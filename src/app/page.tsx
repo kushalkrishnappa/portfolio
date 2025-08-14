@@ -91,7 +91,7 @@ export default function Home() {
               {/* Extended About Section */}
               <div className="space-y-4">
                 <p className="text-lg">
-                  <span className="text-purple-400">[ABOUT]</span> Production Engineer with experience in building and scaling systems across enterprise environments. Currently pursuing Master's in Computer Science at Northeastern while bringing hands-on experience from managing critical infrastructure at Pure Storage and Mercedes-Benz.
+                  <span className="text-purple-400">[ABOUT]</span> Production Engineer with experience in building and scaling systems across enterprise environments. Currently pursuing Master&apos;s in Computer Science at Northeastern while bringing hands-on experience from managing critical infrastructure at Pure Storage and Mercedes-Benz.
                 </p>
                 <p className="text-lg">
                   Specialized in automation, system reliability, and large-scale deployments. Successfully reduced simulator recovery times from hours to minutes and managed 9,000+ production VMs with 99% automation. Passionate about solving complex infrastructure challenges, ML applications in DevSecOps and building invisible infrastructure.
