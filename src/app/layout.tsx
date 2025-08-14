@@ -16,6 +16,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Kushal Krishnappa - Infrastructure Architect",
   description: "Building distributed systems across 9000 environments",
+  icons: {
+    icon: '/favicon.svg',
+  },
 };
 
 export default function RootLayout({
