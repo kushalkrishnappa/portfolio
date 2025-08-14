@@ -249,6 +249,19 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* Construction Note */}
+        <section className="mb-8">
+          <div className="border border-yellow-400 p-6 rounded bg-slate-800">
+            <div className="flex items-center space-x-3">
+              <div className="text-yellow-400 text-xl">⚠️</div>
+              <div>
+                <p className="text-yellow-400 font-bold">NOTE:</p>
+                <p className="text-sm text-gray-300">This site is still under construction. More features and content coming soon!</p>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   )
