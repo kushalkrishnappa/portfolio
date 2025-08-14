@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Kushal Krishnappa - Infrastructure Architect",
-  description: "Building distributed systems across 9000 environments",
+  title: "Kushal Krishnappa - MSCS @ Northeastern University",
+  description: "Building systems that scale seamlessly",
   icons: {
     icon: '/favicon.svg',
   },
