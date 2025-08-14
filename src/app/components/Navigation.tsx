@@ -14,7 +14,7 @@ export default function Navigation() {
         <div>
           <h1 className="text-4xl font-bold text-green-400">$ whoami</h1>
         </div>
-        <div className="flex space-x-6">
+        <div className="hidden sm:flex space-x-6">
           <button onClick={() => scrollToSection('home')} className="text-green-400 hover:text-cyan-400 transition-colors">
             $ home
           </button>
