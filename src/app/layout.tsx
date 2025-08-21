@@ -17,7 +17,12 @@ export const metadata: Metadata = {
   title: "Kushal Krishnappa - MSCS @ Northeastern University",
   description: "Building systems that scale seamlessly",
   icons: {
-    icon: '/favicon.svg',
+    icon: [
+      { url: '/kk.ico', sizes: '32x32', type: 'image/x-icon' },
+      { url: '/kk.svg', type: 'image/svg+xml' }
+    ],
+    shortcut: '/kk.ico',
+    apple: '/kk.svg',
   },
 };
 
@@ -28,6 +33,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/kk.ico" sizes="32x32" />
+        <link rel="icon" href="/kk.svg" type="image/svg+xml" />
+        <link rel="shortcut icon" href="/kk.ico" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Navigation />

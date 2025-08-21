@@ -104,7 +104,7 @@ export default function Home() {
             {/* Content - 60% */}
             <div className="lg:flex-[60] space-y-4">
               <p className="text-xl sm:text-2xl">
-                <span className="text-cyan-400">[INFO]</span> Kushal Krishnappa
+                Kushal Krishnappa
               </p>
               
               {/* Extended About Section */}
@@ -180,7 +180,7 @@ export default function Home() {
 
         {/* Experience Section */}
         <section id="experience" className="mb-24">
-          <h1 className="text-2xl sm:text-4xl font-bold mb-8">$ cat /var/log/experience.log</h1>
+          <h1 className="text-2xl sm:text-4xl font-bold mb-8">/experience.log</h1>
           <div className="space-y-8">
             {experiences.map((experience, index) => (
               <div key={index} className="border border-green-400 p-4 sm:p-6 rounded">
@@ -201,7 +201,7 @@ export default function Home() {
 
         {/* Projects Section */}
         <section id="projects" className="mb-24">
-          <h1 className="text-2xl sm:text-4xl font-bold mb-8">$ cat /var/log/projects.log</h1>
+          <h1 className="text-2xl sm:text-4xl font-bold mb-8">/projects.log</h1>
           <div className="space-y-8">
             {projects.map((project, index) => (
               <div key={index} className="border border-green-400 p-4 sm:p-6 rounded">
@@ -223,7 +223,7 @@ export default function Home() {
 
         {/* Skills Section */}
         <section id="skills" className="mb-24">
-          <h1 className="text-2xl sm:text-4xl font-bold mb-8">$ cat /var/log/skills.log</h1>
+          <h1 className="text-2xl sm:text-4xl font-bold mb-8">/skills.log</h1>
           <div className="border border-green-400 p-4 sm:p-6 rounded">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
               <div>
