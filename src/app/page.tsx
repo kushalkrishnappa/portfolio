@@ -103,7 +103,7 @@ export default function Home() {
 
             {/* Content - 60% */}
             <div className="lg:flex-[60] space-y-4">
-              <p className="text-xl sm:text-2xl">
+              <p className="text-xl sm:text-2xl font-bold">
                 Kushal Krishnappa
               </p>
               
