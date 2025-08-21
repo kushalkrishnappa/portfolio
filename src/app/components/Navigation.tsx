@@ -4,7 +4,12 @@ export default function Navigation() {
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      const offset = 80; // Height of fixed navigation
+      const elementPosition = element.offsetTop - offset;
+      window.scrollTo({
+        top: elementPosition,
+        behavior: 'smooth'
+      });
     }
   };
 
@@ -16,16 +21,16 @@ export default function Navigation() {
         </div>
         <div className="hidden sm:flex space-x-6">
           <button onClick={() => scrollToSection('home')} className="text-green-400 hover:text-cyan-400 transition-colors">
-            $ home
+            <span className="text-red-400">&gt;</span> home
           </button>
           <button onClick={() => scrollToSection('experience')} className="text-green-400 hover:text-cyan-400 transition-colors">
-            $ experience
+            <span className="text-red-400">&gt;</span> experience
           </button>
           <button onClick={() => scrollToSection('projects')} className="text-green-400 hover:text-cyan-400 transition-colors">
-            $ projects
+            <span className="text-red-400">&gt;</span> projects
           </button>
           <button onClick={() => scrollToSection('skills')} className="text-green-400 hover:text-cyan-400 transition-colors">
-            $ skills
+            <span className="text-red-400">&gt;</span> skills
           </button>
         </div>
       </div>
