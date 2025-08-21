@@ -104,7 +104,7 @@ export default function Home() {
             {/* Content - 60% */}
             <div className="lg:flex-[60] space-y-4">
               <p className="text-xl sm:text-2xl">
-                <span className="text-cyan-400">[INFO]</span> Kushal Krishnappa
+                Kushal Krishnappa
               </p>
               
               {/* Extended About Section */}
