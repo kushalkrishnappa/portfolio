@@ -122,14 +122,14 @@ export default function Home() {
           {/* Option 3: Card-style Status Layout */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
             <div className="border border-green-400 p-3 sm:p-4 rounded text-center">
-              <h3 className="text-cyan-400 text-xs sm:text-sm font-bold mb-2">CURRENT ROLE</h3>
+              <h3 className="text-red-400 text-xs sm:text-sm font-bold mb-2">CURRENT ROLE</h3>
               <div className="text-xs sm:text-sm">
                 <div>MSCS Student</div>
                 <div>@Northeastern University</div>
               </div>
             </div>
             <div className="border border-green-400 p-3 sm:p-4 rounded text-center">
-              <h3 className="text-blue-400 text-xs sm:text-sm font-bold mb-2">LOCATION</h3>
+              <h3 className="text-red-400 text-xs sm:text-sm font-bold mb-2">LOCATION</h3>
               <div className="text-xs sm:text-sm">
                 <div>Boston, MA</div>
                 <div>EST timezone</div>
@@ -146,7 +146,7 @@ export default function Home() {
 
           {/* Social Communications Section */}
           <div className="border border-green-400 p-4 sm:p-6 rounded">
-            <h2 className="text-lg sm:text-xl mb-4">$ ls -la /social/comms</h2>
+            <h2 className="text-lg sm:text-xl mb-4 font-bold">/social/comms</h2>
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
               <a 
                 href="https://linkedin.com/in/kushalkrishnappa" 
@@ -165,7 +165,7 @@ export default function Home() {
                 href="https://github.com/kushalkrishnappa" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="flex items-center space-x-3 text-purple-400 hover:text-cyan-400 transition-colors"
+                className="flex items-center space-x-3 text-white hover:text-cyan-400 transition-colors"
               >
                 <div className="w-8 h-8 flex items-center justify-center">
                   <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24">
