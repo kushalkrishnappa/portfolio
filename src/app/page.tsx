@@ -343,7 +343,7 @@ export default function Home() {
                     <div className="text-sm">
                       <p className="text-yellow-400 font-semibold mb-2">Form Under Development</p>
                       <p className="text-gray-300 mb-2">
-                        Currently building the backend notification service using{' '}
+                        Currently building a notification service called{' '}
                         <a
                           href="https://github.com/kap-theorem/beacon"
                           target="_blank"
@@ -354,7 +354,7 @@ export default function Home() {
                         </a>
                       </p>
                       <p className="text-gray-400 text-xs">
-                        In the meantime, feel free to reach out via LinkedIn or GitHub above!
+                        In the meantime, feel free to reach out via LinkedIn or GitHub!
                       </p>
                     </div>
                   </div>
@@ -387,7 +387,7 @@ export default function Home() {
                     <label className="block text-xs text-gray-500 mb-2">MESSAGE</label>
                     <textarea
                       name="message"
-                      value="Building Beacon - a notification service to power this contact form. Check out the progress on GitHub!"
+                      value="Building Beacon - a notification service to power sms, email, and push notifications. Check out the progress on GitHub!"
                       disabled
                       rows={4}
                       className="w-full bg-gray-900 border border-gray-700 rounded px-4 py-2 text-gray-500 text-sm cursor-not-allowed resize-none"
