@@ -13,6 +13,15 @@ export default function Navigation() {
     }
   };
 
+  const downloadResume = () => {
+    const link = document.createElement('a');
+    link.href = '/files/KushalKrishnappa.pdf';
+    link.download = 'KushalKrishnappa.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
   return (
     <nav className="bg-black border-b border-gray-800 p-3 sm:p-4 font-mono fixed top-0 left-0 right-0 z-50 backdrop-blur-sm bg-opacity-95">
       <div className="container mx-auto px-2 sm:px-4 max-w-5xl flex justify-between items-center">
@@ -36,6 +45,9 @@ export default function Navigation() {
           </button>
           <button onClick={() => scrollToSection('contact')} className="text-gray-400 hover:text-cyan-400 transition-colors">
             contact
+          </button>
+          <button onClick={() => downloadResume()} className="text-gray-400 hover:text-cyan-400 transition-colors">
+            resume
           </button>
         </div>
       </div>
