@@ -1,57 +1,56 @@
-import fs from "fs";
-import path from "path";
-import matter from "gray-matter";
 import { BlogPostMeta } from "@/types";
 
-function blogDir(): string {
-  return process.env.BLOG_CONTENT_DIR || path.join(process.cwd(), "content", "blog");
+const DEFAULT_MANIFEST_URL = "https://kushalkrishnappa.github.io/blog/posts.json";
+
+function manifestUrl(): string {
+  return process.env.BLOG_MANIFEST_URL || DEFAULT_MANIFEST_URL;
 }
 
-function readingTime(text: string): string {
-  const words = text.trim().split(/\s+/).filter(Boolean).length;
-  const minutes = Math.max(1, Math.ceil(words / 200));
-  return `${minutes} min read`;
+interface RawPost {
+  slug?: unknown;
+  title?: unknown;
+  date?: unknown;
+  summary?: unknown;
+  tags?: unknown;
+  url?: unknown;
+  readingTime?: unknown;
 }
 
-function postFiles(dir: string): string[] {
-  if (!fs.existsSync(dir)) return [];
-  return fs
-    .readdirSync(dir, { withFileTypes: true })
-    .filter((entry) => entry.isFile() && entry.name.endsWith(".mdx"))
-    .map((entry) => entry.name);
-}
-
-function toMeta(slug: string, data: Record<string, unknown>, content: string): BlogPostMeta {
+function toMeta(raw: RawPost): BlogPostMeta | null {
+  if (typeof raw.title !== "string" || typeof raw.url !== "string") return null;
   return {
-    slug,
-    title: String(data.title ?? slug),
-    date: String(data.date ?? ""),
-    summary: String(data.summary ?? ""),
-    tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
-    readingTime: readingTime(content),
+    slug: typeof raw.slug === "string" && raw.slug ? raw.slug : raw.title,
+    title: raw.title,
+    date: typeof raw.date === "string" ? raw.date : "",
+    summary: typeof raw.summary === "string" ? raw.summary : "",
+    tags: Array.isArray(raw.tags) ? raw.tags.filter((t): t is string => typeof t === "string") : [],
+    url: raw.url,
+    readingTime: typeof raw.readingTime === "string" ? raw.readingTime : undefined,
   };
 }
 
-export function getAllPosts(): BlogPostMeta[] {
-  const dir = blogDir();
-  return postFiles(dir)
-    .map((file) => {
-      const slug = file.replace(/\.mdx$/, "");
-      const raw = fs.readFileSync(path.join(dir, file), "utf8");
-      const { data, content } = matter(raw);
-      return { slug, data, content };
-    })
-    .filter((p) => p.data.published === true)
-    .map((p) => toMeta(p.slug, p.data, p.content))
-    .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
+export async function getAllPosts(): Promise<BlogPostMeta[]> {
+  try {
+    const res = await fetch(manifestUrl(), { cache: "force-cache" });
+    if (!res.ok) {
+      console.warn(`[blog] manifest fetch failed: HTTP ${res.status}`);
+      return [];
+    }
+    const data = (await res.json()) as { posts?: unknown };
+    if (!Array.isArray(data.posts)) {
+      console.warn("[blog] manifest has no posts array");
+      return [];
+    }
+    return data.posts
+      .map((p) => toMeta(p as RawPost))
+      .filter((p): p is BlogPostMeta => p !== null)
+      .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
+  } catch (err) {
+    console.warn(`[blog] manifest fetch error: ${String(err)}`);
+    return [];
+  }
 }
 
-export function getPostBySlug(slug: string): { meta: BlogPostMeta; content: string } | null {
-  const safeName = path.basename(slug);
-  const file = path.join(blogDir(), `${safeName}.mdx`);
-  if (!fs.existsSync(file)) return null;
-  const raw = fs.readFileSync(file, "utf8");
-  const { data, content } = matter(raw);
-  if (data.published !== true) return null;
-  return { meta: toMeta(safeName, data, content), content };
+export async function getLatestPosts(limit: number): Promise<BlogPostMeta[]> {
+  return (await getAllPosts()).slice(0, limit);
 }
