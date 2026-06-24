@@ -50,7 +50,7 @@ Two repos bound by one data contract (`posts.json`):
 └───────────┬─────────────┘                              └────────────┬─────────────┘
             │ merge to main (GH Action)                                │ build-time fetch
             │  1. build Docusaurus + generate posts.json               │ (cache: no-store)
-            │  2. deploy to Pages                                      ▼
+            │  2. deploy to Pages                            (force-cache, baked at build)
             │  3. POST Netlify build hook  ───────────────►  ┌──────────────────────────┐
             └─────────────────────────────────────────────► │ portfolio (Netlify)      │
                                                              │ /blog list + home teaser │
@@ -107,7 +107,12 @@ Rules:
 ## 7. Portfolio Repo (changes to existing code)
 
 - **`src/lib/blog.ts`** — rewrite from local-file reading to a build-time
-  `fetch(BLOG_MANIFEST_URL, { cache: "no-store" })`; parse and return `BlogPostMeta[]`.
+  `fetch(BLOG_MANIFEST_URL, { cache: "force-cache" })`; parse and return `BlogPostMeta[]`.
+  - `force-cache` (not `no-store`) is required: in Next.js 15 `fetch` defaults to uncached,
+    and an uncached fetch makes the route render dynamically (per-request at runtime).
+    `force-cache` keeps the page statically rendered so the manifest is fetched **once at
+    build** and baked into the static HTML, then re-fetched on the next rebuild — matching
+    the "build-time, fully static, refreshed by deploy hook" decision.
   - **Fail-soft:** on any fetch/parse error, return `[]` and `console.warn`, so a blog
     outage never breaks the portfolio deploy (the existing "Working on it…" placeholder
     shows). No last-known-good cache file (deliberately omitted for simplicity).
