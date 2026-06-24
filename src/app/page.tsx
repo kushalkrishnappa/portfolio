@@ -2,6 +2,7 @@ import Whoami from "@/app/components/sections/Whoami";
 import ImpactMetrics from "@/app/components/sections/ImpactMetrics";
 import Experience from "@/app/components/sections/Experience";
 import Projects from "@/app/components/sections/Projects";
+import Writing from "@/app/components/sections/Writing";
 import Skills from "@/app/components/sections/Skills";
 import Education from "@/app/components/sections/Education";
 import Publications from "@/app/components/sections/Publications";
@@ -16,6 +17,7 @@ export default function Home() {
         <ImpactMetrics />
         <Experience />
         <Projects />
+        <Writing />
         <Skills />
         <Education />
         <Publications />
