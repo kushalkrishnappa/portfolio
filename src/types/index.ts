@@ -63,6 +63,7 @@ export interface Publication {
 export interface Certification {
   name: string;
   featured?: boolean;
+  url?: string;
 }
 
 export interface BlogPostMeta {
