@@ -26,7 +26,7 @@ export const experiences: Experience[] = [
   {
     period: "Aug 2022 – Jan 2023",
     company: "Mercedes-Benz Research & Development India",
-    role: "Graduate Engineer Trainee — Over-the-Air (OTA) Updates",
+    role: "Software Engineer — Over-the-Air (OTA) Updates",
     location: "Bengaluru, India",
     achievements: [
       "Built scalable ETL pipelines for OTA updates using PySpark on Databricks with a Delta Lake architecture, processing 90TB+ of historical and ongoing data for downstream analytics.",

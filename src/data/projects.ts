@@ -2,6 +2,17 @@ import { Project } from "@/types";
 
 export const projects: Project[] = [
   {
+    name: "DSA Panicle",
+    description: "Online platform for algorithmic challenges",
+    tech: ["Docusaurus", "RST", "GitHub Actions", "CI/CD"],
+    features: [
+      "Curated algorithmic challenges",
+      "CI/CD via GitHub runners",
+      "Hostinger webhook deploys",
+    ],
+    impact: "Accessible, continuously-deployed practice platform",
+  },
+  {
     name: "Virtual Calendar",
     description: "Full-stack virtual calendar application in Java",
     tech: ["Java", "Swing GUI", "MVC Architecture"],
@@ -12,17 +23,6 @@ export const projects: Project[] = [
       "Google Calendar import/export",
     ],
     impact: "Streamlined event management with timezone-aware scheduling",
-  },
-  {
-    name: "DSA Panicle",
-    description: "Online platform for algorithmic challenges",
-    tech: ["Docusaurus", "RST", "GitHub Actions", "CI/CD"],
-    features: [
-      "Curated algorithmic challenges",
-      "CI/CD via GitHub runners",
-      "Hostinger webhook deploys",
-    ],
-    impact: "Accessible, continuously-deployed practice platform",
   },
   {
     name: "Yet Another Centralized Scheduler",
