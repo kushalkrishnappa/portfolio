@@ -6,7 +6,6 @@ export const publications: Publication[] = [
     venue: "Published in IEEE",
     description:
       "A genetic algorithm to optimize dense 5G base-station deployment — minimizing cost while maximizing coverage and efficiency.",
-    // url omitted until a public link is available; the section renders the
-    // "Read paper" link only when a url is present.
+    url: "https://ieeexplore.ieee.org/abstract/document/9865106",
   },
 ];
