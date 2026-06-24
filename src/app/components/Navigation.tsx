@@ -21,11 +21,11 @@ export default function Navigation() {
   };
 
   return (
-    <nav className="bg-black border-b border-gray-800 p-3 sm:p-4 font-mono fixed top-0 left-0 right-0 z-50 backdrop-blur-sm bg-opacity-95">
+    <nav aria-label="Main navigation" className="bg-black border-b border-gray-800 p-3 sm:p-4 font-mono fixed top-0 left-0 right-0 z-50 backdrop-blur-sm bg-opacity-95">
       <div className="container mx-auto px-2 sm:px-4 max-w-5xl flex justify-between items-center">
         <div className="flex-shrink-0 flex items-center">
-          <Link href="/">
-            <h1 className="text-base sm:text-xl md:text-2xl font-bold text-green-400 flex items-center">
+          <Link href="/" aria-label="Kushal Krishnappa — home">
+            <h1 aria-hidden="true" className="text-base sm:text-xl md:text-2xl font-bold text-green-400 flex items-center">
               <span className="text-green-500">$</span>
               <span className="ml-2 inline-block w-[200px] sm:w-[280px] md:w-[350px] overflow-hidden relative">
                 <span className="inline-block whitespace-nowrap animate-slideLeft">
