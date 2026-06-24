@@ -10,11 +10,22 @@ export interface Social {
   icon: "linkedin" | "github";
 }
 
+export interface AboutHighlight {
+  org: string;
+  detail: string;
+}
+
+export interface About {
+  intro: string;
+  built: AboutHighlight[];
+  closing: string;
+}
+
 export interface Profile {
   name: string;
   tagline: string;
   availability: string;
-  about: string[];
+  about: About;
   quickInfo: QuickInfo[];
   socials: Social[];
 }

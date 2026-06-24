@@ -3,11 +3,30 @@ import { Profile } from "@/types";
 export const profile: Profile = {
   name: "Kushal Krishnappa",
   tagline: "I ♥ computers in any shape or form.",
-  availability: "Available for entry level full time SWE roles",
-  about: [
-    "Production Engineer with experience in building and scaling systems across enterprise environments. Currently pursuing a Master's in Computer Science at Northeastern while bringing hands-on experience from managing critical infrastructure at Pure Storage and Mercedes-Benz.",
-    "Specialized in automation, system reliability, and large-scale deployments. Successfully reduced simulator recovery times from hours to minutes and managed 9,000+ production VMs with 90%+ automation. Passionate about solving complex infrastructure challenges, ML applications in DevSecOps, and building invisible infrastructure.",
-  ],
+  availability: "Open to backend / platform / infrastructure SWE roles",
+  about: {
+    intro:
+      "Backend software engineer building distributed systems and platform infrastructure — Go, Python, Kubernetes, AWS. Currently pursuing my MS in CS at Northeastern (4.0 GPA), graduating Dec 2026.",
+    built: [
+      {
+        org: "RoonCyber (SWE Intern)",
+        detail:
+          "Shipped Go backend services for a CNAPP platform and extended eBPF-based runtime threat-detection pipelines.",
+      },
+      {
+        org: "Pure Storage (Member of Technical Staff 2)",
+        detail:
+          "Designed backend systems for physical host allocation and VM lifecycle management; cross-team work on deployment workflows at infrastructure scale.",
+      },
+      {
+        org: "Mercedes-Benz R&D (SWE)",
+        detail:
+          "Built ETL pipelines on PySpark/Databricks for OTA update analytics and extended the OTA microservice for real-time downstream analytics.",
+      },
+    ],
+    closing:
+      "What I care about: orchestration, reliability and systems that hold up under real load. Lately I'm working under Prof. Xiang Ren at System Research Group on GPU programming, LLM performance engineering and low level observability — anything that needs to go brrr.",
+  },
   quickInfo: [
     { label: "CURRENT ROLE", value: "MSCS Grad @ Northeastern" },
     { label: "LOCATION", value: "Boston, MA" },

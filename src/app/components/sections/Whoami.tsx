@@ -12,10 +12,24 @@ export default function Whoami() {
           </h1>
           <p className="text-xl sm:text-2xl text-cyan-400 mb-2">{profile.tagline}</p>
           <p className="text-sm text-green-400 mb-6">{profile.availability}</p>
-          <div className="space-y-3 text-sm sm:text-base leading-relaxed">
-            {profile.about.map((paragraph, index) => (
-              <p key={index}>{paragraph}</p>
-            ))}
+          <div className="space-y-4 text-sm sm:text-base leading-relaxed">
+            <p>{profile.about.intro}</p>
+
+            <div>
+              <p className="text-gray-400 mb-2">{"What I've built:"}</p>
+              <ul className="space-y-2">
+                {profile.about.built.map((item) => (
+                  <li key={item.org} className="flex items-start">
+                    <span className="text-green-500 mr-2 mt-1">▸</span>
+                    <span>
+                      <span className="text-cyan-400">{item.org}</span> — {item.detail}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <p>{profile.about.closing}</p>
           </div>
         </div>
       </div>
