@@ -15,7 +15,7 @@ export const certifications: Certification[] = [
     url: "https://coursera.org/verify/YYBVCUFU6QSS",
   },
   {
-    name: "Object Oriented Programming — Advanced (Java OOP)",
+    name: "Object Oriented Programming — Advanced (Java)",
     url: "https://ude.my/UC-92ff2ad5-93d3-428d-a43a-269f35d14185",
   },
   {
