@@ -2,7 +2,7 @@ import { Profile } from "@/types";
 
 export const profile: Profile = {
   name: "Kushal Krishnappa",
-  tagline: "I '3 computers in any shape or form.",
+  tagline: "I ♥ computers in any shape or form.",
   availability: "Available: Winter / Spring / Summer 2026",
   about: [
     "Production Engineer with experience in building and scaling systems across enterprise environments. Currently pursuing a Master's in Computer Science at Northeastern while bringing hands-on experience from managing critical infrastructure at Pure Storage and Mercedes-Benz.",
