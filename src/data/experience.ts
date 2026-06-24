@@ -2,6 +2,16 @@ import { Experience } from "@/types";
 
 export const experiences: Experience[] = [
   {
+    period: "Jan 2026 – Jun 2026",
+    company: "RoonCyber",
+    role: "Software Engineer — Internship",
+    location: "Boston, MA",
+    achievements: [
+      "Built API key auth for a multi-tenant CNAPP platform — designed key issuance with tenant isolation and implemented validation middleware with in-process caching across 10+ endpoints, enabling M2M integrations for enterprise customers.",
+      "Enhanced an eBPF-based sensor for HTTP header/payload inspection, increasing application-layer visibility by 30%.",
+    ],
+  },
+  {
     period: "Jan 2023 – Dec 2024",
     company: "Pure Storage",
     role: "Member of Technical Staff 2",

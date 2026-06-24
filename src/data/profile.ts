@@ -3,7 +3,7 @@ import { Profile } from "@/types";
 export const profile: Profile = {
   name: "Kushal Krishnappa",
   tagline: "I ♥ computers in any shape or form.",
-  availability: "Available: Winter / Spring / Summer 2026",
+  availability: "Available for entry level full time SWE roles",
   about: [
     "Production Engineer with experience in building and scaling systems across enterprise environments. Currently pursuing a Master's in Computer Science at Northeastern while bringing hands-on experience from managing critical infrastructure at Pure Storage and Mercedes-Benz.",
     "Specialized in automation, system reliability, and large-scale deployments. Successfully reduced simulator recovery times from hours to minutes and managed 9,000+ production VMs with 90%+ automation. Passionate about solving complex infrastructure challenges, ML applications in DevSecOps, and building invisible infrastructure.",
