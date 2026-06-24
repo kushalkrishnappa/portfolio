@@ -37,3 +37,15 @@ body {
 .animate-slideLeft {
   animation: slideLeft 15s linear infinite;
 }
+
+/* Smooth anchor scrolling, disabled for users who prefer reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Offsets in-page anchor targets so headings clear the fixed nav bar. */
+section[id] {
+  scroll-margin-top: 6rem;
+}
