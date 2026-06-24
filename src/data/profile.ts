@@ -2,7 +2,7 @@ import { Profile } from "@/types";
 
 export const profile: Profile = {
   name: "Kushal Krishnappa",
-  tagline: "I ♥ computers in any shape or form.",
+  tagline: "building invisible infrastructure for visible impact",
   availability: "Open to backend / platform / infrastructure SWE roles",
   about: {
     intro:
