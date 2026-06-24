@@ -37,3 +37,11 @@ body {
 .animate-slideLeft {
   animation: slideLeft 15s linear infinite;
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+section[id] {
+  scroll-margin-top: 6rem;
+}
