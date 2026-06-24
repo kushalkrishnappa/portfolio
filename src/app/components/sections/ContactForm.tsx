@@ -57,6 +57,9 @@ export default function ContactForm() {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  // The form is intentionally disabled while Beacon is in development. The state
+  // and handlers above are kept so re-enabling is a one-line change; these voids
+  // mark them as deliberately-unused for now.
   void isSubmitting;
   void submitStatus;
   void handleChange;
