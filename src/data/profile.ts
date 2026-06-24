@@ -25,7 +25,7 @@ export const profile: Profile = {
       },
     ],
     closing:
-      "What I care about: orchestration, reliability and systems that hold up under real load. Lately I'm working under Prof. Xiang Ren at System Research Group on GPU programming, LLM performance engineering and low level observability — anything that needs to go brrr.",
+      "What I care about: orchestration, reliability and systems that hold up under real load. Lately I'm working under Prof. Xiang Ren at System Research Group on low level observability.",
   },
   quickInfo: [
     { label: "CURRENT ROLE", value: "MSCS Grad @ Northeastern" },
