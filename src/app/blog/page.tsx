@@ -1,4 +1,3 @@
-import Link from "next/link";
 import type { Metadata } from "next";
 import { getAllPosts } from "@/lib/blog";
 import SectionHeader from "@/app/components/SectionHeader";
@@ -8,8 +7,8 @@ export const metadata: Metadata = {
   description: "Writing on distributed systems, infrastructure automation, and security.",
 };
 
-export default function BlogIndex() {
-  const posts = getAllPosts();
+export default async function BlogIndex() {
+  const posts = await getAllPosts();
 
   return (
     <div className="min-h-screen bg-black text-gray-300 font-mono">
@@ -27,9 +26,11 @@ export default function BlogIndex() {
           ) : (
             <div className="space-y-4">
               {posts.map((post) => (
-                <Link
+                <a
                   key={post.slug}
-                  href={`/blog/${post.slug}`}
+                  href={post.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="block bg-gray-900 border border-gray-800 rounded-lg p-5 hover:border-gray-700 transition-colors"
                 >
                   <div className="flex justify-between items-baseline">
@@ -47,7 +48,7 @@ export default function BlogIndex() {
                       </span>
                     ))}
                   </div>
-                </Link>
+                </a>
               ))}
             </div>
           )}

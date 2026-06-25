@@ -1,105 +1,137 @@
-import { describe, it, expect, beforeEach, afterEach } from "vitest";
-import fs from "fs";
-import os from "os";
-import path from "path";
-import { getAllPosts, getPostBySlug } from "@/lib/blog";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import { getAllPosts, getLatestPosts } from "@/lib/blog";
 
-let dir: string;
-
-function writePost(
-  name: string,
-  frontmatter: Record<string, unknown>,
-  body = "Body text here.",
-) {
-  const fm = Object.entries(frontmatter)
-    .map(([k, v]) => `${k}: ${JSON.stringify(v)}`)
-    .join("\n");
-  fs.writeFileSync(path.join(dir, name), `---\n${fm}\n---\n${body}\n`);
+function manifest(posts: unknown[]) {
+  return { generatedAt: "2026-06-24T00:00:00Z", posts };
 }
 
+function mockFetch(impl: () => Promise<Response> | Response) {
+  vi.stubGlobal("fetch", vi.fn(impl));
+}
+
+function jsonResponse(body: unknown, ok = true, status = 200): Response {
+  return {
+    ok,
+    status,
+    json: async () => body,
+  } as unknown as Response;
+}
+
+const samplePost = {
+  slug: "first-post",
+  title: "My first post",
+  date: "2026-07-01",
+  summary: "A teaser.",
+  tags: ["distributed-systems"],
+  url: "https://blog.example.com/first-post",
+  readingTime: "5 min read",
+};
+
 beforeEach(() => {
-  dir = fs.mkdtempSync(path.join(os.tmpdir(), "blog-"));
-  process.env.BLOG_CONTENT_DIR = dir;
+  process.env.BLOG_MANIFEST_URL = "https://blog.example.com/posts.json";
+  vi.spyOn(console, "warn").mockImplementation(() => {});
 });
 
 afterEach(() => {
-  delete process.env.BLOG_CONTENT_DIR;
-  fs.rmSync(dir, { recursive: true, force: true });
+  vi.unstubAllGlobals();
+  vi.restoreAllMocks();
+  delete process.env.BLOG_MANIFEST_URL;
 });
 
 describe("getAllPosts", () => {
-  it("returns [] when no posts exist", () => {
-    expect(getAllPosts()).toEqual([]);
-  });
-
-  it("returns [] when the directory is absent", () => {
-    process.env.BLOG_CONTENT_DIR = path.join(dir, "does-not-exist");
-    expect(getAllPosts()).toEqual([]);
-  });
-
-  it("excludes unpublished posts", () => {
-    writePost("draft.mdx", { title: "Draft", date: "2026-01-01", published: false });
-    writePost("live.mdx", { title: "Live", date: "2026-01-02", published: true });
-    const posts = getAllPosts();
+  it("returns parsed posts from a valid manifest", async () => {
+    mockFetch(() => jsonResponse(manifest([samplePost])));
+    const posts = await getAllPosts();
     expect(posts).toHaveLength(1);
-    expect(posts[0].slug).toBe("live");
+    expect(posts[0]).toMatchObject({
+      slug: "first-post",
+      title: "My first post",
+      date: "2026-07-01",
+      summary: "A teaser.",
+      tags: ["distributed-systems"],
+      url: "https://blog.example.com/first-post",
+      readingTime: "5 min read",
+    });
   });
 
-  it("sorts published posts by date descending", () => {
-    writePost("old.mdx", { title: "Old", date: "2026-01-01", published: true });
-    writePost("new.mdx", { title: "New", date: "2026-05-01", published: true });
-    expect(getAllPosts().map((p) => p.slug)).toEqual(["new", "old"]);
+  it("sorts posts newest-first by date", async () => {
+    const older = { ...samplePost, slug: "old", url: "https://b/old", date: "2026-01-01" };
+    const newer = { ...samplePost, slug: "new", url: "https://b/new", date: "2026-05-01" };
+    mockFetch(() => jsonResponse(manifest([older, newer])));
+    expect((await getAllPosts()).map((p) => p.slug)).toEqual(["new", "old"]);
   });
 
-  it("derives tags and reading time", () => {
-    writePost(
-      "p.mdx",
-      { title: "P", date: "2026-01-01", tags: ["a", "b"], published: true },
-      "word ".repeat(400),
-    );
-    const [post] = getAllPosts();
-    expect(post.tags).toEqual(["a", "b"]);
-    expect(post.readingTime).toBe("2 min read");
+  it("skips entries missing required url or title", async () => {
+    const noUrl = { slug: "x", title: "No URL", date: "2026-02-01", tags: [] };
+    const noTitle = { slug: "y", url: "https://b/y", date: "2026-02-01", tags: [] };
+    mockFetch(() => jsonResponse(manifest([noUrl, noTitle, samplePost])));
+    expect((await getAllPosts()).map((p) => p.slug)).toEqual(["first-post"]);
   });
 
-  it("orders equal-date posts deterministically across reads", () => {
-    writePost("a.mdx", { title: "A", date: "2026-01-01", published: true });
-    writePost("b.mdx", { title: "B", date: "2026-01-01", published: true });
-    const first = getAllPosts().map((p) => p.slug);
-    const second = getAllPosts().map((p) => p.slug);
-    expect(first).toHaveLength(2);
-    expect(first).toEqual(second);
-  });
-
-  it("falls back to slug and empty values when frontmatter fields are missing", () => {
-    writePost("bare.mdx", { published: true }, "Some body");
-    const [post] = getAllPosts();
-    expect(post.title).toBe("bare");
+  it("defaults optional fields when absent", async () => {
+    const bare = { title: "Bare", url: "https://b/bare" };
+    mockFetch(() => jsonResponse(manifest([bare])));
+    const [post] = await getAllPosts();
+    expect(post.slug).toBe("Bare");
     expect(post.date).toBe("");
     expect(post.summary).toBe("");
     expect(post.tags).toEqual([]);
+    expect(post.readingTime).toBeUndefined();
+  });
+
+  it("returns [] on a non-ok HTTP response", async () => {
+    mockFetch(() => jsonResponse({}, false, 404));
+    expect(await getAllPosts()).toEqual([]);
+    expect(console.warn).toHaveBeenCalledWith(expect.stringContaining("[blog]"));
+  });
+
+  it("returns [] when fetch throws", async () => {
+    mockFetch(() => {
+      throw new Error("network down");
+    });
+    expect(await getAllPosts()).toEqual([]);
+    expect(console.warn).toHaveBeenCalledWith(expect.stringContaining("[blog]"));
+  });
+
+  it("returns [] when posts is missing or not an array", async () => {
+    mockFetch(() => jsonResponse({ generatedAt: "x" }));
+    expect(await getAllPosts()).toEqual([]);
+    expect(console.warn).toHaveBeenCalledWith(expect.stringContaining("[blog]"));
+  });
+
+  it("keeps a deterministic order for posts sharing a date", async () => {
+    const a = { ...samplePost, slug: "a", url: "https://b/a", date: "2026-03-01" };
+    const b = { ...samplePost, slug: "b", url: "https://b/b", date: "2026-03-01" };
+    mockFetch(() => jsonResponse(manifest([a, b])));
+    const first = (await getAllPosts()).map((p) => p.slug);
+    mockFetch(() => jsonResponse(manifest([a, b])));
+    const second = (await getAllPosts()).map((p) => p.slug);
+    expect(first).toEqual(second);
+    expect(first).toEqual(["a", "b"]);
+  });
+
+  it("falls back to the default manifest URL when the env var is unset", async () => {
+    delete process.env.BLOG_MANIFEST_URL;
+    const fetchMock = vi.fn(() => jsonResponse(manifest([samplePost])));
+    vi.stubGlobal("fetch", fetchMock);
+    await getAllPosts();
+    expect(fetchMock).toHaveBeenCalledWith(
+      "https://kushalkrishnappa.github.io/blog/posts.json",
+      { cache: "force-cache" },
+    );
   });
 });
 
-describe("getPostBySlug", () => {
-  it("returns meta + content for a published slug", () => {
-    writePost("hello.mdx", { title: "Hello", date: "2026-01-01", published: true }, "Hello world body");
-    const post = getPostBySlug("hello");
-    expect(post?.meta.title).toBe("Hello");
-    expect(post?.content).toContain("Hello world body");
-  });
-
-  it("returns null for an unknown slug", () => {
-    expect(getPostBySlug("missing")).toBeNull();
-  });
-
-  it("returns null for an unpublished slug", () => {
-    writePost("draft.mdx", { title: "Draft", date: "2026-01-01", published: false });
-    expect(getPostBySlug("draft")).toBeNull();
-  });
-
-  it("returns null for slugs that try to traverse outside the blog directory", () => {
-    expect(getPostBySlug("../outside")).toBeNull();
-    expect(getPostBySlug("../../etc/passwd")).toBeNull();
+describe("getLatestPosts", () => {
+  it("returns at most `limit` newest posts", async () => {
+    const posts = [1, 2, 3, 4].map((n) => ({
+      ...samplePost,
+      slug: `p${n}`,
+      url: `https://b/p${n}`,
+      date: `2026-0${n}-01`,
+    }));
+    mockFetch(() => jsonResponse(manifest(posts)));
+    const latest = await getLatestPosts(2);
+    expect(latest.map((p) => p.slug)).toEqual(["p4", "p3"]);
   });
 });

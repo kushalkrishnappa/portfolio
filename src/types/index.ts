@@ -83,5 +83,6 @@ export interface BlogPostMeta {
   date: string;
   summary: string;
   tags: string[];
-  readingTime: string;
+  url: string;
+  readingTime?: string;
 }
