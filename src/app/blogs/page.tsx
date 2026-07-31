@@ -33,9 +33,11 @@ export default async function BlogIndex() {
                   rel="noopener noreferrer"
                   className="block bg-gray-900 border border-gray-800 rounded-lg p-5 hover:border-gray-700 transition-colors"
                 >
-                  <div className="flex justify-between items-baseline">
+                  <div className="flex justify-between items-baseline gap-4">
                     <h2 className="text-white font-bold">{post.title}</h2>
-                    <span className="text-gray-500 text-xs">{post.date}</span>
+                    <span className="text-gray-500 text-xs shrink-0 whitespace-nowrap tabular-nums">
+                      {post.date}
+                    </span>
                   </div>
                   <p className="text-gray-400 text-sm my-2">{post.summary}</p>
                   <div className="flex flex-wrap gap-2">
