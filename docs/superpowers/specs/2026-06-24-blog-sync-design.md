@@ -63,7 +63,7 @@ Two coordinated work-streams (blog repo setup; portfolio changes) bound by the
 
 ## 5. Data Contract — `posts.json`
 
-Served at the blog site root (e.g. `https://kushalkrishnappa.github.io/blog/posts.json`).
+Served at the blog site root (e.g. `https://kushalkrishnappa.github.io/blogs/posts.json`).
 
 ```json
 {
@@ -75,7 +75,7 @@ Served at the blog site root (e.g. `https://kushalkrishnappa.github.io/blog/post
       "date": "2026-07-01",
       "summary": "One-line teaser.",
       "tags": ["distributed-systems", "temporal"],
-      "url": "https://kushalkrishnappa.github.io/blog/first-post",
+      "url": "https://kushalkrishnappa.github.io/blogs/first-post",
       "readingTime": "5 min read"
     }
   ]
@@ -94,7 +94,7 @@ Rules:
 - Standard Docusaurus site. Posts authored as `.md` / `.mdx` with frontmatter:
   `title`, `date`, `description` (→ `summary`), `tags`, `slug`, `draft`.
 - Recommendation: set the blog plugin `routeBasePath: '/'` so post URLs are clean
-  (`…/blog/<slug>`, not `…/blog/blog/<slug>`). Moving to a custom subdomain later only
+  (`…/blogs/<slug>`, not `…/blogs/blog/<slug>`). Moving to a custom subdomain later only
   changes the base URL used to build `url`.
 - **`scripts/generate-manifest.mjs`** (Node, uses `gray-matter` — already in the
   Docusaurus dependency tree, so zero new deps): reads each post's frontmatter, computes
