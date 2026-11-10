@@ -6,6 +6,7 @@ export const profile: Profile = {
   tagline: "building invisible infrastructure for visible impact",
   availability: "Open to backend / platform / infra / SRE roles",
   nowLine: "Research Assistant @ Northeastern · open for full-time May 2027",
+  before: ["RoonCyber", "Pure Storage", "Mercedes-Benz"],
   chips: [
     "Go",
     "Kubernetes",

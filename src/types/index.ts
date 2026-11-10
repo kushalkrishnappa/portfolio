@@ -27,6 +27,8 @@ export interface Profile {
   tagline: string;
   availability: string;
   nowLine: string;
+  /** Prior employers, most recent first — rendered in the hero's BEFORE line. */
+  before: string[];
   chips: string[];
   about: About;
   quickInfo: QuickInfo[];
