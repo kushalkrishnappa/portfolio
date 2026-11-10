@@ -11,6 +11,7 @@ import Research from "@/app/components/sections/Research";
 import Publications from "@/app/components/sections/Publications";
 import Certifications from "@/app/components/sections/Certifications";
 import Contact from "@/app/components/sections/Contact";
+import Footer from "@/app/components/Footer";
 
 export default function Home() {
   return (
@@ -29,14 +30,10 @@ export default function Home() {
         <Certifications />
         <Writing />
         <Contact />
-
-        <div
-          className="mono pt-8 text-center text-[11px] uppercase tracking-[0.14em] border-t"
-          style={{ color: "var(--faint)", borderColor: "var(--line)" }}
-        >
-          <p>© 2026 Kushal Krishnappa — Built with Next.js &amp; Tailwind CSS</p>
-        </div>
       </div>
+
+      {/* Full-bleed closing bookend — outside the padded container. */}
+      <Footer />
     </div>
   );
 }

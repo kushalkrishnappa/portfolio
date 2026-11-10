@@ -25,6 +25,8 @@ export interface Profile {
   name: string;
   role: string;
   tagline: string;
+  /** Public résumé contact email — rendered as the Contact section's CTA. */
+  email: string;
   availability: string;
   nowLine: string;
   /** Prior employers, most recent first — rendered in the hero's BEFORE line. */
