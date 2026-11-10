@@ -25,6 +25,8 @@ export interface Profile {
   name: string;
   tagline: string;
   availability: string;
+  nowLine: string;
+  chips: string[];
   about: About;
   quickInfo: QuickInfo[];
   socials: Social[];
@@ -40,7 +42,33 @@ export interface Experience {
   company: string;
   role: string;
   location: string;
+  summary?: string;
+  tags?: string[];
   achievements: string[];
+}
+
+export interface SystemCaseStudy {
+  slug: string;
+  name: string;
+  org: string;
+  period: string;
+  role: string;
+  summary: string;
+  problem: string;
+  approach: string[];
+  highlights: string[];
+  stack: string[];
+  outcome: string;
+  status?: "shipped" | "prototype";
+}
+
+export interface Research {
+  title: string;
+  advisor: string;
+  group: string;
+  period: string;
+  summary: string;
+  skills: string[];
 }
 
 export interface Project {
@@ -49,6 +77,9 @@ export interface Project {
   tech: string[];
   features: string[];
   impact: string;
+  links?: { label: string; url: string }[];
+  role?: string;
+  year?: string;
 }
 
 export interface SkillGroup {
@@ -61,6 +92,7 @@ export interface Education {
   degree: string;
   period: string;
   gpa?: string;
+  honors?: string;
   coursework: string[];
 }
 

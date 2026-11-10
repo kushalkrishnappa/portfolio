@@ -4,7 +4,7 @@ export const education: Education[] = [
   {
     school: "Northeastern University",
     degree: "M.S. Computer Science",
-    period: "Jan 2025 – Present",
+    period: "Jan 2025 – May 2027",
     gpa: "4.0/4.0",
     coursework: ["Programming Design Paradigms", "Algorithms"],
   },
