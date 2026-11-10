@@ -66,7 +66,7 @@ export default function Hero() {
         <h1
           className="display select-none font-black"
           style={{
-            fontSize: "clamp(2.75rem, 11.5vw, 9.5rem)",
+            fontSize: "clamp(2.75rem, 13vw, 13rem)",
             lineHeight: 0.86,
             letterSpacing: "-0.03em",
             color: "var(--bone)",
@@ -79,13 +79,6 @@ export default function Hero() {
           </span>
           <span className="block whitespace-nowrap">
             <Letters text={line2} start={line1.length} />
-            {/* Caret tucked inline, immediately trailing the last letter. */}
-            <span
-              className="hero-caret ml-[0.04em] inline-block"
-              aria-hidden="true"
-            >
-              _
-            </span>
           </span>
         </h1>
 

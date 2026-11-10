@@ -34,7 +34,7 @@ export default function Navigation() {
         borderColor: "var(--line)",
       }}
     >
-      <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4">
+      <div className="flex w-full items-center justify-between px-5 py-3 sm:px-8 sm:py-4 lg:px-14 xl:px-20">
         <Link
           href="/"
           aria-label="Kushal Krishnappa — home"

@@ -12,7 +12,7 @@ export default async function BlogIndex() {
 
   return (
     <div className="min-h-screen" style={{ background: "var(--bg)", color: "var(--bone)" }}>
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl pt-12 sm:pt-20 pb-16">
+      <div className="w-full px-5 sm:px-8 lg:px-14 xl:px-20 pt-12 sm:pt-20 pb-16">
         <SectionHeader index="01" title="WRITING" />
         {posts.length === 0 ? (
           <div
