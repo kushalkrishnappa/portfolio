@@ -1,16 +1,26 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Archivo, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navigation from "./components/Navigation";
 
+// Clean body sans.
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
 
+// Labels, meta, and chips.
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+// Monumental wordmark and headings — a committed display grotesk with real
+// presence (not Inter/Helvetica/Arial/Space Grotesk).
+const archivo = Archivo({
+  variable: "--font-display",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
@@ -39,7 +49,7 @@ export default function RootLayout({
         <link rel="shortcut icon" href="/kk.ico" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        className={`${geistSans.variable} ${geistMono.variable} ${archivo.variable} antialiased`}>
         <Navigation />
         {children}
       </body>
