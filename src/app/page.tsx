@@ -1,4 +1,4 @@
-import Whoami from "@/app/components/sections/Whoami";
+import Hero from "@/app/components/sections/Hero";
 import ImpactMetrics from "@/app/components/sections/ImpactMetrics";
 import Experience from "@/app/components/sections/Experience";
 import Projects from "@/app/components/sections/Projects";
@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-black text-gray-300 font-mono">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl pt-12 sm:pt-20 pb-16">
-        <Whoami />
+        <Hero />
         <ImpactMetrics />
         <Experience />
         <Projects />
