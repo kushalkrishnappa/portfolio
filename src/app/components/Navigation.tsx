@@ -1,5 +1,6 @@
 'use client'
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 // Quiet top bar for the Monumental Nameplate world: a "KK" display monogram on
 // the left, mono nav links on the right, a cyan "contact" primary action, and
@@ -16,6 +17,10 @@ const focusRing =
   "rounded-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--bg)]";
 
 export default function Navigation() {
+  const pathname = usePathname();
+  // The embed signature route is a bare, standalone surface — no fixed nav.
+  if (pathname?.startsWith("/embed")) return null;
+
   const downloadResume = () => {
     const link = document.createElement("a");
     link.href = "/files/KushalKrishnappa.pdf";

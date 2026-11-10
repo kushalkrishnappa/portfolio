@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import gsap from "gsap";
 import { useReducedMotion } from "./useReducedMotion";
 
@@ -26,13 +27,16 @@ const INTERACTIVE = "a, button, [data-cursor]";
  */
 export default function Cursor() {
   const reducedMotion = useReducedMotion();
+  const pathname = usePathname();
+  const isEmbed = pathname?.startsWith("/embed") ?? false;
   const [active, setActive] = useState(false);
   const ringRef = useRef<HTMLDivElement>(null);
   const dotRef = useRef<HTMLDivElement>(null);
 
-  // Decide whether to render at all: fine pointer + motion allowed.
+  // Decide whether to render at all: fine pointer + motion allowed, and never
+  // on the bare `/embed` signature surface.
   useEffect(() => {
-    if (reducedMotion) {
+    if (reducedMotion || isEmbed) {
       setActive(false);
       return;
     }
@@ -44,7 +48,7 @@ export default function Cursor() {
     const onChange = (event: MediaQueryListEvent) => setActive(event.matches);
     mql.addEventListener("change", onChange);
     return () => mql.removeEventListener("change", onChange);
-  }, [reducedMotion]);
+  }, [reducedMotion, isEmbed]);
 
   // Wire pointer tracking + hover state once the cursor is active and mounted.
   useEffect(() => {
