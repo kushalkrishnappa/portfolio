@@ -17,10 +17,12 @@ const geistMono = Geist_Mono({
 
 // Monumental wordmark and headings — a committed display grotesk with real
 // presence (not Inter/Helvetica/Arial/Space Grotesk).
+// Variable font: omit `weight` so all weights (incl. 900) stay available and
+// `next dev --turbopack` resolves it correctly (an explicit weight array breaks
+// the turbopack font loader).
 const archivo = Archivo({
   variable: "--font-display",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
