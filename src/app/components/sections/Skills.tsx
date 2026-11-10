@@ -4,7 +4,7 @@ import SectionHeader from "@/app/components/SectionHeader";
 export default function Skills() {
   return (
     <section id="skills" className="mb-16 sm:mb-24">
-      <SectionHeader index="05" title="SKILLS" />
+      <SectionHeader index="04" title="SKILLS" />
       <div className="space-y-6">
         {skillGroups.map((group) => (
           <div key={group.label}>

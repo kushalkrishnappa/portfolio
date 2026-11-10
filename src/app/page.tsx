@@ -18,12 +18,12 @@ export default function Home() {
         <Systems />
         <Experience />
         <Projects />
-        <Writing />
         <Skills />
         <Education />
         <Research />
         <Publications />
         <Certifications />
+        <Writing />
         <Contact />
 
         <div

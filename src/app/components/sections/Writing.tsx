@@ -8,7 +8,7 @@ export default async function Writing() {
 
   return (
     <section id="writing" className="mb-16 sm:mb-24">
-      <SectionHeader index="04" title="WRITING" />
+      <SectionHeader index="09" title="WRITING" />
       <div className="space-y-4">
         {posts.map((post) => (
           <a

@@ -4,7 +4,7 @@ import SectionHeader from "@/app/components/SectionHeader";
 export default function Research() {
   return (
     <section id="research" className="mb-16 sm:mb-24">
-      <SectionHeader index="07" title="RESEARCH" />
+      <SectionHeader index="06" title="RESEARCH" />
       <article
         className="rounded-lg border p-6"
         style={{ background: "var(--surface)", borderColor: "var(--line)" }}
