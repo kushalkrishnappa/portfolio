@@ -133,18 +133,20 @@ export default function Hero() {
       ref={sectionRef}
       id="home"
       aria-label={`${profile.name} — ${profile.role}`}
-      className="relative flex min-h-[100svh] flex-col justify-between gap-12 py-8"
+      className="relative flex min-h-[calc(100svh-9rem)] flex-col justify-between gap-12 py-8"
     >
-      {/* Living systems-signal field, behind everything, non-interactive. */}
-      <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+      {/* Living systems-signal field — full viewport width (breaks the padded
+          container), behind everything, non-interactive. */}
+      <div className="pointer-events-none absolute left-1/2 top-0 -z-10 h-full w-screen -translate-x-1/2 overflow-hidden">
         <HeroField />
-        {/* Soft floor wash so the name never loses contrast over the field. */}
+        {/* Left-weighted wash so the name keeps contrast while the field still
+            reads clearly through the open space on the right and in the gaps. */}
         <div
           aria-hidden="true"
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(120% 90% at 0% 15%, rgba(10,10,10,0) 40%, var(--bg) 100%)",
+              "linear-gradient(100deg, rgba(10,10,10,0.78) 0%, rgba(10,10,10,0.28) 42%, rgba(10,10,10,0) 72%)",
           }}
         />
       </div>

@@ -51,6 +51,9 @@ body {
   background: var(--bg);
   color: var(--bone);
   font-family: var(--font-geist-sans);
+  /* The hero's living field spans 100vw (breaks the padded container); clip any
+     resulting horizontal overflow so no sideways scrollbar appears. */
+  overflow-x: hidden;
 }
 
 /* Hide the native cursor only while the custom <Cursor /> is active. The class

@@ -68,15 +68,15 @@ export default function HeroField() {
 
     const seed = () => {
       // Density tuned to area, but hard-capped so the O(n^2) edge pass stays cheap.
-      const target = Math.round((width * height) / 26000);
-      const count = Math.max(14, Math.min(54, target));
-      linkDist = Math.max(120, Math.min(210, Math.hypot(width, height) * 0.11));
+      const target = Math.round((width * height) / 19000);
+      const count = Math.max(22, Math.min(78, target));
+      linkDist = Math.max(130, Math.min(220, Math.hypot(width, height) * 0.12));
       nodes = Array.from({ length: count }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.14,
-        vy: (Math.random() - 0.5) * 0.14,
-        r: 0.8 + Math.random() * 1.4,
+        vx: (Math.random() - 0.5) * 0.2,
+        vy: (Math.random() - 0.5) * 0.2,
+        r: 0.9 + Math.random() * 1.7,
       }));
       signals = [];
     };
@@ -93,7 +93,7 @@ export default function HeroField() {
     };
 
     const spawnSignal = () => {
-      if (signals.length > 5 || nodes.length < 2) return;
+      if (signals.length > 9 || nodes.length < 2) return;
       const a = (Math.random() * nodes.length) | 0;
       // Find a nearby node to travel toward, so signals ride real edges.
       let best = -1;
@@ -120,7 +120,7 @@ export default function HeroField() {
           const dy = nodes[i].y - nodes[j].y;
           const d = Math.hypot(dx, dy);
           if (d > linkDist) continue;
-          const alpha = (1 - d / linkDist) * 0.09;
+          const alpha = (1 - d / linkDist) * 0.22;
           ctx.strokeStyle = `rgba(${ACCENT.r},${ACCENT.g},${ACCENT.b},${alpha})`;
           ctx.lineWidth = 1;
           ctx.beginPath();
@@ -130,9 +130,14 @@ export default function HeroField() {
         }
       }
 
-      // Nodes — tiny bone dots, barely there.
+      // Nodes — small bone dots with a faint accent halo so they read as a
+      // living network, not dust.
       for (const n of nodes) {
-        ctx.fillStyle = `rgba(${BONE.r},${BONE.g},${BONE.b},0.18)`;
+        ctx.fillStyle = `rgba(${ACCENT.r},${ACCENT.g},${ACCENT.b},0.10)`;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r + 2.2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = `rgba(${BONE.r},${BONE.g},${BONE.b},0.42)`;
         ctx.beginPath();
         ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
         ctx.fill();
@@ -147,11 +152,11 @@ export default function HeroField() {
         const y = A.y + (B.y - A.y) * s.t;
         // Soft falloff at the ends so signals fade in/out rather than pop.
         const edge = Math.sin(Math.PI * s.t);
-        ctx.fillStyle = `rgba(${ACCENT.r},${ACCENT.g},${ACCENT.b},${0.55 * edge})`;
-        ctx.shadowColor = `rgba(${ACCENT.r},${ACCENT.g},${ACCENT.b},0.6)`;
-        ctx.shadowBlur = 8;
+        ctx.fillStyle = `rgba(${ACCENT.r},${ACCENT.g},${ACCENT.b},${0.9 * edge})`;
+        ctx.shadowColor = `rgba(${ACCENT.r},${ACCENT.g},${ACCENT.b},0.75)`;
+        ctx.shadowBlur = 12;
         ctx.beginPath();
-        ctx.arc(x, y, 1.6, 0, Math.PI * 2);
+        ctx.arc(x, y, 2, 0, Math.PI * 2);
         ctx.fill();
         ctx.shadowBlur = 0;
       }
@@ -176,7 +181,7 @@ export default function HeroField() {
         signals[i].t += signals[i].speed * 0.016 * dt;
         if (signals[i].t >= 1) signals.splice(i, 1);
       }
-      if (Math.random() < 0.018 * dt) spawnSignal();
+      if (Math.random() < 0.032 * dt) spawnSignal();
 
       draw();
       rafId = requestAnimationFrame(step);
