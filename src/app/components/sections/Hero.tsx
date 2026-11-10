@@ -57,18 +57,10 @@ export default function Hero() {
   return (
     <section
       id="home"
-      aria-label={`${profile.name} — ${profile.tagline}`}
+      aria-label={`${profile.name} — ${profile.role}`}
       className="relative flex min-h-[calc(100svh-5rem)] flex-col justify-between gap-10 py-10 sm:py-14"
       data-phase={dataPhase}
     >
-      {/* Top: the signature line that narrates the reveal. */}
-      <p
-        className="mono text-[10px] uppercase tracking-[0.22em] sm:text-[11px]"
-        style={{ color: "var(--dim)" }}
-      >
-        ▸ name resolves on load
-      </p>
-
       {/* The monumental wordmark + role line. */}
       <div className="flex flex-col gap-6">
         <h1
@@ -87,18 +79,32 @@ export default function Hero() {
           </span>
           <span className="block whitespace-nowrap">
             <Letters text={line2} start={line1.length} />
-            <span className="hero-caret" aria-hidden="true">
+            {/* Caret tucked inline, immediately trailing the last letter. */}
+            <span
+              className="hero-caret ml-[0.04em] inline-block"
+              aria-hidden="true"
+            >
               _
             </span>
           </span>
         </h1>
 
-        <p
-          className="max-w-2xl text-lg font-normal leading-snug sm:text-xl md:text-2xl"
-          style={{ color: "var(--dim)" }}
-        >
-          <span style={{ color: "var(--bone)" }}>{profile.tagline}</span>
-        </p>
+        {/* Primary positioning line (what a recruiter reads first), then the
+            secondary tagline beneath it. */}
+        <div className="flex flex-col gap-1.5">
+          <p
+            className="max-w-2xl text-xl font-semibold leading-tight sm:text-2xl md:text-3xl"
+            style={{ color: "var(--bone)" }}
+          >
+            {profile.role}
+          </p>
+          <p
+            className="max-w-2xl text-base font-normal leading-snug sm:text-lg md:text-xl"
+            style={{ color: "var(--dim)" }}
+          >
+            {profile.tagline}
+          </p>
+        </div>
 
         {/* Primary + secondary actions. Accent is spent only on the primary. */}
         <div className="mt-1 flex flex-wrap items-center gap-3">

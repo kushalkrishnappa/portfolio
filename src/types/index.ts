@@ -23,6 +23,7 @@ export interface About {
 
 export interface Profile {
   name: string;
+  role: string;
   tagline: string;
   availability: string;
   nowLine: string;

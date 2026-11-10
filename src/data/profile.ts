@@ -2,6 +2,7 @@ import { Profile } from "@/types";
 
 export const profile: Profile = {
   name: "Kushal Krishnappa",
+  role: "Backend & platform engineer",
   tagline: "building invisible infrastructure for visible impact",
   availability: "Open to backend / platform / infra / SRE roles",
   nowLine: "Research Assistant @ Northeastern · open for full-time May 2027",
