@@ -13,43 +13,51 @@ const ICON_PATHS: Record<Social["icon"], string> = {
 export default function Contact() {
   return (
     <section id="contact" className="mb-8">
-      <SectionHeader command="contact --send-message" />
-      <div className="pl-4 border-l-2 border-gray-700">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="space-y-6">
-            <div>
-              <div className="text-xs text-gray-500 mb-2">LOCATION</div>
-              <div className="text-white">Boston, MA</div>
+      <SectionHeader index="09" title="CONTACT" />
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+        <div className="space-y-6">
+          <div>
+            <div
+              className="mono mb-2 text-[11px] uppercase tracking-[0.18em]"
+              style={{ color: "var(--dim)" }}
+            >
+              Location
             </div>
-
-            <div>
-              <div className="text-xs text-gray-500 mb-3">SOCIAL LINKS</div>
-              <div className="space-y-3">
-                {profile.socials.map((social) => (
-                  <a
-                    key={social.name}
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center space-x-3 text-cyan-400 hover:text-cyan-300 transition-colors group"
-                  >
-                    <svg
-                      className="w-5 h-5 fill-current"
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                      focusable="false"
-                    >
-                      <path d={ICON_PATHS[social.icon]} />
-                    </svg>
-                    <span className="text-sm group-hover:underline">{social.handle}</span>
-                  </a>
-                ))}
-              </div>
-            </div>
+            <div style={{ color: "var(--bone)" }}>Boston, MA</div>
           </div>
 
-          <ContactForm />
+          <div>
+            <div
+              className="mono mb-3 text-[11px] uppercase tracking-[0.18em]"
+              style={{ color: "var(--dim)" }}
+            >
+              Social
+            </div>
+            <div className="space-y-3">
+              {profile.socials.map((social) => (
+                <a
+                  key={social.name}
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center gap-3 rounded-sm text-[color:var(--accent)] transition-opacity hover:opacity-80 focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--bg)]"
+                >
+                  <svg
+                    className="h-5 w-5 fill-current"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path d={ICON_PATHS[social.icon]} />
+                  </svg>
+                  <span className="text-sm group-hover:underline">{social.handle}</span>
+                </a>
+              ))}
+            </div>
+          </div>
         </div>
+
+        <ContactForm />
       </div>
     </section>
   );

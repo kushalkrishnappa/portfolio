@@ -1,14 +1,19 @@
 'use client'
 import Link from "next/link";
 
+// Quiet top bar for the Monumental Nameplate world: a "KK" display monogram on
+// the left, mono nav links on the right, a cyan "contact" primary action, and
+// the résumé download. Kept restrained so the hero wordmark leads.
 const NAV_LINKS = [
-  { label: "whoami", href: "/#home" },
   { label: "experience", href: "/#experience" },
+  { label: "systems", href: "/#systems" },
   { label: "projects", href: "/#projects" },
-  { label: "skills", href: "/#skills" },
+  { label: "writing", href: "/#writing" },
   { label: "blogs", href: "/blogs" },
-  { label: "contact", href: "/#contact" },
 ];
+
+const focusRing =
+  "rounded-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--bg)]";
 
 export default function Navigation() {
   const downloadResume = () => {
@@ -21,35 +26,50 @@ export default function Navigation() {
   };
 
   return (
-    <nav aria-label="Main navigation" className="bg-black border-b border-gray-800 p-3 sm:p-4 font-mono fixed top-0 left-0 right-0 z-50 backdrop-blur-sm bg-opacity-95">
-      <div className="container mx-auto px-2 sm:px-4 max-w-5xl flex justify-between items-center">
-        <div className="flex-shrink-0 flex items-center">
-          <Link href="/" aria-label="Kushal Krishnappa — home">
-            <h1 aria-hidden="true" className="text-base sm:text-xl md:text-2xl font-bold text-green-400 flex items-center">
-              <span className="text-green-500">$</span>
-              <span className="ml-2 inline-block w-[200px] sm:w-[280px] md:w-[350px] overflow-hidden relative">
-                <span className="inline-block whitespace-nowrap animate-slideLeft">
-                  ./kushalkrishnappa -bold -brilliant -breaking_barriers&nbsp;&nbsp;&nbsp;&nbsp;./kushalkrishnappa -bold -brilliant -breaking_barriers&nbsp;&nbsp;&nbsp;&nbsp;
-                </span>
-              </span>
-            </h1>
-          </Link>
-        </div>
-        <div className="hidden sm:flex space-x-4 md:space-x-6 text-xs md:text-sm">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-gray-400 hover:text-cyan-400 transition-colors"
-            >
-              {link.label}
-            </Link>
-          ))}
-          <button
-            onClick={downloadResume}
-            className="text-gray-400 hover:text-cyan-400 transition-colors"
+    <nav
+      aria-label="Main navigation"
+      className="fixed inset-x-0 top-0 z-50 border-b backdrop-blur-md"
+      style={{
+        background: "color-mix(in srgb, var(--bg) 85%, transparent)",
+        borderColor: "var(--line)",
+      }}
+    >
+      <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4">
+        <Link
+          href="/"
+          aria-label="Kushal Krishnappa — home"
+          className={`display text-lg font-black tracking-tight sm:text-xl text-[color:var(--bone)] ${focusRing}`}
+        >
+          KK
+        </Link>
+
+        <div className="flex items-center gap-4 sm:gap-6">
+          <ul className="hidden items-center gap-5 sm:flex">
+            {NAV_LINKS.map((link) => (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  className={`mono text-xs uppercase tracking-[0.14em] transition-colors text-[color:var(--dim)] hover:text-[color:var(--bone)] ${focusRing}`}
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          <Link
+            href="/#contact"
+            className={`mono text-xs uppercase tracking-[0.14em] transition-opacity text-[color:var(--accent)] hover:opacity-80 ${focusRing}`}
           >
-            resume
+            contact
+          </Link>
+
+          <button
+            type="button"
+            onClick={downloadResume}
+            className={`mono text-xs uppercase tracking-[0.14em] transition-colors text-[color:var(--dim)] hover:text-[color:var(--bone)] ${focusRing}`}
+          >
+            résumé ↓
           </button>
         </div>
       </div>

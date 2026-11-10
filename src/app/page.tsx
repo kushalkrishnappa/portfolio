@@ -11,7 +11,7 @@ import Contact from "@/app/components/sections/Contact";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-black text-gray-300 font-mono">
+    <div className="min-h-screen" style={{ background: "var(--bg)", color: "var(--bone)" }}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl pt-12 sm:pt-20 pb-16">
         <Hero />
         <ImpactMetrics />
@@ -24,8 +24,11 @@ export default function Home() {
         <Certifications />
         <Contact />
 
-        <div className="text-center text-xs text-gray-600 border-t border-gray-800 pt-8">
-          <p>© 2026 Kushal Krishnappa. Built with Next.js &amp; Tailwind CSS</p>
+        <div
+          className="mono pt-8 text-center text-[11px] uppercase tracking-[0.14em] border-t"
+          style={{ color: "var(--faint)", borderColor: "var(--line)" }}
+        >
+          <p>© 2026 Kushal Krishnappa — Built with Next.js &amp; Tailwind CSS</p>
         </div>
       </div>
     </div>

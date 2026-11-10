@@ -3,45 +3,87 @@ import SectionHeader from "@/app/components/SectionHeader";
 
 export default function Projects() {
   return (
-    <section id="projects" className="mb-16 sm:mb-20">
-      <SectionHeader command="ls -la ~/projects" />
-      <div className="pl-4 border-l-2 border-gray-700 space-y-8">
+    <section id="projects" className="mb-16 sm:mb-24">
+      <SectionHeader index="03" title="PROJECTS" />
+      <div className="space-y-5">
         {projects.map((project) => (
-          <div
+          <article
             key={project.name}
-            className="bg-gray-900 border border-gray-800 p-6 rounded hover:border-gray-700 transition-colors"
+            className="rounded-lg border bg-[color:var(--surface)] border-[color:var(--line)] p-6 transition-colors hover:border-[color:var(--line-2)]"
           >
-            <h3 className="text-xl font-bold text-white mb-2">{project.name}</h3>
-            <p className="text-gray-400 mb-4">{project.description}</p>
-
-            <div className="mb-4">
-              <div className="text-xs text-gray-500 mb-2">TECH STACK</div>
-              <div className="flex flex-wrap gap-2">
-                {project.tech.map((tech) => (
-                  <span key={tech} className="text-xs bg-gray-800 px-2 py-1 rounded text-cyan-400">
-                    {tech}
+            <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
+              <h3
+                className="display text-lg font-bold sm:text-xl"
+                style={{ color: "var(--bone)" }}
+              >
+                {project.name}
+              </h3>
+              <div className="mono flex items-center gap-2 text-[11px] uppercase tracking-[0.12em]">
+                {project.role && (
+                  <span style={{ color: "var(--dim)" }}>{project.role}</span>
+                )}
+                {project.role && project.year && (
+                  <span aria-hidden="true" style={{ color: "var(--faint)" }}>
+                    ·
                   </span>
-                ))}
+                )}
+                {project.year && (
+                  <span style={{ color: "var(--faint)" }}>{project.year}</span>
+                )}
               </div>
             </div>
 
-            <div className="mb-4">
-              <div className="text-xs text-gray-500 mb-2">KEY FEATURES</div>
-              <ul className="space-y-1 text-sm">
-                {project.features.map((feature) => (
-                  <li key={feature} className="flex items-start">
-                    <span className="text-green-500 mr-2">▸</span>
-                    <span>{feature}</span>
+            <p className="mt-2 text-sm leading-relaxed sm:text-[15px]" style={{ color: "var(--dim)" }}>
+              {project.description}
+            </p>
+
+            <ul className="mt-4 space-y-2">
+              {project.features.map((feature) => (
+                <li key={feature} className="flex gap-3 text-sm leading-relaxed">
+                  <span
+                    aria-hidden="true"
+                    className="mt-[9px] h-px w-3 flex-shrink-0"
+                    style={{ background: "var(--line-2)" }}
+                  />
+                  <span style={{ color: "var(--dim)" }}>{feature}</span>
+                </li>
+              ))}
+            </ul>
+
+            <p className="mt-4 text-sm leading-relaxed" style={{ color: "var(--bone)" }}>
+              {project.impact}
+            </p>
+
+            <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-3">
+              <ul className="flex flex-wrap gap-2">
+                {project.tech.map((tech) => (
+                  <li
+                    key={tech}
+                    className="mono rounded-full border px-3 py-1 text-[11px] tracking-[0.03em]"
+                    style={{ borderColor: "var(--line-2)", color: "var(--bone)" }}
+                  >
+                    {tech}
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div>
-              <div className="text-xs text-gray-500 mb-1">IMPACT</div>
-              <p className="text-sm text-gray-300">{project.impact}</p>
-            </div>
-          </div>
+            {project.links && project.links.length > 0 && (
+              <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2">
+                {project.links.map((link) => (
+                  <a
+                    key={link.url}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mono rounded-sm text-xs tracking-[0.04em] transition-opacity hover:opacity-80 text-[color:var(--accent)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--bg)]"
+                  >
+                    {link.label} ↗
+                  </a>
+                ))}
+              </div>
+            )}
+          </article>
         ))}
       </div>
     </section>

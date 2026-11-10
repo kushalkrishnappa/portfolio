@@ -5,7 +5,7 @@ export default function Whoami() {
   return (
     <section id="home" className="mb-16 sm:mb-20">
       <div className="mb-8">
-        <SectionHeader command="whoami" />
+        <SectionHeader index="00" title="WHOAMI" />
         <div className="pl-4 border-l-2 border-gray-700">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
             {profile.name}

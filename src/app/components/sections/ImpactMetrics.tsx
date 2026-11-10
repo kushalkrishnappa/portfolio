@@ -3,17 +3,32 @@ import SectionHeader from "@/app/components/SectionHeader";
 
 export default function ImpactMetrics() {
   return (
-    <section id="impact" className="mb-16 sm:mb-20">
-      <SectionHeader command="./impact_metrics.sh" />
-      <div className="pl-4 border-l-2 border-gray-700">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {impactMetrics.map((metric) => (
-            <div key={metric.label} className="bg-gray-900 border border-gray-800 p-5 rounded">
-              <div className="text-2xl font-bold text-green-400 mb-2">{metric.value}</div>
-              <div className="text-xs text-gray-400">{metric.label}</div>
+    <section id="impact" className="mb-16 sm:mb-24">
+      <SectionHeader index="01" title="IMPACT" />
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        {impactMetrics.map((metric) => (
+          <div
+            key={metric.label}
+            className="rounded-lg border p-6"
+            style={{
+              background: "var(--surface)",
+              borderColor: "var(--line)",
+            }}
+          >
+            <div
+              className="display text-2xl font-bold sm:text-3xl"
+              style={{ color: "var(--accent)" }}
+            >
+              {metric.value}
             </div>
-          ))}
-        </div>
+            <div
+              className="mono mt-3 text-[11px] uppercase tracking-[0.14em]"
+              style={{ color: "var(--dim)" }}
+            >
+              {metric.label}
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );

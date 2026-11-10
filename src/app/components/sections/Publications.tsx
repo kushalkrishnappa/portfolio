@@ -3,25 +3,41 @@ import SectionHeader from "@/app/components/SectionHeader";
 
 export default function Publications() {
   return (
-    <section id="publications" className="mb-16 sm:mb-20">
-      <SectionHeader command="cat publications.bib" />
-      <div className="pl-4 border-l-2 border-gray-700 space-y-4">
+    <section id="publications" className="mb-16 sm:mb-24">
+      <SectionHeader index="07" title="PUBLICATIONS" />
+      <div className="space-y-4">
         {publications.map((pub) => (
-          <div key={pub.title} className="bg-gray-900 border border-gray-800 p-6 rounded">
-            <h3 className="text-base sm:text-lg font-bold text-white">{pub.title}</h3>
-            <p className="text-amber-400 text-xs sm:text-sm my-1">{pub.venue}</p>
-            <p className="text-sm text-gray-300">{pub.description}</p>
+          <article
+            key={pub.title}
+            className="rounded-lg border p-6"
+            style={{ background: "var(--surface)", borderColor: "var(--line)" }}
+          >
+            <h3
+              className="text-base font-bold leading-snug sm:text-lg"
+              style={{ color: "var(--bone)" }}
+            >
+              {pub.title}
+            </h3>
+            <p
+              className="mono mt-2 text-[11px] uppercase tracking-[0.14em]"
+              style={{ color: "var(--dim)" }}
+            >
+              {pub.venue}
+            </p>
+            <p className="mt-3 text-sm leading-relaxed" style={{ color: "var(--dim)" }}>
+              {pub.description}
+            </p>
             {pub.url && (
               <a
                 href={pub.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block mt-3 text-sm text-cyan-400 hover:text-cyan-300"
+                className="mono mt-4 inline-block rounded-sm text-xs tracking-[0.04em] transition-opacity hover:opacity-80 text-[color:var(--accent)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--bg)]"
               >
-                ▸ Read paper →
+                Read paper ↗
               </a>
             )}
-          </div>
+          </article>
         ))}
       </div>
     </section>

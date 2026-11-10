@@ -3,22 +3,28 @@ import SectionHeader from "@/app/components/SectionHeader";
 
 export default function Skills() {
   return (
-    <section id="skills" className="mb-16 sm:mb-20">
-      <SectionHeader command="cat skills.txt" />
-      <div className="pl-4 border-l-2 border-gray-700 space-y-5">
+    <section id="skills" className="mb-16 sm:mb-24">
+      <SectionHeader index="05" title="SKILLS" />
+      <div className="space-y-6">
         {skillGroups.map((group) => (
           <div key={group.label}>
-            <div className="text-xs text-gray-500 mb-2 uppercase tracking-wide">{group.label}</div>
-            <div className="flex flex-wrap gap-2">
+            <div
+              className="mono mb-3 text-[11px] uppercase tracking-[0.18em]"
+              style={{ color: "var(--dim)" }}
+            >
+              {group.label}
+            </div>
+            <ul className="flex flex-wrap gap-2.5">
               {group.skills.map((skill) => (
-                <span
+                <li
                   key={skill}
-                  className="bg-gray-900 border border-gray-700 px-3 py-1 rounded text-sm text-cyan-400 hover:border-cyan-600 transition-colors"
+                  className="mono rounded-full border px-3.5 py-1.5 text-[13px] tracking-[0.03em]"
+                  style={{ borderColor: "var(--line)", color: "var(--bone)" }}
                 >
                   {skill}
-                </span>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         ))}
       </div>
