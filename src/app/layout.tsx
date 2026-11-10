@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Archivo, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navigation from "./components/Navigation";
+import SmoothScroll from "./components/motion/SmoothScroll";
+import Cursor from "./components/motion/Cursor";
 
 // Clean body sans.
 const geistSans = Geist({
@@ -52,8 +54,11 @@ export default function RootLayout({
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${archivo.variable} antialiased`}>
-        <Navigation />
-        {children}
+        <SmoothScroll>
+          <Navigation />
+          {children}
+        </SmoothScroll>
+        <Cursor />
       </body>
     </html>
   );

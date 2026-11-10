@@ -53,6 +53,13 @@ body {
   font-family: var(--font-geist-sans);
 }
 
+/* Hide the native cursor only while the custom <Cursor /> is active. The class
+   is added to <body> on mount and removed on unmount / touch devices. */
+.cursor-none,
+.cursor-none * {
+  cursor: none;
+}
+
 /* Font helpers. */
 .mono {
   font-family: var(--font-geist-mono);
