@@ -13,7 +13,7 @@ const ICON_PATHS: Record<Social["icon"], string> = {
 export default function Contact() {
   return (
     <section id="contact" className="mb-8">
-      <SectionHeader index="09" title="CONTACT" />
+      <SectionHeader index="10" title="CONTACT" />
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
         <div className="space-y-6">
           <div>

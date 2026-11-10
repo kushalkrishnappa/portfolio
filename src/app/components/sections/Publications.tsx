@@ -4,7 +4,7 @@ import SectionHeader from "@/app/components/SectionHeader";
 export default function Publications() {
   return (
     <section id="publications" className="mb-16 sm:mb-24">
-      <SectionHeader index="07" title="PUBLICATIONS" />
+      <SectionHeader index="08" title="PUBLICATIONS" />
       <div className="space-y-4">
         {publications.map((pub) => (
           <article

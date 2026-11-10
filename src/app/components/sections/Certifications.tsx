@@ -4,7 +4,7 @@ import SectionHeader from "@/app/components/SectionHeader";
 export default function Certifications() {
   return (
     <section id="certifications" className="mb-16 sm:mb-24">
-      <SectionHeader index="08" title="CERTIFICATIONS" />
+      <SectionHeader index="09" title="CERTIFICATIONS" />
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {certifications.map((cert) => {
           const baseClasses =

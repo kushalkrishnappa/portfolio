@@ -1,10 +1,11 @@
 import Hero from "@/app/components/sections/Hero";
-import ImpactMetrics from "@/app/components/sections/ImpactMetrics";
+import Systems from "@/app/components/sections/Systems";
 import Experience from "@/app/components/sections/Experience";
 import Projects from "@/app/components/sections/Projects";
 import Writing from "@/app/components/sections/Writing";
 import Skills from "@/app/components/sections/Skills";
 import Education from "@/app/components/sections/Education";
+import Research from "@/app/components/sections/Research";
 import Publications from "@/app/components/sections/Publications";
 import Certifications from "@/app/components/sections/Certifications";
 import Contact from "@/app/components/sections/Contact";
@@ -14,12 +15,13 @@ export default function Home() {
     <div className="min-h-screen" style={{ background: "var(--bg)", color: "var(--bone)" }}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl pt-12 sm:pt-20 pb-16">
         <Hero />
-        <ImpactMetrics />
+        <Systems />
         <Experience />
         <Projects />
         <Writing />
         <Skills />
         <Education />
+        <Research />
         <Publications />
         <Certifications />
         <Contact />
