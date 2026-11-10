@@ -1,4 +1,6 @@
 import Hero from "@/app/components/sections/Hero";
+import Statement from "@/app/components/sections/Statement";
+import Metrics from "@/app/components/sections/Metrics";
 import Systems from "@/app/components/sections/Systems";
 import Experience from "@/app/components/sections/Experience";
 import Projects from "@/app/components/sections/Projects";
@@ -15,6 +17,8 @@ export default function Home() {
     <div className="min-h-screen" style={{ background: "var(--bg)", color: "var(--bone)" }}>
       <div className="w-full px-5 sm:px-8 lg:px-14 xl:px-20 pt-12 sm:pt-20 pb-16">
         <Hero />
+        <Statement />
+        <Metrics />
         <Systems />
         <Experience />
         <Projects />
