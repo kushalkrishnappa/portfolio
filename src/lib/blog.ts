@@ -1,6 +1,6 @@
 import { BlogPostMeta } from "@/types";
 
-const DEFAULT_MANIFEST_URL = "https://kushalkrishnappa.github.io/blog/posts.json";
+const DEFAULT_MANIFEST_URL = "https://kushalkrishnappa.github.io/blogs/posts.json";
 
 function manifestUrl(): string {
   return process.env.BLOG_MANIFEST_URL || DEFAULT_MANIFEST_URL;

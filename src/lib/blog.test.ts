@@ -116,7 +116,7 @@ describe("getAllPosts", () => {
     vi.stubGlobal("fetch", fetchMock);
     await getAllPosts();
     expect(fetchMock).toHaveBeenCalledWith(
-      "https://kushalkrishnappa.github.io/blog/posts.json",
+      "https://kushalkrishnappa.github.io/blogs/posts.json",
       { cache: "force-cache" },
     );
   });
