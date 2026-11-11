@@ -378,7 +378,7 @@ html:not(.motion) .scroll-cue i{animation:none}
 .stamp.o{ animation:stampBreath 3.2s ease-in-out infinite }
 @keyframes stampBreath{ 0%,100%{ --stamp:var(--sig) } 50%{ --stamp:var(--pop2) } }
 
-@media (prefers-reduced-motion: reduce){ .flow{ display:none } .fc h4,.lbl-b,.hot,.tmark,.dot .core,.stamp.o,.sheet .sheet-title,.leaf .sheet-title{ animation:none !important } }
+@media (prefers-reduced-motion: reduce){ .flow{ display:none } .fc h4,.lbl-b,.hot,.tmark,.dot .core,.stamp.o,.sheet .sheet-title,.leaf .sheet-title,.sheen,.bom-tq{ animation:none !important } }
 
 
 /* ---- v3 additions ---- */
@@ -760,3 +760,6 @@ html:has(.emb),html:has(.emb) body{height:100%;overflow:hidden}
 @media (prefers-reduced-motion: reduce){ .fn-page .spec tr:first-child td{animation:none} }
 .emb-tb small{font-size:.6em;color:var(--ink2);margin-left:2px}
 .emb-sub p{margin:0}
+@media (prefers-reduced-motion: reduce){ .sheen,.bom-tq{ background:none; -webkit-background-clip:border-box; background-clip:border-box; color:var(--ink) } }
+/* static layout: leave room under a leaf's title block for the next sheet's torn edge */
+html:not(.motion) .appx .leaf-stage{padding-bottom:calc(var(--inset) + 18px)}
