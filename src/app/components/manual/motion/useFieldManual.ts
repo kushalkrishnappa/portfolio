@@ -8,7 +8,8 @@
  *  - The cover intro + lift, sheet-over-sheet entries, and one scrubbed
  *    timeline per sheet (draw / fade / pop / callout / stamp / travel).
  *  - The colour runtime: flow comets on drawn lines, lit notes, title sweeps.
- *  - The appendices (unpinned leaves between 05 and 06): they stack like
+ *  - The general-data band (an unpinned leaf under the cover, before 01) and
+ *    the appendices (unpinned leaves between 09 and 10): they stack like
  *    sheets (slide over, stick at their end, get slid over), their rows
  *    draw in as they scroll into view, and they take part in the rail, the
  *    title sweep and the sheet-over-sheet entries.
@@ -25,6 +26,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
 import { botPoly, edgePts, rng, topPoly } from "./edges";
 import { RS } from "../sheets/geometry";
+import { buildAssembly, buildBand, buildCritical, buildGate, buildSignal, buildTenant, sdraw, type Kit } from "./builders";
 
 declare global {
   interface Window {
@@ -34,7 +36,7 @@ declare global {
 }
 
 /** The story sheets, in order (the pinned, scrubbed sheets). Appendices are not part of it. */
-const STORY = ["s1", "s2", "s3", "s4", "s5", "s6"] as const;
+const STORY = ["s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8", "s9", "s10"] as const;
 
 const useIsoLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
@@ -74,11 +76,11 @@ function mountFieldManual(root: HTMLElement): () => void {
   }
 
   const sheetEl = (id: string) => document.getElementById(id) as HTMLElement;
-  /** Every sheet after the cover in DOM order: story sheets and appendix leaves (01–05, A–C, 06). */
-  const flow = $$<HTMLElement>(".sheet, .appx");
+  /** Every sheet after the cover in DOM order: the general-data band, story sheets and appendix leaves (GD, 01–09, A–C, 10). */
+  const flow = $$<HTMLElement>(".band, .sheet, .appx");
   /** What the rail and nav address: the cover, then the flow. Ids match `data-go`. */
   const parts = [$("#cover") as HTMLElement, ...flow].filter(Boolean);
-  const isLeaf = (el: Element) => el.classList.contains("appx");
+  const isLeaf = (el: Element) => el.classList.contains("appx") || el.classList.contains("band");
 
   /* ---------- torn / deckled edges ---------- */
   const clipped: HTMLElement[] = [];
@@ -87,7 +89,7 @@ function mountFieldManual(root: HTMLElement): () => void {
     el.style.clipPath = v;
     clipped.push(el);
   };
-  $$<HTMLElement>(".sheet, .appx, .rfi-sheet").forEach((sec, domIdx) => {
+  $$<HTMLElement>(".band, .sheet, .appx, .rfi-sheet").forEach((sec, domIdx) => {
     const si = STORY.indexOf(sec.id as (typeof STORY)[number]);
     const i = si >= 0 ? si : sec.classList.contains("rfi-sheet") ? STORY.length : STORY.length + 1 + domIdx;
     const pts = edgePts(101 + i * 37, sec.dataset.edge || (sec.classList.contains("rfi-sheet") ? "deckle" : "torn"));
@@ -168,7 +170,7 @@ function mountFieldManual(root: HTMLElement): () => void {
   }
   const routeOf = (sel: string, r: ParentNode = root) => $<SVGPathElement>(sel, r) as SVGPathElement;
   const dotOf = (id: string) => $<SVGGElement>(`#${id} .dwg .dot`) as SVGGElement;
-  const DOTS: Record<string, string> = { s1: "#r1", s2: "#r2in", s3: "#rsa", s4: "#r3a", s5: "#r4a", s6: "#r6a" };
+  const DOTS: Record<string, string> = { s1: "#r1", s2: "#r2in", s3: "#rsa", s4: "#r4a", s5: "#r5a", s6: "#r6a", s7: "#r7a", s8: "#r8a", s9: "#r9a", s10: "#r10a" };
   Object.keys(DOTS).forEach((id) => {
     const d = dotOf(id), r = routeOf(DOTS[id]);
     if (d && r) place(d, r, 0);
@@ -227,7 +229,7 @@ function mountFieldManual(root: HTMLElement): () => void {
   if (!MOTION) {
     nameMetrics();
     document.fonts?.ready.then(nameMetrics);
-    const last: Record<string, string> = { s1: "#r1", s2: ".hop:last-of-type", s3: "#rsb", s4: "#r3b", s5: "#r4c", s6: "#r6a" };
+    const last: Record<string, string> = { s1: "#r1", s2: ".hop:last-of-type", s3: "#rsb", s4: "#r4c", s5: "#r5b", s6: "#r6c", s7: "#r7c", s8: "#r8b", s9: "#r9c", s10: "#r10a" };
     Object.keys(last).forEach((id) => {
       const svg = $(`#${id} .dwg`);
       if (!svg) return;
@@ -241,6 +243,10 @@ function mountFieldManual(root: HTMLElement): () => void {
     });
     setMTTR(1);
     rsStatic();
+    {
+      const kd = $<SVGElement>("#s5 .vellum .kd"), rk = $<SVGPathElement>("#s5 .vellum #rk");
+      if (kd && rk) place(kd, rk, 1);
+    }
     $$<SVGPathElement>("#arcs .trail").forEach((t) => (t.style.stroke = "rgba(232,242,249,.3)"));
     $$(".fc").forEach((c) => c.classList.add("on"));
     const railA = $$(".rail a");
@@ -300,7 +306,7 @@ function mountFieldManual(root: HTMLElement): () => void {
   // A leaf is as tall as its content. Its stage sticks with a negative top so
   // that it holds still once its END reaches the viewport bottom; the leaf's
   // 100vh tail is the overlap the next sheet slides over (like a pinned stage).
-  const leafStages = $$<HTMLElement>(".appx .leaf-stage");
+  const leafStages = $$<HTMLElement>(".appx .leaf-stage, .band .leaf-stage");
   function fitLeaves() {
     leafStages.forEach((st) => (st.style.top = Math.min(0, VH() - st.offsetHeight) + "px"));
   }
@@ -343,14 +349,14 @@ function mountFieldManual(root: HTMLElement): () => void {
       tl.to(frame, { y: 0, duration: 0.16, ease: "power2.out" }, pos + 0.33);
     }
   }
-  function travel(tl: TL, route: RouteLike, mover: Element, pos: number, dur: number, ease?: string, noTrail?: boolean) {
-    const o = { p: 0 };
+  function travel(tl: TL, route: RouteLike, mover: Element, pos: number, dur: number, ease?: string, noTrail?: boolean, p0 = 0, p1 = 1) {
+    const o = { p: p0 };
     const trail = noTrail ? null : trails.get(route) || null;
     tl.fromTo(
       o,
-      { p: 0 },
+      { p: p0 },
       {
-        p: 1,
+        p: p1,
         duration: dur,
         ease: ease || "power1.inOut",
         immediateRender: false,
@@ -363,13 +369,13 @@ function mountFieldManual(root: HTMLElement): () => void {
     );
   }
   function mkTL(sec: HTMLElement) {
-    const first = sec.id === "s1", last = sec.id === "s6";
+    const last = sec.id === "s10";
     return gsap.timeline({
       defaults: { ease: "none" },
       scrollTrigger: {
         trigger: sec,
-        start: first ? "top -100%" : "top top",
-        end: () => "+=" + Math.max(10, sec.offsetHeight - VH() * (first ? 3 : last ? 1 : 2)),
+        start: "top top",
+        end: () => "+=" + Math.max(10, sec.offsetHeight - VH() * (last ? 1 : 2)),
         scrub: 0.7,
         invalidateOnRefresh: true,
       },
@@ -404,21 +410,19 @@ function mountFieldManual(root: HTMLElement): () => void {
   }
   function measureDot() {
     const cover = $("#cover"), anc = $(".dot-anchor"), h1 = $(".name");
-    const svg = $<SVGSVGElement>("#s1 .dwg"), st = $("#s1 .stage");
-    if (!cover || !anc || !h1 || !svg || !st) return;
+    // the dot lands on the general-data band's datum (the band holds still under the lifting cover)
+    const datum = $("#gd .gd-datum"), st = $("#gd .leaf-stage");
+    if (!cover || !anc || !h1 || !datum || !st) return;
     const o = offsetIn(anc, cover), fs = parseFloat(getComputedStyle(h1).fontSize);
     A.x = o.x + fs * 0.13 + 7;
     A.y = o.y - 9;
-    const m = svg.getScreenCTM();
-    if (!m) return;
-    const sr = st.getBoundingClientRect();
-    const p = new DOMPoint(214, 352).matrixTransform(m);
-    T.x = p.x - sr.left;
-    T.y = p.y - sr.top;
+    const d = offsetIn(datum, st);
+    T.x = d.x + datum.offsetWidth / 2;
+    T.y = d.y + datum.offsetHeight / 2;
   }
   function buildCover() {
     const chars = $$(".cover .ch"), r = rng(42);
-    const lift = gsap.timeline({ defaults: { ease: "none" }, scrollTrigger: { trigger: "#s1", start: "top top", end: "+=100%", scrub: 0.6, invalidateOnRefresh: true } });
+    const lift = gsap.timeline({ defaults: { ease: "none" }, scrollTrigger: { trigger: "#gd", start: "top top", end: "+=100%", scrub: 0.6, invalidateOnRefresh: true } });
     chars.forEach((c) => {
       const rx = (r() - 0.5) * 1.1, ry = -(0.3 + r() * 0.75), rot = (r() - 0.5) * 90, d = r() * 0.14;
       lift.to(c, { x: () => rx * innerWidth * 0.55, y: () => ry * innerHeight, rotation: rot, opacity: 0, ease: "power2.in", duration: 0.52 }, d);
@@ -426,7 +430,7 @@ function mountFieldManual(root: HTMLElement): () => void {
     lift.to(".cover .guides i, .cover .cap-dim, .cover .dot-note, .cover .scroll-cue", { opacity: 0, duration: 0.25 }, 0);
     lift.to(".cover .cover-sub", { y: -40, opacity: 0, duration: 0.4, ease: "power2.in" }, 0.08);
     lift.to("#cover", { yPercent: -114, rotation: -3.2, xPercent: -1.5, transformOrigin: "100% 0%", ease: "power2.in", duration: 0.74 }, 0.24);
-    lift.fromTo("#s1 .shade-cover", { opacity: 0.62 }, { opacity: 0, duration: 0.76 }, 0.24);
+    lift.fromTo("#gd .shade-cover", { opacity: 0.62 }, { opacity: 0, duration: 0.76 }, 0.24);
     const hd = $("#herodot"), o = { p: 0 };
     lift.fromTo(
       o,
@@ -446,12 +450,13 @@ function mountFieldManual(root: HTMLElement): () => void {
       0.14,
     );
     lift.set(hd, { autoAlpha: 0 }, 0.95);
+    lift.fromTo("#gd .gd-datum i", { opacity: 0 }, { opacity: 1, duration: 0.02 }, 0.94);
     lift.set("#cover", { autoAlpha: 0 }, 1);
   }
 
   /* ---------- sheet entries (sheet-over-sheet) ---------- */
-  // Each sheet or leaf slides over the one before it in the flow, so 06's
-  // predecessor is Appendix C and A's is 05. A stuck leaf is taller than the
+  // Each sheet or leaf slides over the one before it in the flow, so 01's
+  // predecessor is the general-data band, 10's is Appendix C and A's is 09. A stuck leaf is taller than the
   // viewport, so it recedes about the point at the viewport's top edge.
   const stageOf = (sec: Element) => $(isLeaf(sec) ? ".leaf-stage" : ".stage", sec) as HTMLElement;
   function buildEntries() {
@@ -509,7 +514,13 @@ function mountFieldManual(root: HTMLElement): () => void {
     tl.fromTo(q(".dim1"), { scaleY: 0, opacity: 0, transformOrigin: "50% 50%" }, { scaleY: 1, opacity: 1, duration: 0.6, ease: "power2.out" }, 7.5);
     callout(tl, $(".c3", svg), 8.0);
     stamp(tl, $(".st1", svg), 8.6, fr);
-    tl.to({}, { duration: 0.5 }, 9.2);
+    // Detail B · the hot path: N+1 fan-out → one call, p95 halves
+    draw(tl, q(".hotp .ink"), 9.0, 0.6, 0.04);
+    fade(tl, q(".hotp .fade"), 9.1, 0.4);
+    sdraw(tl, q(".p95b"), 9.6, 0.4);
+    pop(tl, q(".hotp .pop"), 9.9);
+    tl.to(lis[3], { opacity: 1, duration: 0.4 }, 9.3);
+    tl.to({}, { duration: 0.5 }, 10.3);
   }
 
   /* ---------- sheet 02 · fleet ---------- */
@@ -555,66 +566,24 @@ function mountFieldManual(root: HTMLElement): () => void {
     stamp(tl, $(".st2", svg), t0 + step * bks.length + 0.1, fr);
     fade(tl, q(".to .fade"), t0 + step * bks.length + 0.3);
     draw(tl, q(".to .ink"), t0 + step * bks.length - 0.2, 0.4);
-    tl.to({}, { duration: 0.5 }, t0 + step * hops.length + 0.2);
+    // card 4: snapshot-restore takes a further 85%; card 5: availability
+    const t4 = t0 + step * hops.length + 0.3;
+    const card = (n: number, at: number) => {
+      tl.to(track, { y: () => -n * cardH(), duration: 0.6, ease: "power2.inOut" }, at);
+      tl.to(cards[n - 1], { opacity: 0.32, duration: 0.4 }, at);
+      tl.set(cards[n], { className: "fc on" }, at + 0.2);
+      tl.set(cards[n - 1], { className: "fc" }, at + 0.2);
+    };
+    card(3, t4);
+    callout(tl, $(".mt2", svg), t4 + 0.4);
+    card(4, t4 + 1.2);
+    tl.to({}, { duration: 0.6 }, t4 + 1.8);
     setMTTR(0);
   }
 
-  /* ---------- sheet 04 · tenant isolation (v3 "buildS3") ---------- */
-  function buildTenant() {
-    const sec = sheetEl("s4"), svg = $(".dwg", sec)!, fr = $(".frame", sec), vel = $(".vellum", sec)!, vs = $("svg", vel)!, tl = mkTL(sec);
-    const q = (s: string) => $$(s, svg), v = (s: string) => $$(s, vs);
-    const lis = $$(".gnotes li", sec), dot = $(".dot", svg)!;
-    tl.fromTo(vel, { xPercent: 118, rotation: 4, transformOrigin: "0% 100%" }, { xPercent: 118, rotation: 4, duration: 0.01 }, 0);
-    fade(tl, q("svg > .lbl.fade, .from .fade, .to .fade"), 0, 0.4);
-    draw(tl, q(".from .ink, .to .ink, .regs .ink"), 0, 0.5, 0.03);
-    tl.to(lis[0], { opacity: 1, duration: 0.4 }, 0);
-    draw(tl, q("#walls .ink"), 0.1, 0.9, 0.05);
-    fade(tl, q("#walls .fade"), 0.9, 0.6);
-    draw(tl, q("#doors .ink"), 1.6, 0.6, 0.06);
-    draw(tl, q("#dets .ink"), 2.0, 0.6, 0.04);
-    draw(tl, q(".ink.bus"), 1.2, 0.9);
-    fade(tl, q("#dets .fade"), 2.3, 0.5);
-    tl.to(lis[1], { opacity: 1, duration: 0.4 }, 2.2);
-    travel(tl, routeOf("#r3a"), dot, 3.0, 1.5);
-    tl.fromTo(q(".ring-o"), { scale: 1, opacity: 0.9, transformOrigin: "50% 50%" }, { scale: 2.8, opacity: 0, stagger: 0.12, duration: 0.6, ease: "power2.out", immediateRender: false }, 4.45);
-    // vellum
-    tl.to(vel, { xPercent: 0, rotation: 0, duration: 1.1, ease: "power2.out" }, 5.0);
-    draw(tl, v(".regs .ink"), 5.9, 0.4);
-    fade(tl, v(".lbl.fade"), 6.0, 0.4);
-    draw(tl, v(".ink.sg"), 6.2, 0.3);
-    pop(tl, v(".hand").filter((t) => t.textContent === "wm"), 6.4);
-    callout(tl, $(".v2", vs), 6.5);
-    const ghost = $(".ghost", vs)!;
-    tl.fromTo(ghost, { opacity: 0 }, { opacity: 1, duration: 0.1 }, 6.9);
-    const ghostRoute: RouteLike = {
-      getTotalLength: () => 447,
-      getPointAtLength: (l: number) => (l < 412 ? { x: 18 + l, y: 270 } : { x: 430, y: 270 - (l - 412) }),
-    };
-    lens.set(ghostRoute, 447);
-    travel(tl, ghostRoute, ghost, 6.9, 1.0, "power2.out", true);
-    pop(tl, v(".skip"), 7.9);
-    tl.to(ghost, { opacity: 0.25, duration: 0.3 }, 8.0);
-    tl.to(lis[2], { opacity: 1, duration: 0.4 }, 7.9);
-    callout(tl, $(".v1", vs), 8.0);
-    stamp(tl, $(".st3", vs), 8.5, fr);
-    pop(tl, v(".v4 .hand"), 9.0);
-    tl.to(lis[3], { opacity: 1, duration: 0.4 }, 9.0);
-    draw(tl, v(".tline .ink"), 9.4, 0.5, 0.1);
-    pop(tl, v(".tline .lbl"), 9.6);
-    const tm = $(".tmark", vs)!;
-    tl.fromTo(tm, { opacity: 0 }, { opacity: 1, duration: 0.1 }, 9.8);
-    travel(tl, routeOf("#rt", vs), tm, 9.8, 1.0, "none", true);
-    tl.to(lis[4], { opacity: 1, duration: 0.4 }, 10.0);
-    stamp(tl, $(".st3b", vs), 10.85, fr);
-    travel(tl, routeOf("#r3b"), dot, 11.3, 0.9);
-    tl.to({}, { duration: 0.4 }, 12.2);
-    place(tm, routeOf("#rt", vs), 0);
-    place(ghost, routeOf("#r3a"), 0);
-  }
-
-  /* ---------- sheet 05 · durable workflows (v3 "buildS4") ---------- */
+  /* ---------- sheet 09 · durable workflows (v3 "buildS4") ---------- */
   function buildWorkflows() {
-    const sec = sheetEl("s5"), svg = $(".dwg", sec)!, fr = $(".frame", sec), tl = mkTL(sec), q = (s: string) => $$(s, svg);
+    const sec = sheetEl("s9"), svg = $(".dwg", sec)!, fr = $(".frame", sec), tl = mkTL(sec), q = (s: string) => $$(s, svg);
     const lis = $$(".gnotes li", sec), dot = $(".dot", svg)!, fail = $(".fail", svg), atts = q(".att"), rows = q(".row");
     fade(tl, q("svg > .lbl.fade, .from .fade"), 0, 0.4);
     draw(tl, q(".from .ink"), 0, 0.4);
@@ -626,24 +595,25 @@ function mountFieldManual(root: HTMLElement): () => void {
     fade(tl, q(".loop .fade"), 1.9);
     draw(tl, q(".log .ink"), 2.0, 0.5);
     fade(tl, q(".log .fade"), 2.2);
-    travel(tl, routeOf("#r4a"), dot, 2.7, 1.3);
+    travel(tl, routeOf("#r9a"), dot, 2.7, 1.3);
     let t = 4.0;
-    const loop = routeOf("#r4l");
-    for (let i = 0; i < 4; i++) {
+    const loop = routeOf("#r9l");
+    for (let i = 0; i < 3; i++) {
       tl.set(atts[i], { opacity: 1 }, t);
       if (i) tl.set(atts[i - 1], { opacity: 0 }, t);
       pop(tl, [rows[i]], t);
-      if (i < 3) {
+      if (i < 2) {
         tl.fromTo(fail, { opacity: 0, scale: 0.6, transformOrigin: "0% 50%" }, { opacity: 1, scale: 1, duration: 0.14, ease: "back.out(3)", immediateRender: i === 0 }, t + 0.05);
         tl.to(fail, { opacity: 0.2, duration: 0.2 }, t + 0.4);
         travel(tl, loop, dot, t + 0.5, 0.75);
         t += 1.35;
       }
     }
-    tl.to(lis[1], { opacity: 1, duration: 0.4 }, 6.0);
+    tl.to(lis[1], { opacity: 1, duration: 0.4 }, 5.0);
     stamp(tl, $(".st4", svg), t - 0.55, fr);
-    travel(tl, routeOf("#r4b"), dot, t + 0.3, 1.0);
-    pop(tl, [rows[4]], t + 1.2);
+    travel(tl, routeOf("#r9b"), dot, t + 0.3, 1.0);
+    pop(tl, [rows[3]], t + 1.2);
+    tl.to(lis[2], { opacity: 1, duration: 0.4 }, t + 1.0);
     stamp(tl, $(".st4b", svg), t + 1.25, fr);
     const d0 = t + 1.8;
     draw(tl, q(".dmark .ink"), d0, 0.5, 0.1);
@@ -652,11 +622,17 @@ function mountFieldManual(root: HTMLElement): () => void {
     fade(tl, q(".detail .fade"), d0 + 1.0, 0.5);
     fade(tl, q("svg > .lbl.fade"), d0 + 1.0, 0.5);
     pop(tl, q(".detail .hand"), d0 + 1.3);
-    tl.to(lis[2], { opacity: 1, duration: 0.4 }, d0 + 0.8);
-    draw(tl, q(".to .ink"), d0 + 1.4, 0.4);
-    fade(tl, q(".to .fade"), d0 + 1.5);
-    travel(tl, routeOf("#r4c"), dot, d0 + 1.7, 0.5);
-    tl.to({}, { duration: 0.5 }, d0 + 2.2);
+    tl.to(lis[3], { opacity: 1, duration: 0.4 }, d0 + 0.8);
+    // Detail C · codeflow, and the eBPF scan
+    draw(tl, q(".detc9 .ink"), d0 + 1.6, 0.8, 0.05);
+    fade(tl, q(".detc9 .fade"), d0 + 1.9, 0.4);
+    callout(tl, $(".c-cf", svg), d0 + 2.3);
+    tl.to(lis[4], { opacity: 1, duration: 0.4 }, d0 + 1.8);
+    tl.to(lis[5], { opacity: 1, duration: 0.4 }, d0 + 2.4);
+    draw(tl, q(".to .ink"), d0 + 2.6, 0.4);
+    fade(tl, q(".to .fade"), d0 + 2.7);
+    travel(tl, routeOf("#r9c"), dot, d0 + 2.8, 0.5);
+    tl.to({}, { duration: 0.5 }, d0 + 3.3);
   }
 
   /* ---------- sheet 03 · rollout safety (v3 "buildRS") ---------- */
@@ -720,18 +696,28 @@ function mountFieldManual(root: HTMLElement): () => void {
     fade(tl, q(".detc .fade"), 11.4, 0.5);
     draw(tl, q(".detc .ink"), 11.4, 0.5);
     callout(tl, $(".c-plug", svg), 11.8);
-    tl.to(lis[5], { opacity: 1, duration: 0.4 }, 12.2);
     callout(tl, $(".metric", svg), 12.2);
-    fade(tl, q(".after .fade"), 12.6, 0.5);
-    draw(tl, q(".to .ink"), 12.6, 0.4);
-    fade(tl, q(".to .fade"), 12.7);
-    travel(tl, routeOf("#rsb"), dot, 12.9, 0.9);
-    tl.to({}, { duration: 0.5 }, 13.8);
+    fade(tl, q(".after .fade"), 12.4, 0.5);
+    // the incident report: a film overlay slides up over the lane
+    const film = $(".incident", svg);
+    tl.fromTo(film, { y: 340, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: "power2.out", immediateRender: false }, 12.9);
+    fade(tl, q(".incident .fade"), 13.7, 0.4);
+    draw(tl, q(".incident .ink"), 13.7, 1.3, 0.06);
+    sdraw(tl, q(".incident .storm"), 14.4, 0.4, 0.25);
+    tl.to(lis[5], { opacity: 1, duration: 0.4 }, 14.4);
+    pop(tl, q(".incident .lesson"), 15.4);
+    callout(tl, $(".metric2", svg), 15.9);
+    callout(tl, $(".c-inc", svg), 16.2);
+    stamp(tl, $(".st-inc", svg), 16.5, fr);
+    draw(tl, q(".to .ink"), 16.8, 0.4);
+    fade(tl, q(".to .fade"), 16.9);
+    travel(tl, routeOf("#rsb"), dot, 17.0, 0.8);
+    tl.to({}, { duration: 0.5 }, 17.8);
   }
 
-  /* ---------- sheet 06 · issued for hire ---------- */
+  /* ---------- sheet 10 · issued for hire ---------- */
   function buildClose() {
-    const sec = sheetEl("s6"), svg = $(".dwg", sec)!, fr = $(".frame", sec), tl = mkTL(sec), q = (s: string) => $$(s, svg);
+    const sec = sheetEl("s10"), svg = $(".dwg", sec)!, fr = $(".frame", sec), tl = mkTL(sec), q = (s: string) => $$(s, svg);
     const dot = $(".dot", svg)!;
     fade(tl, q("svg > .lbl.fade, .from .fade"), 0, 0.4);
     draw(tl, q(".from .ink"), 0, 0.4);
@@ -740,7 +726,7 @@ function mountFieldManual(root: HTMLElement): () => void {
     draw(tl, q(".tx .ink"), 0.6, 0.5, 0.1);
     fade(tl, q(".tx .fade"), 0.8, 0.4);
     pop(tl, q(".tx .row"), 1.0);
-    travel(tl, routeOf("#r6a"), dot, 1.6, 1.4);
+    travel(tl, routeOf("#r10a"), dot, 1.6, 1.4);
     callout(tl, $(".c6", svg), 2.4);
     draw(tl, q(".to .ink"), 2.6, 0.4);
     fade(tl, q(".to .fade"), 2.8);
@@ -824,10 +810,16 @@ function mountFieldManual(root: HTMLElement): () => void {
         intro();
         buildCover();
         buildEntries();
+        const kit: Kit = { $, $$, sheetEl, mkTL, draw, fade, pop, callout, stamp, travel, routeOf, lens, place, VH };
+        buildBand(kit);
         buildS1();
         buildS2();
         buildRollout();
-        buildTenant();
+        buildGate(kit);
+        buildTenant(kit);
+        buildSignal(kit);
+        buildCritical(kit);
+        buildAssembly(kit);
         buildWorkflows();
         buildClose();
         buildAppendices();
@@ -882,7 +874,8 @@ function colourRuntime(root: HTMLElement, sheets: HTMLElement[]): () => void {
     ".dwg path.ink.b, .dwg line.ink.b, .dwg polyline.ink.b, .dwg rect.ink.b, .dwg path.ink:not(.t), .dwg line.ink:not(.t), .dwg polyline.ink:not(.t), .dwg .sig-ln, .dwg .dimln, .plate rect.pf";
   const pairs: [SVGGeometryElement, SVGElement, Element | null, boolean][] = [];
   root.querySelectorAll<SVGGeometryElement>(SEL).forEach((el, n) => {
-    if (el.closest(".stamp") || el.closest("defs") || el.closest("pattern")) return;
+    // .nf: lines that are scaled or swapped in by a timeline (strikes, needles), not drawn
+    if (el.closest(".stamp") || el.closest("defs") || el.closest("pattern") || el.closest(".nf")) return;
     try {
       if (el.getTotalLength && el.getTotalLength() < 60) return;
     } catch {
@@ -903,7 +896,7 @@ function colourRuntime(root: HTMLElement, sheets: HTMLElement[]): () => void {
     pairs.push([el, c, el.closest(".sheet, .appx, .cover"), isPlate]);
   });
 
-  function drawn(el: Element, strict: boolean) {
+  function drawn(el: Element) {
     const cs = getComputedStyle(el), op = parseFloat(cs.opacity);
     if (op < 0.5) return false;
     let p = el.parentNode as Element | null;
@@ -912,7 +905,8 @@ function colourRuntime(root: HTMLElement, sheets: HTMLElement[]): () => void {
       p = p.parentNode as Element | null;
     }
     const off = parseFloat((el as SVGElement).style.strokeDashoffset || cs.strokeDashoffset || "0");
-    return strict ? !(Math.abs(off) > 0.02) : !(Math.abs(off) > 2);
+    // every drawn line carries pathLength=1, so "drawn" means a dash offset of ~0
+    return !(Math.abs(off) > 0.02);
   }
   function activeIndex() {
     const vh = innerHeight;
@@ -940,7 +934,7 @@ function colourRuntime(root: HTMLElement, sheets: HTMLElement[]): () => void {
       });
     }
     const host = a === 0 ? root.querySelector(".cover") : sheets[a - 1];
-    pairs.forEach((p) => p[1].classList.toggle("live", p[2] === host && drawn(p[0], p[3])));
+    pairs.forEach((p) => p[1].classList.toggle("live", p[2] === host && drawn(p[0])));
     if (host)
       host.querySelectorAll<HTMLElement>(".gnotes li").forEach((li) => {
         li.classList.toggle("lit", parseFloat(getComputedStyle(li).opacity) > 0.8);

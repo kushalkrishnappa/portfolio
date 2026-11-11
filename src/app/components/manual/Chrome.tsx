@@ -11,8 +11,8 @@ export default function Chrome() {
         <a href="#s1" data-go="s1">
           <span className="k">01</span>Work
         </a>
-        <a href="#s6" data-go="s6">
-          <span className="k">06</span>Contact
+        <a href="#s10" data-go="s10">
+          <span className="k">10</span>Contact
         </a>
         <a href={RESUME_HREF} download="KushalKrishnappa.pdf">
           Résumé
@@ -37,8 +37,8 @@ export function PageChrome() {
           <span className="k">00</span>Manual
         </a>
         {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- full load for the manual's motion gate */}
-        <a href="/#s6">
-          <span className="k">06</span>Contact
+        <a href="/#s10">
+          <span className="k">10</span>Contact
         </a>
         <a href={RESUME_HREF} download="KushalKrishnappa.pdf">
           Résumé
