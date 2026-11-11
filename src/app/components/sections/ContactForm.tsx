@@ -1,13 +1,16 @@
 'use client'
 import React from "react";
 
-const FIELD_CLASS =
-  "w-full rounded-md border bg-[color:var(--bg)] border-[color:var(--line-2)] px-4 py-2 text-sm text-[color:var(--bone)] placeholder:text-[color:var(--faint)] transition-colors focus:outline-none focus:border-[color:var(--accent)] focus-visible:ring-2 focus-visible:ring-[color:var(--accent)] disabled:cursor-not-allowed disabled:text-[color:var(--faint)]";
-
-const LABEL_CLASS =
-  "mono mb-2 block text-[11px] uppercase tracking-[0.14em] text-[color:var(--dim)]";
-
-export default function ContactForm() {
+/**
+ * ContactForm — sheet 06's "Request for information" transmittal.
+ *
+ * Posts { name, email, message } to /api/contact (nodemailer); the route
+ * validates that all three fields are present. The inputs are `required`
+ * (email `type="email"`) so the browser checks them before sending.
+ * Styled by field-manual.css (`.rfi*`).
+ */
+export default function ContactForm({ className }: { className?: string }) {
+  const uid = React.useId();
   const [formData, setFormData] = React.useState({
     name: "",
     email: "",
@@ -56,92 +59,74 @@ export default function ContactForm() {
     }
   };
 
-  // Bound to inputs for when the form is re-enabled (inputs are disabled for now).
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  // The form is intentionally disabled while Beacon is in development. The state
-  // and handlers above are kept so re-enabling is a one-line change; these voids
-  // mark them as deliberately-unused for now.
-  void isSubmitting;
-  void submitStatus;
-  void handleChange;
+  const statusClass =
+    submitStatus.type === "success" ? "rfi-status ok" : submitStatus.type === "error" ? "rfi-status err" : "rfi-status";
 
   return (
-    <div>
-      {/* Under-development notice. */}
-      <div
-        className="mb-4 rounded-lg border p-4"
-        style={{ background: "var(--surface)", borderColor: "var(--line-2)" }}
-      >
-        <p
-          className="mono mb-2 text-[11px] uppercase tracking-[0.18em]"
-          style={{ color: "var(--accent)" }}
-        >
-          Form under development
-        </p>
-        <p className="text-sm" style={{ color: "var(--dim)" }}>
-          Currently building a notification service called{" "}
-          <a
-            href="https://github.com/kap-theorem/beacon"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-semibold underline transition-opacity hover:opacity-80 text-[color:var(--accent)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--accent)] rounded-sm"
-          >
-            Beacon
-          </a>
-        </p>
-        <p className="mt-2 text-xs" style={{ color: "var(--faint)" }}>
-          In the meantime, feel free to reach out via LinkedIn or GitHub!
-        </p>
-      </div>
-
-      <form onSubmit={handleSubmit} className="space-y-4 opacity-60 pointer-events-none">
-        <div>
-          <label className={LABEL_CLASS}>Name</label>
+    <form
+      className={["rfi", className].filter(Boolean).join(" ")}
+      onSubmit={handleSubmit}
+      aria-labelledby={`${uid}-cap`}
+    >
+      <p className="rfi-cap" id={`${uid}-cap`}>
+        <span>Schedule G — Request for information</span>
+        <b aria-hidden="true">RFI · 06</b>
+      </p>
+      <div className="rfi-grid">
+        <div className="rfi-f">
+          <label htmlFor={`${uid}-name`}>From · name</label>
           <input
+            id={`${uid}-name`}
             type="text"
             name="name"
-            value="Working on it..."
-            disabled
-            className={FIELD_CLASS}
+            autoComplete="name"
+            required
+            value={formData.name}
+            onChange={handleChange}
+            disabled={isSubmitting}
           />
         </div>
-
-        <div>
-          <label className={LABEL_CLASS}>Email</label>
+        <div className="rfi-f">
+          <label htmlFor={`${uid}-email`}>Reply to · email</label>
           <input
+            id={`${uid}-email`}
             type="email"
             name="email"
-            value="notification@beacon.dev"
-            disabled
-            className={FIELD_CLASS}
+            autoComplete="email"
+            required
+            value={formData.email}
+            onChange={handleChange}
+            disabled={isSubmitting}
           />
         </div>
-
-        <div>
-          <label className={LABEL_CLASS}>Message</label>
+        <div className="rfi-f full">
+          <label htmlFor={`${uid}-message`}>Request</label>
           <textarea
+            id={`${uid}-message`}
             name="message"
-            value="Building Beacon - a notification service to power sms, email, and push notifications. Check out the progress on GitHub!"
-            disabled
-            rows={4}
-            className={`${FIELD_CLASS} resize-none`}
+            rows={3}
+            required
+            value={formData.message}
+            onChange={handleChange}
+            disabled={isSubmitting}
           />
         </div>
-
-        <button
-          type="button"
-          disabled
-          className="mono w-full rounded-md border py-3 px-6 text-xs uppercase tracking-[0.14em] cursor-not-allowed"
-          style={{ borderColor: "var(--line-2)", color: "var(--dim)" }}
-        >
-          Coming soon
+      </div>
+      <div className="rfi-foot">
+        <button type="submit" className="rfi-send" disabled={isSubmitting}>
+          {isSubmitting ? "Transmitting…" : "Transmit RFI"}
+          <span className="arr" aria-hidden="true">→</span>
         </button>
-      </form>
-    </div>
+        <p className={statusClass} role="status" aria-live="polite">
+          {submitStatus.message || "Routed to K. Krishnappa by email."}
+        </p>
+      </div>
+    </form>
   );
 }
