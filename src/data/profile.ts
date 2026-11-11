@@ -2,35 +2,47 @@ import { Profile } from "@/types";
 
 export const profile: Profile = {
   name: "Kushal Krishnappa",
+  role: "Backend & platform engineer",
   tagline: "building invisible infrastructure for visible impact",
-  availability: "Open to backend / platform / infrastructure SWE roles",
+  email: "kushalkrishnappa333@gmail.com",
+  availability: "Open to backend / platform / infra / SRE roles",
+  nowLine: "MS CS @ Northeastern · open to full-time May 2027",
+  before: ["RoonCyber", "Pure Storage", "Mercedes-Benz"],
+  chips: [
+    "Go",
+    "Kubernetes",
+    "Temporal",
+    "AWS",
+    "multi-tenant",
+    "distributed systems",
+  ],
   about: {
     intro:
-      "Backend software engineer building distributed systems and platform infrastructure — Go, Python, Kubernetes, AWS. Currently pursuing my MS in CS at Northeastern (4.0 GPA), graduating Dec 2026.",
+      "Backend & platform engineer working on distributed systems, multi-tenant isolation, and reliability at scale — Go, Python, Kubernetes, Temporal, AWS. Pursuing an MS in CS at Northeastern (4.0 GPA), graduating May 2027.",
     built: [
       {
-        org: "RoonCyber (SWE Intern)",
+        org: "RoonCyber (Software Engineer, Co-op)",
         detail:
-          "Shipped Go backend services for a CNAPP platform and extended eBPF-based runtime threat-detection pipelines.",
+          "Built a multi-tenant AI-security notification platform — per-tenant detectors, idempotent watermarks, and API/auth plumbing — plus posture and runtime-analysis plumbing across a CNAPP.",
       },
       {
-        org: "Pure Storage (Member of Technical Staff 2)",
+        org: "Pure Storage / Everpure (Member of Technical Staff 2)",
         detail:
-          "Designed backend systems for physical host allocation and VM lifecycle management; cross-team work on deployment workflows at infrastructure scale.",
+          "Built event-driven reconciliation and rollout-safety services on Temporal that drove MTTR from 5 hours to 10 minutes across a 2,000-testbed / 9,000+-VM OpenStack fleet.",
       },
       {
-        org: "Mercedes-Benz R&D (SWE)",
+        org: "Mercedes-Benz R&D India (Software Engineer)",
         detail:
-          "Built ETL pipelines on PySpark/Databricks for OTA update analytics and extended the OTA microservice for real-time downstream analytics.",
+          "Pitched and built a central data warehouse: multi-source ingestion into Azure Event Hubs plus PySpark/Delta Lake ETL over 90TB+ of OTA telemetry.",
       },
     ],
     closing:
-      "What I care about: orchestration, reliability and systems that hold up under real load. Lately I'm working under Prof. Xiang Ren at System Research Group on low level observability.",
+      "What I care about: orchestration, reliability, and systems that hold up under real load.",
   },
   quickInfo: [
-    { label: "CURRENT ROLE", value: "MSCS Grad @ Northeastern" },
+    { label: "EDUCATION", value: "MS CS @ Northeastern · May 2027" },
     { label: "LOCATION", value: "Boston, MA" },
-    { label: "EXPERIENCE", value: "2+ years in Software Engineering" },
+    { label: "EXPERIENCE", value: "2.5+ years in Software Engineering" },
   ],
   socials: [
     {

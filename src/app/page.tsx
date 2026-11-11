@@ -1,33 +1,13 @@
-import Whoami from "@/app/components/sections/Whoami";
-import ImpactMetrics from "@/app/components/sections/ImpactMetrics";
-import Experience from "@/app/components/sections/Experience";
-import Projects from "@/app/components/sections/Projects";
-import Writing from "@/app/components/sections/Writing";
-import Skills from "@/app/components/sections/Skills";
-import Education from "@/app/components/sections/Education";
-import Publications from "@/app/components/sections/Publications";
-import Certifications from "@/app/components/sections/Certifications";
-import Contact from "@/app/components/sections/Contact";
+import FieldManual from "@/app/components/manual/FieldManual";
+import Appendices from "@/app/components/manual/sheets/Appendices";
+import { getAllPosts } from "@/lib/blog";
 
-export default function Home() {
-  return (
-    <div className="min-h-screen bg-black text-gray-300 font-mono">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl pt-12 sm:pt-20 pb-16">
-        <Whoami />
-        <ImpactMetrics />
-        <Experience />
-        <Projects />
-        <Writing />
-        <Skills />
-        <Education />
-        <Publications />
-        <Certifications />
-        <Contact />
+/** How many of the latest posts Appendix C lists (the rest live on /blogs). */
+const FIELD_NOTES_ON_HOME = 4;
 
-        <div className="text-center text-xs text-gray-600 border-t border-gray-800 pt-8">
-          <p>© 2026 Kushal Krishnappa. Built with Next.js &amp; Tailwind CSS</p>
-        </div>
-      </div>
-    </div>
-  );
+export default async function Home() {
+  // Fetched on the server; getAllPosts returns [] when the manifest is empty
+  // or unreachable, and Appendix C then shows its quiet empty line.
+  const posts = await getAllPosts();
+  return <FieldManual appendices={<Appendices posts={posts.slice(0, FIELD_NOTES_ON_HOME)} total={posts.length} />} />;
 }

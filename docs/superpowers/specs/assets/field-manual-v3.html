@@ -1,0 +1,1764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kushal Krishnappa — Field Manual</title>
+<meta name="description" content="Kushal Krishnappa, backend and platform engineer. A field manual in six sheets.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Display:wght@600;800;900&family=Instrument+Sans:wght@400;500;600&family=Martian+Mono:wght@400;500;700&family=Reenie+Beanie&display=swap" rel="stylesheet">
+<script>
+(function(){var m=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;if(!m){document.documentElement.classList.add('motion');}
+setTimeout(function(){if(!window.__fmStarted){document.documentElement.classList.remove('motion');}},5000);})();
+</script>
+<style>
+:root{
+  --paper:#123f71; --paper-lo:#0c3261; --paper-deep:#061a35;
+  --ink:#e8f2f9; --ink2:rgba(232,242,249,.66); --ink3:rgba(232,242,249,.32); --ink4:rgba(232,242,249,.14);
+  --grid:rgba(190,222,246,.055); --grid2:rgba(190,222,246,.10);
+  --sig:#ff6a1a;
+  --f-disp:'Big Shoulders Stencil Display', Impact, 'Arial Narrow', sans-serif;
+  --f-mono:'Martian Mono', ui-monospace, Menlo, monospace;
+  --f-hand:'Reenie Beanie', 'Bradley Hand', cursive;
+  --f-text:'Instrument Sans', system-ui, sans-serif;
+  --inset:26px;
+  --col:min(392px, 29vw);
+  --grain:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='260'><filter id='a'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' seed='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .93 0 0 0 0 .97 0 0 0 0 1 .85 0 0 0 -.47'/></filter><filter id='b'><feTurbulence type='fractalNoise' baseFrequency='.6' numOctaves='2' seed='9' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 .02 0 0 0 0 .06 -1 0 0 0 .58'/></filter><rect width='260' height='260' filter='url(%23b)'/><rect width='260' height='260' filter='url(%23a)'/></svg>");
+  --blotch:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='900' height='600' preserveAspectRatio='none'><filter id='c'><feTurbulence type='fractalNoise' baseFrequency='.0035 .005' numOctaves='3' seed='14'/><feColorMatrix values='0 0 0 0 .55 0 0 0 0 .75 0 0 0 0 .95 .55 0 0 0 -.26'/></filter><rect width='900' height='600' filter='url(%23c)'/></svg>");
+}
+*{box-sizing:border-box}
+html{background:var(--paper-deep)}
+html,body{overflow-x:clip}
+body{margin:0;color:var(--ink);font:400 15px/1.5 var(--f-text);background:var(--paper-deep);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:inherit}
+::selection{background:var(--sig);color:var(--paper-deep)}
+.vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- paper ---------- */
+.paper-bg,.paper-fringe{position:absolute;left:0;right:0;top:-40px;bottom:0}
+.paper-fringe{background:#dce8f1;opacity:.9}
+.paper-bg{
+  background-color:var(--paper);
+  background-image:
+    var(--grain),
+    linear-gradient(90deg, transparent 46%, rgba(2,14,34,.16) 49.85%, rgba(215,238,255,.09) 50.1%, transparent 54%),
+    linear-gradient(180deg, transparent 44%, rgba(2,14,34,.12) 49.8%, rgba(215,238,255,.07) 50.1%, transparent 55%),
+    var(--blotch),
+    radial-gradient(120% 90% at 50% 45%, transparent 55%, rgba(3,14,32,.42) 100%),
+    linear-gradient(var(--grid2) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid2) 1px, transparent 1px),
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size:260px 260px,100% 100%,100% 100%,100% 100%,100% 100%,120px 120px,120px 120px,24px 24px,24px 24px;
+  background-position:0 0,0 0,0 0,var(--bp,0 0),0 0,-1px 15px,-1px 15px,-1px 15px,-1px 15px;
+}
+.tear-shadow{position:absolute;left:0;right:0;top:-72px;height:150px;filter:blur(10px);pointer-events:none}
+.tear-shadow i{position:absolute;inset:0;background:rgba(0,6,18,.78)}
+.shade,.shade-cover{position:absolute;left:0;right:0;top:-40px;bottom:0;background:#020b1b;opacity:0;pointer-events:none;z-index:5}
+
+/* ---------- frame / sheet furniture ---------- */
+.frame{position:absolute;inset:var(--inset);border:1.5px solid var(--ink2)}
+.frame::before{content:"";position:absolute;inset:5px;border:.75px solid var(--ink4);pointer-events:none}
+.frame::after{content:"";position:absolute;top:0;bottom:0;right:104px;border-left:.75px solid var(--ink4);pointer-events:none}
+.zones{position:absolute;inset:0;pointer-events:none;font:500 8px/1 var(--f-mono);color:var(--ink3);letter-spacing:.1em}
+.zones span{position:absolute}
+.zones .zt{top:-17px;transform:translateX(-50%)} .zones .zb{bottom:-17px;transform:translateX(-50%)}
+.zones .zl{left:-17px;transform:translateY(-50%)} .zones .zr{right:-17px;transform:translateY(-50%)}
+.zones i{position:absolute;background:var(--ink3)}
+.zones i.t{top:0;width:1px;height:8px} .zones i.b{bottom:0;width:1px;height:8px}
+.zones i.l{left:0;height:1px;width:8px} .zones i.r{right:0;height:1px;width:8px}
+
+.sheet{position:relative;height:var(--h,400vh)}
+.sheet + .sheet{margin-top:-100vh}
+.stage{position:sticky;top:0;height:100vh;will-change:transform}
+
+.eyebrow{font:500 10px/1.3 var(--f-mono);letter-spacing:.2em;text-transform:uppercase;color:var(--ink2);display:flex;gap:12px;align-items:center;margin:0}
+.eyebrow::before{content:"";flex:0 0 26px;height:1px;background:var(--ink2)}
+.sheet-head{position:absolute;left:34px;top:56px;right:230px}
+.sheet-title{margin:12px 0 0;font:800 clamp(52px,7.3vw,116px)/.84 var(--f-disp);letter-spacing:.006em;text-transform:uppercase;color:var(--ink)}
+
+.notes{position:absolute;left:34px;top:206px;width:var(--col);bottom:150px}
+.drawing{position:absolute;left:calc(var(--col) + 76px);right:118px;top:184px;bottom:16px}
+.dwg{width:100%;height:100%;display:block;overflow:visible}
+
+.spec{width:100%;border-collapse:collapse;font-size:14px;line-height:1.35}
+.spec caption{text-align:left;font:500 8.5px/1 var(--f-mono);letter-spacing:.22em;text-transform:uppercase;color:var(--ink2);padding:0 0 9px}
+.spec th{width:88px;text-align:left;vertical-align:top;font:500 8px/1.7 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--ink2);padding:8px 10px 7px 0;border-top:1px solid var(--ink3)}
+.spec td{padding:6px 0 7px;border-top:1px solid var(--ink3);font-weight:500}
+.spec tr:first-child td{font-size:17px;font-weight:600;letter-spacing:-.005em}
+.spec tr:last-child th,.spec tr:last-child td{border-bottom:1px solid var(--ink3)}
+.gnotes{margin-top:20px}
+.gnotes h3{font:500 8.5px/1 var(--f-mono);letter-spacing:.22em;text-transform:uppercase;color:var(--ink2);margin:0 0 11px}
+.gnotes ol{list-style:none;margin:0;padding:0;counter-reset:n}
+.gnotes li{counter-increment:n;position:relative;padding-left:30px;margin:0 0 9px;font-size:14.5px;line-height:1.45}
+.gnotes li::before{content:counter(n,decimal-leading-zero);position:absolute;left:0;top:.2em;font:500 9px/1.4 var(--f-mono);color:var(--ink2);letter-spacing:.06em}
+.gnotes b{font-weight:600;color:#fff}
+
+.titleblock{position:absolute;left:0;bottom:0;width:calc(var(--col) + 34px);display:grid;grid-template-columns:1.25fr 1fr .72fr;border-top:1.5px solid var(--ink2);border-right:1.5px solid var(--ink2);background:rgba(7,32,64,.42)}
+.titleblock .c{border-right:.75px solid var(--ink3);border-bottom:.75px solid var(--ink3);padding:6px 9px 7px;min-width:0}
+.titleblock .c:nth-child(2),.titleblock .c:nth-child(4),.titleblock .c:nth-child(7){border-right:0}
+.titleblock .c:nth-child(n+5){border-bottom:0}
+.titleblock span{display:block;font:500 7px/1 var(--f-mono);letter-spacing:.2em;text-transform:uppercase;color:var(--ink2);margin-bottom:5px}
+.titleblock b{display:block;font:500 10px/1.15 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.titleblock .proj,.titleblock .ttl{grid-column:1/3}
+.titleblock .ttl b{font:800 25px/1 var(--f-disp);letter-spacing:.03em}
+.titleblock .sh b,.titleblock .rev b{font:800 22px/1 var(--f-disp);letter-spacing:.03em}
+.titleblock .sh small{font-size:.6em;color:var(--ink2);margin-left:2px}
+
+/* ---------- svg vocabulary ---------- */
+.dwg .ink,.vellum .ink{fill:none;stroke:var(--ink);stroke-width:1.35;stroke-linecap:round;stroke-linejoin:round}
+.ink.b{stroke-width:2.3}
+.ink.t{stroke-width:.9;stroke:var(--ink2)}
+.ink.solid{fill:var(--paper)}
+.ink.sg{stroke:var(--sig);stroke-width:2.6}
+.ctr{fill:none;stroke:var(--ink3);stroke-width:.8;stroke-dasharray:14 4 2 4}
+.rel{fill:none;stroke:var(--ink3);stroke-width:1;stroke-dasharray:5 5}
+.dimln{fill:none;stroke:var(--ink);stroke-width:1}
+.ghost-dim{fill:none;stroke:var(--ink2);stroke-width:1;stroke-dasharray:4 4}
+.sig-ln{fill:none;stroke:var(--sig);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.route{fill:none;stroke:none}
+.trail{fill:none;stroke:var(--sig);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+.lbl{font:500 10px var(--f-mono);letter-spacing:.14em;fill:var(--ink2);text-transform:uppercase}
+.lbl.k{fill:var(--ink)}
+.lbl-b{font:800 24px var(--f-disp);letter-spacing:.06em;fill:var(--ink)}
+.hand{font-family:var(--f-hand);font-size:30px;fill:var(--ink)}
+.hand.o{fill:var(--sig)}
+.dimtxt{font:500 13px var(--f-mono);letter-spacing:.12em;fill:var(--ink)}
+.st-name{font:500 12px var(--f-mono);letter-spacing:.14em;fill:var(--ink)}
+.st-name.sm{font-size:10.5px}
+.mttr-v{font:800 32px var(--f-disp);fill:var(--ink);letter-spacing:.03em}
+.fill-ink{fill:var(--ink)}
+.bk .o-top{fill:url(#hatchO);stroke:var(--sig);stroke-width:2;stroke-linejoin:round}
+.bk .o-x{fill:none;stroke:var(--sig);stroke-width:2;stroke-linecap:round}
+.ring-o{fill:none;stroke:var(--sig);stroke-width:2;opacity:0}
+.hot-edge{fill:none;stroke:var(--sig);stroke-width:3.2;stroke-linecap:round}
+.hot{fill:var(--sig)}
+.ghost .gh{fill:none;stroke:var(--sig);stroke-width:2;stroke-dasharray:3 3}
+.tmark{fill:var(--sig)}
+.dot .core{fill:var(--sig)}
+.dot .halo{fill:none;stroke:var(--sig);stroke-width:1.5;transform-box:fill-box;transform-origin:center;animation:halo 2.2s ease-out infinite}
+@keyframes halo{0%{transform:scale(.5);opacity:.85}100%{transform:scale(1.7);opacity:0}}
+.stamp{--stamp:rgba(238,245,250,.93);pointer-events:none}
+.stamp.o{--stamp:var(--sig)}
+.stamp .st-b{fill:none;stroke:var(--stamp);stroke-width:3.4}
+.stamp .st-b2{fill:none;stroke:var(--stamp);stroke-width:1.2}
+.stamp .st-t{font:800 32px var(--f-disp);letter-spacing:.08em;fill:var(--stamp)}
+.stamp .st-s{font:500 7.5px var(--f-mono);letter-spacing:.22em;fill:var(--stamp)}
+.stamp .st-ring{fill:none;stroke:var(--stamp);stroke-width:2;opacity:0}
+
+/* ---------- chrome: monogram, nav, rail ---------- */
+.chrome{position:fixed;top:10px;left:10px;right:10px;z-index:60;display:flex;justify-content:space-between;align-items:flex-start;pointer-events:none}
+.mono-stamp{pointer-events:auto;display:block;width:68px;height:68px;transform:rotate(-8deg)}
+.mono-stamp svg{width:100%;height:100%;display:block;overflow:visible}
+.mono-stamp .ms-bg{fill:var(--paper-lo)}
+.mono-stamp .ms-ln{fill:none;stroke:var(--ink);stroke-width:2.2}
+.mono-stamp .ms-ln.t{stroke-width:1}
+.mono-stamp .ms-txt{font:500 7.4px var(--f-mono);letter-spacing:.1em;fill:var(--ink);text-transform:uppercase}
+.mono-stamp .ms-kk{font:900 31px var(--f-disp);fill:var(--ink);letter-spacing:.02em}
+.mono-stamp .ms-dot{fill:var(--sig)}
+.nav{pointer-events:auto;display:flex;gap:6px;margin:22px 22px 0 0}
+.nav a{font:500 9px/1 var(--f-mono);letter-spacing:.2em;text-transform:uppercase;text-decoration:none;padding:8px 11px 8px;color:var(--ink);background:rgba(9,38,74,.72);border:1px solid var(--ink3);transition:border-color .2s,background .2s}
+.nav a:hover,.nav a:focus-visible{border-color:var(--ink);background:rgba(9,38,74,.95);outline:none}
+.nav a .k{color:var(--ink2);margin-right:6px}
+
+.rail{position:fixed;right:34px;top:50%;transform:translateY(-50%);z-index:60;height:min(48vh,440px);width:98px;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end}
+.rail-head{position:absolute;top:-30px;right:0;font:500 7.5px/1 var(--f-mono);letter-spacing:.22em;color:var(--ink2);white-space:nowrap;text-transform:uppercase}
+.rail-line{position:absolute;right:3px;top:0;bottom:0;width:1px;background:var(--ink3)}
+.rail-line::before{content:"";position:absolute;right:0;top:0;bottom:0;width:5px;background:repeating-linear-gradient(to bottom,var(--ink3) 0 1px,transparent 1px 11px)}
+.rail-prog{position:absolute;right:3px;top:0;bottom:0;width:1px;background:var(--sig);transform-origin:50% 0;transform:scaleY(0)}
+.rail a{position:relative;display:flex;align-items:center;gap:9px;text-decoration:none;color:var(--ink2);padding:3px 0;cursor:pointer}
+.rail .lab{font:500 7.5px/1.3 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;text-align:right;max-width:64px;opacity:.75;transition:opacity .3s,color .3s}
+.rail .n{font:500 8.5px/1 var(--f-mono);letter-spacing:.08em}
+.rail .sq{flex:0 0 7px;width:7px;height:7px;border:1px solid var(--ink2);background:var(--paper-lo);transition:background .25s,border-color .25s,transform .25s}
+.rail a.on{color:var(--ink)}
+.rail a.on .lab{opacity:1;font-weight:700;color:var(--ink)}
+.rail a.on .n{font-weight:700}
+.rail a.on .sq{background:var(--sig);border-color:var(--sig);transform:scale(1.25)}
+.rail a:hover .lab{opacity:1}
+
+/* ---------- cover ---------- */
+.cover{position:fixed;inset:0;z-index:40;will-change:transform;--nfs:min(16.1vw,28vh)}
+.cover .paper-bg,.cover .paper-fringe,.cover .shade{top:0;bottom:-40px}
+.cover .tear-shadow{top:auto;bottom:-96px;height:150px}
+.motion .cover .frame{visibility:hidden}
+.cover-eyebrow{position:absolute;left:62px;top:58px}
+.name{position:absolute;left:62px;top:96px;margin:0;font:900 var(--nfs)/.8 var(--f-disp);text-transform:uppercase;letter-spacing:.004em;color:var(--ink)}
+.nline{display:block;position:relative;width:max-content}
+.word{display:block;overflow:hidden;padding:.06em .03em;margin:-.06em -.03em}
+.word.free{overflow:visible}
+.ch{display:inline-block;will-change:transform}
+.guides i{position:absolute;left:-46px;right:-70px;height:0;border-top:1px solid var(--ink3);transform-origin:0 50%}
+.guides .g-cap{top:var(--cap,.05em)} .guides .g-base{top:var(--base,.75em)}
+.guides .g-base{border-top-color:var(--ink2)}
+.cap-dim{position:absolute;left:-36px;top:var(--cap,.05em);height:var(--caph,.7em);width:12px;border-left:1px solid var(--ink2);transform-origin:50% 100%}
+.cap-dim::before,.cap-dim::after{content:"";position:absolute;left:-5px;width:9px;height:1px;background:var(--ink2);transform:rotate(-45deg)}
+.cap-dim::before{top:0}.cap-dim::after{bottom:0}
+.cap-dim b{position:absolute;left:-20px;top:50%;transform:translate(-50%,-50%) rotate(-90deg);font:500 8px/1 var(--f-mono);letter-spacing:.2em;color:var(--ink2);white-space:nowrap}
+.dot-anchor{position:absolute;left:100%;top:var(--base,.75em);width:0;height:0}
+.dot-note{position:absolute;right:-1.3em;top:calc(var(--base,.75em) + 86px);font:400 30px/1 var(--f-hand);white-space:nowrap;letter-spacing:0;text-transform:none;color:var(--ink)}
+.dot-note::before{content:"";position:absolute;right:3px;bottom:100%;width:1px;height:58px;background:linear-gradient(var(--ink2),var(--ink3));transform:translateY(-6px)}
+html:not(.motion) .dot-anchor::after{content:"";position:absolute;left:.12em;top:-15px;width:14px;height:14px;border-radius:50%;background:var(--sig)}
+.cover-sub{position:absolute;left:62px;top:calc(96px + var(--nfs) * 1.6 + 30px);display:flex;gap:30px;align-items:baseline;flex-wrap:wrap;margin:0}
+.role{font:500 12.5px/1.2 var(--f-mono);letter-spacing:.24em;text-transform:uppercase;margin:0;padding:7px 11px 6px;border:1px solid var(--ink2)}
+.tagline{font:400 38px/1 var(--f-hand);margin:0;color:var(--ink)}
+.scroll-cue{position:absolute;left:50%;bottom:20px;transform:translateX(-50%);font:500 8.5px/1 var(--f-mono);letter-spacing:.26em;text-transform:uppercase;color:var(--ink2);display:flex;flex-direction:column;align-items:center;gap:10px}
+.scroll-cue i{display:block;width:1px;height:34px;background:linear-gradient(var(--ink2),transparent);animation:cue 1.8s ease-in-out infinite;transform-origin:50% 0}
+@keyframes cue{0%{transform:scaleY(0)}55%{transform:scaleY(1)}100%{transform:scaleY(1) translateY(12px);opacity:0}}
+.revs{position:absolute;right:104px;bottom:0;border-collapse:collapse;font:500 8.5px/1.3 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;background:rgba(7,32,64,.42)}
+.revs caption{caption-side:top;text-align:left;padding:0 0 7px;font-size:7.5px;letter-spacing:.24em;color:var(--ink2)}
+.revs th,.revs td{border:.75px solid var(--ink3);padding:6px 10px;text-align:left;white-space:nowrap}
+.revs th{color:var(--ink2);font-weight:500;font-size:7px;letter-spacing:.2em}
+.revs td:first-child{font:800 15px/1 var(--f-disp);text-align:center}
+.revs tr:last-child td{color:#fff}
+
+#herodot{position:fixed;left:0;top:0;width:0;height:0;z-index:45;pointer-events:none}
+#herodot i{position:absolute;border-radius:50%}
+#herodot .c{width:14px;height:14px;margin:-7px 0 0 -7px;background:var(--sig)}
+#herodot .h{width:32px;height:32px;margin:-16px 0 0 -16px;border:1.5px solid var(--sig);animation:halo 2.2s ease-out infinite}
+html:not(.motion) #herodot{display:none}
+
+/* ---------- sheet 02 fact cards ---------- */
+.fcards{position:relative;margin-top:20px;height:330px;overflow:hidden;-webkit-mask-image:linear-gradient(#000 0,#000 72%,transparent 100%);mask-image:linear-gradient(#000 0,#000 72%,transparent 100%)}
+.fc-track{will-change:transform}
+.fc{height:150px;padding:2px 0 0 20px;border-left:1.5px solid var(--ink3);position:relative}
+.fc + .fc{margin-top:0}
+.fc::before{content:"";position:absolute;left:-5px;top:4px;width:8px;height:8px;background:var(--paper);border:1px solid var(--ink2)}
+.fc.on::before{background:var(--sig);border-color:var(--sig)}
+.fc-n{display:block;font:500 8.5px/1 var(--f-mono);letter-spacing:.22em;text-transform:uppercase;color:var(--ink2);margin-bottom:10px}
+.fc h4{margin:0 0 8px;font:800 34px/.95 var(--f-disp);text-transform:uppercase;letter-spacing:.015em}
+.fc p{margin:0;font-size:14.5px;line-height:1.45;color:var(--ink);max-width:34ch}
+
+/* ---------- sheet 03 vellum ---------- */
+.vellum{position:absolute;inset:-18px;z-index:3;background-color:rgba(226,238,248,.13);background-image:var(--grain);background-size:260px 260px;-webkit-backdrop-filter:blur(.5px) brightness(1.1) saturate(.85);backdrop-filter:blur(.5px) brightness(1.1) saturate(.85);border:1px solid rgba(235,245,252,.3);box-shadow:0 34px 60px -24px rgba(0,8,22,.6), inset 0 0 40px rgba(255,255,255,.04)}
+.vellum > svg{position:absolute;left:18px;top:18px;width:calc(100% - 36px);height:calc(100% - 36px);overflow:visible}
+.vellum .tape{position:absolute;width:104px;height:26px;background:rgba(238,232,210,.32);box-shadow:0 1px 0 rgba(255,255,255,.12) inset}
+.vellum .tape.a{left:-34px;top:6px;transform:rotate(-38deg)}
+.vellum .tape.b{right:-34px;bottom:10px;transform:rotate(-38deg)}
+.vellum .vtag{position:absolute;right:16px;top:-1px;transform:translateY(-100%);font:500 8px/1 var(--f-mono);letter-spacing:.22em;text-transform:uppercase;padding:6px 8px;background:rgba(226,238,248,.16);border:1px solid rgba(235,245,252,.3);border-bottom:0;color:var(--ink)}
+
+/* ---------- sheet 05 ---------- */
+.sclose .drawing{bottom:auto;height:min(40vh,372px)}
+.cta-block{position:absolute;left:calc(var(--col) + 76px);right:118px;top:calc(184px + min(40vh,372px) + 22px)}
+.cta-row{display:flex;gap:16px;align-items:stretch;flex-wrap:wrap;margin:16px 0 18px}
+.btn-mail{position:relative;display:inline-flex;align-items:center;gap:16px;padding:18px 30px 15px 22px;background:var(--sig);color:#0a1a33;text-decoration:none;font:800 44px/.9 var(--f-disp);text-transform:uppercase;letter-spacing:.04em;clip-path:polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,0 100%);transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+.btn-mail:hover,.btn-mail:focus-visible{transform:translateY(-3px);outline:none}
+.btn-mail .hole{flex:0 0 16px;width:16px;height:16px;border-radius:50%;background:var(--paper-deep);box-shadow:inset 0 0 0 3px #b44a10}
+.btn-mail .arr{font:500 22px/1 var(--f-mono);transition:transform .25s}
+.btn-mail:hover .arr{transform:translateX(5px)}
+.btn-cv{display:inline-flex;align-items:center;gap:12px;padding:16px 24px 13px;border:1.5px solid var(--ink);text-decoration:none;font:800 34px/.9 var(--f-disp);text-transform:uppercase;letter-spacing:.04em;transition:background .25s,color .25s}
+.btn-cv small{font:500 8.5px/1 var(--f-mono);letter-spacing:.2em;color:var(--ink2)}
+.btn-cv:hover,.btn-cv:focus-visible{background:var(--ink);color:var(--paper-deep);outline:none}
+.btn-cv:hover small{color:var(--paper)}
+.links{display:flex;gap:26px;flex-wrap:wrap}
+.links a{font:500 10px/1.4 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--ink);border-bottom:1px solid var(--ink3);padding-bottom:3px}
+.links a span{color:var(--ink2);text-transform:none;letter-spacing:.04em;margin-left:8px}
+.links a:hover{border-color:var(--ink)}
+.final-stamp{position:absolute;right:140px;top:calc(184px + min(40vh,372px) + 12px);width:280px;overflow:visible;pointer-events:none}
+
+/* ---------- motion-only initial states ---------- */
+.motion .dwg .ink,.motion .vellum .ink{stroke-dasharray:1 3;stroke-dashoffset:1.02}
+.motion .dwg .fade,.motion .vellum .fade{opacity:0}
+.motion .dwg .ink.solid{fill-opacity:0}
+.motion .pop{opacity:0}
+.motion .stamp .st-in{opacity:0}
+.motion .trail{stroke-dasharray:1 3;stroke-dashoffset:1.02}
+.motion .gnotes li{opacity:.2}
+.motion .att{opacity:0}
+.motion .sclose .btn-mail .hole{transform:scale(0)}
+html:not(.motion) .bk,html:not(.motion) .ghost,html:not(.motion) .skip,html:not(.motion) .att:not(.att4),html:not(.motion) .tmark{display:none}
+html:not(.motion) .cover{position:relative;height:100vh;min-height:760px}
+html:not(.motion) .sheet{height:auto!important;margin-top:0!important}
+html:not(.motion) .stage{position:relative;height:100vh;min-height:860px}
+html:not(.motion) .fcards{height:auto;-webkit-mask-image:none;mask-image:none}
+html:not(.motion) .fc{height:auto;padding-bottom:12px}
+html:not(.motion) .fc h4{font-size:26px}
+html:not(.motion) .fc p{display:none}
+html:not(.motion) .fc::before{background:var(--sig);border-color:var(--sig)}
+html:not(.motion) .scroll-cue i{animation:none}
+
+/* ---------- mobile ---------- */
+@media (max-width:760px){
+  :root{--inset:10px;--col:auto}
+  .zones,.frame::after,.revs,.scroll-cue,.nav,.cover-eyebrow{display:none}
+  .mono-stamp{width:50px;height:50px}
+  .sheet-head{left:14px;top:50px;right:34px}
+  .eyebrow{font-size:8px;letter-spacing:.14em}
+  .eyebrow::before{flex-basis:14px}
+  .sheet-title{font-size:12.6vw;margin-top:8px}
+  .drawing{left:4px;right:26px;top:128px;bottom:auto;height:40vh}
+  .notes{left:14px;right:32px;width:auto;top:calc(128px + 40vh + 4px);bottom:58px;overflow:hidden}
+  .spec{font-size:12.5px} .spec th{width:66px;font-size:7px} .spec td{padding:4px 0 5px} .spec tr:first-child td{font-size:14px}
+  .spec caption{display:none}
+  .gnotes{margin-top:10px} .gnotes h3{display:none}
+  .gnotes li{font-size:12.5px;margin-bottom:4px;padding-left:24px}
+  .gnotes li:nth-child(n+4){display:none}
+  .titleblock{right:0;width:auto;grid-template-columns:84px 1fr}
+  .c-recon .hand{display:none}
+  .titleblock .c:not(.ttl):not(.sh){display:none}
+  .titleblock .ttl{grid-column:auto;border-bottom:0}
+  .titleblock .sh{border-bottom:0}
+  .titleblock .ttl b{font-size:20px}
+  .rail{right:5px;width:14px;height:40vh}
+  .rail .lab,.rail .n,.rail-head{display:none}
+  .rail .sq{width:6px;height:6px;flex-basis:6px}
+  .lbl{font-size:15px} .hand{font-size:40px} .st-name{font-size:16px}
+  .cover{--nfs:18.4vw}
+  .name{left:22px;top:22vh}
+  .guides i{left:-12px;right:-12px}
+  .cap-dim{display:none}
+  .dot-note{font-size:22px;left:auto;right:0;top:calc(var(--base) + 26px)}
+  .dot-note::before{display:none}
+  .cover-sub{left:22px;right:22px;top:calc(22vh + var(--nfs) * 1.6 + 64px);flex-direction:column;gap:12px}
+  .role{font-size:10px}
+  .tagline{font-size:28px}
+  .fcards{height:150px;margin-top:10px}
+  .fc{height:120px} .fc h4{font-size:26px} .fc p{font-size:12.5px}
+  .sclose .drawing{display:none}
+  .sclose .notes{top:128px;bottom:auto}
+  .cta-block{left:14px;right:32px;top:auto;bottom:60px}
+  .btn-mail{font-size:32px;padding:14px 20px 12px 16px}
+  .btn-cv{font-size:26px;padding:12px 18px 10px}
+  .links{gap:12px;flex-direction:column}
+  .final-stamp{right:28px;bottom:auto;top:42vh;width:220px}
+  .vellum{inset:-8px}
+  .vellum > svg{left:8px;top:8px;width:calc(100% - 16px);height:calc(100% - 16px)}
+}
+@media (max-height:760px) and (min-width:761px){
+  .sheet-title{font-size:clamp(48px,6.2vw,96px)}
+  .gnotes li{font-size:13.5px;margin-bottom:6px}
+}
+</style>
+
+<style id="pal-css">
+@property --sig  { syntax:'<color>'; inherits:true; initial-value:#ff5a1f; }
+@property --pop2 { syntax:'<color>'; inherits:true; initial-value:#ffd60a; }
+:root{
+  /* ONE fixed dark ground for every sheet — no colour lives in the background */
+  --paper:#0b0e14; --paper-lo:#090c11; --paper-deep:#06080c;
+  --ink:#e9edf3; --ink2:rgba(233,237,243,.60); --ink3:rgba(233,237,243,.26); --ink4:rgba(233,237,243,.10);
+  --grid:rgba(233,237,243,.028); --grid2:rgba(233,237,243,.055);
+  --blotch:linear-gradient(transparent,transparent);
+  --sig:#ff5a1f; --pop2:#ffd60a;
+}
+.paper-fringe{ background:#1a1f29 !important; opacity:1 !important }
+.shade,.shade-cover{ background:#000 !important }
+.nav a{ background:rgba(11,14,20,.85) !important }
+.nav a:hover{ border-color:var(--sig) !important }
+.mono-stamp .ms-bg{ fill:var(--paper-lo) }
+.titleblock, .revs{ background:rgba(11,14,20,.92) !important }
+
+/* 1 · ARCHITECTURE: current flows along every drawn structural line */
+.flow{ fill:none !important; stroke:var(--sig); stroke-width:2.4; stroke-linecap:round; stroke-dasharray:5 95; stroke-dashoffset:100;
+  opacity:0; transition:opacity .6s; pointer-events:none; animation:flowRun var(--fd,2.6s) linear infinite; animation-delay:var(--fdl,0s) }
+.flow.alt{ stroke:var(--pop2) }
+.flow.live{ opacity:.95 }
+@keyframes flowRun{ to{ stroke-dashoffset:0 } }
+
+/* 2 · METRICS: numbers carry a moving two-colour sheen */
+.fc h4, .lbl-b{ background:linear-gradient(100deg, var(--ink) 0%, var(--ink) 30%, var(--sig) 45%, var(--pop2) 55%, var(--ink) 70%, var(--ink) 100%);
+  background-size:300% 100%; -webkit-background-clip:text; background-clip:text; color:transparent; animation:sheen 4.5s linear infinite }
+.mttr-v, .dimtxt, .lbl-b{ fill:url(#popSheen) }
+@keyframes sheen{ from{ background-position:100% 0 } to{ background-position:-200% 0 } }
+.fc.on{ border-left-color:var(--sig) }
+.fc.on .fc-n{ color:var(--sig) }
+
+/* 3 · TEXT: key phrases light up as each note is reached */
+.gnotes b{ color:var(--ink) !important; background:linear-gradient(90deg, var(--sig), var(--pop2)) no-repeat 0 100% / 0% 2px; transition:background-size .9s cubic-bezier(.2,.7,.2,1) .15s, color .6s }
+.gnotes li.lit b{ background-size:100% 2px; color:#fff !important }
+.gnotes li.lit::before{ color:var(--sig) !important }
+.spec tr:first-child td{ background:linear-gradient(90deg, var(--sig), var(--pop2)) no-repeat 0 100% / 0% 2px; transition:background-size 1.1s cubic-bezier(.2,.7,.2,1) .3s }
+.sheet.is-on .spec tr:first-child td{ background-size:min(100%, 18ch) 2px }
+.eyebrow{ transition:color .6s } .sheet.is-on .eyebrow{ color:var(--ink) }
+
+/* 4 · TITLES: one colour sweep passes through the stencil letters on arrival */
+.sheet-title{ background:linear-gradient(100deg, var(--ink) 0 38%, var(--sig) 46%, var(--pop2) 54%, var(--ink) 62% 100%);
+  background-size:300% 100%; background-position:0% 0; -webkit-background-clip:text; background-clip:text; color:transparent }
+.sheet.sweep .sheet-title{ animation:titleSweep 1.8s cubic-bezier(.3,.6,.2,1) 1 both }
+@keyframes titleSweep{ from{ background-position:100% 0 } to{ background-position:0% 0 } }
+
+/* 5 · NODES: diagram hot spots breathe between the two pops */
+.hot, .tmark, .dot .core{ animation:nodeBreath 3.2s ease-in-out infinite }
+@keyframes nodeBreath{ 0%,100%{ fill:var(--sig) } 50%{ fill:var(--pop2) } }
+.stamp.o{ animation:stampBreath 3.2s ease-in-out infinite }
+@keyframes stampBreath{ 0%,100%{ --stamp:var(--sig) } 50%{ --stamp:var(--pop2) } }
+
+@media (prefers-reduced-motion: reduce){ .flow{ display:none } .fc h4,.lbl-b,.hot,.tmark,.dot .core,.stamp.o,.sheet .sheet-title{ animation:none !important } }
+
+
+/* ---- v3 additions ---- */
+.notes-tight .gnotes{margin-top:14px}
+.notes-tight .gnotes h3{display:none}
+.notes-tight .gnotes li{font-size:13.5px;line-height:1.42;margin-bottom:7px}
+.notes-tight .spec tr:first-child td{font-size:16px}
+.vst{font:500 8px var(--f-mono);letter-spacing:.1em;fill:var(--ink2);opacity:0}
+.vst.v-idle{opacity:1}
+.vst.v-per{fill:var(--sig)} .vst.v-den,.vst.v-done{fill:var(--ink)}
+.img2{fill:url(#hatchO);opacity:0}
+.tok{fill:var(--sig);opacity:0}
+.lg-p{fill:var(--sig)}
+.tagbox{fill:var(--paper);stroke:var(--ink2);stroke-width:1}
+.hold .h2{fill:var(--sig)} .hold .h3{opacity:0}
+.code{font:500 12px var(--f-mono);fill:var(--ink);letter-spacing:.02em;white-space:pre}
+.dwg .ink.dr{stroke:var(--ink3);stroke-width:.9}
+.dwg .ink.bus{stroke:var(--ink3);stroke-width:1.2}
+.illus{font:500 8px var(--f-mono);letter-spacing:.18em;fill:var(--ink2);text-transform:uppercase}
+</style>
+</head>
+<body>
+
+<!-- shared defs -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#e8f2f9" stroke-width="1" stroke-opacity=".5"/></pattern>
+    <pattern id="hatchFine" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="5" stroke="#e8f2f9" stroke-width=".8" stroke-opacity=".38"/></pattern>
+    <pattern id="hatchO" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#ff6a1a" stroke-width="1.2" stroke-opacity=".55"/></pattern>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0 1.5 L10 5 L0 8.5 z" fill="#e8f2f9"/></marker>
+    <marker id="tk" viewBox="-5 -5 10 10" markerWidth="11" markerHeight="11" markerUnits="userSpaceOnUse" orient="auto"><path d="M-4 4 L4 -4" stroke="#e8f2f9" stroke-width="1.4"/></marker>
+    <filter id="rough" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2"/></filter>
+    <filter id="stampTex" x="-10%" y="-20%" width="120%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency=".75" numOctaves="2" seed="11" result="t"/>
+      <feColorMatrix in="t" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.8 2.25" result="m"/>
+      <feComposite in="SourceGraphic" in2="m" operator="in" result="c"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="2" result="w"/>
+      <feDisplacementMap in="c" in2="w" scale="3.5"/>
+    </filter>
+  </defs>
+</svg>
+
+<header class="chrome">
+  <a class="mono-stamp" href="#top" aria-label="Kushal Krishnappa — back to cover" data-go="0">
+    <svg viewBox="0 0 100 100" aria-hidden="true">
+      <defs><path id="mcirc" d="M50 50 m-37 0 a37 37 0 1 1 74 0 a37 37 0 1 1 -74 0"/></defs>
+      <circle class="ms-bg" cx="50" cy="50" r="49"/>
+      <g filter="url(#rough)">
+        <circle class="ms-ln" cx="50" cy="50" r="46.5"/>
+        <circle class="ms-ln t" cx="50" cy="50" r="29"/>
+        <g class="ms-ring"><text class="ms-txt"><textPath href="#mcirc" textLength="230" lengthAdjust="spacing">K. Krishnappa · Field manual · Rev D ·</textPath></text></g>
+        <text class="ms-kk" x="50" y="61" text-anchor="middle">KK</text>
+      </g>
+      <circle class="ms-dot" cx="50" cy="13" r="2.6"/>
+    </svg>
+  </a>
+  <nav class="nav" aria-label="Primary">
+    <a href="#s1" data-go="1"><span class="k">01</span>Work</a>
+    <a href="#s6" data-go="6"><span class="k">06</span>Contact</a>
+    <a href="#resume" title="Résumé (placeholder link)">Résumé</a>
+  </nav>
+</header>
+
+<nav class="rail" aria-label="Sheet index">
+  <div class="rail-head">Sheet index</div>
+  <div class="rail-line"></div><div class="rail-prog"></div>
+  <a data-go="0" class="on"><span class="lab">Cover</span><span class="n">00</span><span class="sq"></span></a>
+  <a data-go="1"><span class="lab">Ingestion</span><span class="n">01</span><span class="sq"></span></a>
+  <a data-go="2"><span class="lab">Fleet recon&shy;ciliation</span><span class="n">02</span><span class="sq"></span></a>
+  <a data-go="3"><span class="lab">Rollout safety</span><span class="n">03</span><span class="sq"></span></a>
+  <a data-go="4"><span class="lab">Tenant isolation</span><span class="n">04</span><span class="sq"></span></a>
+  <a data-go="5"><span class="lab">Durable workflows</span><span class="n">05</span><span class="sq"></span></a>
+  <a data-go="6"><span class="lab">Issued for hire</span><span class="n">06</span><span class="sq"></span></a>
+</nav>
+
+<!-- ================= COVER ================= -->
+<div class="cover" id="cover">
+  <div class="tear-shadow"><i></i></div>
+  <div class="paper-fringe"></div>
+  <div class="paper-bg" style="--bp:30% 10%"></div>
+  <div class="frame">
+    <div class="zones"></div>
+    <p class="eyebrow cover-eyebrow">Field manual · Sheet 00 / 06 · Cover</p>
+    <h1 class="name" id="top" aria-label="Kushal Krishnappa">
+      <span class="nline" aria-hidden="true"><span class="guides"><i class="g-cap"></i><i class="g-base"></i></span><span class="cap-dim"><b>Cap ht.</b></span><span class="word">Kushal</span></span>
+      <span class="nline" aria-hidden="true"><span class="guides"><i class="g-cap"></i><i class="g-base"></i></span><span class="word">Krishnappa</span><span class="dot-anchor"></span><span class="dot-note">this is a request. follow it.</span></span>
+    </h1>
+    <div class="cover-sub">
+      <p class="role">Backend &amp; platform engineer</p>
+      <p class="tagline">building invisible infrastructure for visible impact</p>
+    </div>
+    <div class="scroll-cue" aria-hidden="true">Scroll to unfold<i></i></div>
+    <table class="revs">
+      <caption>Revisions</caption>
+      <tr><th>Rev</th><th>Description</th><th>Date</th></tr>
+      <tr><td>A</td><td>Data platform — Mercedes-Benz R&amp;D India</td><td>2022</td></tr>
+      <tr><td>B</td><td>Fleet reliability — Pure Storage / Everpure</td><td>2023–24</td></tr>
+      <tr><td>C</td><td>Rollout safety — Pure Storage / Everpure</td><td>2023–24</td></tr>
+      <tr><td>D</td><td>Tenant isolation — RoonCyber</td><td>2026</td></tr>
+    </table>
+    <div class="titleblock">
+      <div class="c proj"><span>Project</span><b>K. Krishnappa · Field manual</b></div>
+      <div class="c sh"><span>Sheet</span><b>00<small>/06</small></b></div>
+      <div class="c ttl"><span>Title</span><b>Cover sheet</b></div>
+      <div class="c rev"><span>Rev</span><b>D</b></div>
+      <div class="c"><span>Drawn</span><b>K. Krishnappa</b></div>
+      <div class="c"><span>Date</span><b>Nov 2026</b></div>
+      <div class="c"><span>Scale</span><b>1 : 1</b></div>
+    </div>
+  </div>
+</div>
+<div id="herodot" aria-hidden="true"><i class="h"></i><i class="c"></i></div>
+
+<main>
+<!-- ================= SHEET 01 ================= -->
+<section class="sheet" id="s1" style="--h:440vh;z-index:1" aria-labelledby="t1" data-edge="torn">
+  <div class="stage">
+    <div class="tear-shadow"><i></i></div><div class="paper-fringe"></div><div class="paper-bg" style="--bp:70% 30%"></div>
+    <div class="frame">
+      <div class="zones"></div>
+      <header class="sheet-head"><p class="eyebrow">Sheet 01 / 06 · Mercedes-Benz R&amp;D India · 2022</p><h2 class="sheet-title" id="t1">Ingestion</h2></header>
+      <aside class="notes">
+        <table class="spec"><caption>Schedule A — Role</caption>
+          <tr><th>Employer</th><td>Mercedes-Benz R&amp;D India</td></tr>
+          <tr><th>Role</th><td>Software Engineer</td></tr>
+          <tr><th>Period</th><td>Mar – Dec 2022</td></tr>
+          <tr><th>Stack</th><td>Azure Event Hubs · PySpark · Delta Lake</td></tr>
+        </table>
+        <div class="gnotes"><h3>General notes</h3><ol>
+          <li>Pitched a <b>central data warehouse</b>, then built it.</li>
+          <li>Multi-source ingestion into <b>Azure Event Hubs</b>.</li>
+          <li><b>PySpark / Delta Lake</b> ETL over <b>90 TB+</b> of OTA vehicle telemetry.</li>
+        </ol></div>
+      </aside>
+      <div class="drawing">
+        <svg class="dwg" viewBox="0 0 900 620" role="img" aria-label="Schematic: telemetry from a vehicle and other sources converges into Azure Event Hubs, runs through PySpark ETL, and lands in a Delta Lake warehouse holding 90 TB+.">
+          <text class="lbl fade" x="20" y="22">DWG 01 · MULTI-SOURCE INGESTION · NTS</text>
+          <g class="p1" transform="translate(0 90)">
+            <path class="ink b" d="M28 396 L28 368 C28 356 40 350 58 347 L112 340 C138 314 168 298 214 294 L262 294 C292 296 314 316 336 338 L352 344 C362 348 366 358 366 372 L366 396 L330 396 A34 34 0 0 0 262 396 L132 396 A34 34 0 0 0 64 396 Z"/>
+            <path class="ink" d="M124 340 C146 318 170 306 208 303 L208 340 Z"/>
+            <path class="ink" d="M218 303 L258 303 C282 305 300 320 318 339 L218 340 Z"/>
+            <path class="ink t" d="M213 340 L213 392 M36 372 L360 372 M300 352 L316 352"/>
+            <circle class="ink b" cx="98" cy="396" r="26"/><circle class="ink" cx="98" cy="396" r="9"/>
+            <circle class="ink b" cx="296" cy="396" r="26"/><circle class="ink" cx="296" cy="396" r="9"/>
+            <path class="ctr fade" d="M62 396 L134 396 M98 360 L98 432 M260 396 L332 396 M296 360 L296 432"/>
+            <path class="ink" d="M214 294 L214 266"/><circle class="ink" cx="214" cy="262" r="4"/>
+            <circle class="ink" cx="40" cy="376" r="3.5"/><circle class="ink" cx="356" cy="360" r="3.5"/>
+            <path class="ink t" d="M8 424 L384 424"/>
+            <rect class="fade" x="8" y="424" width="376" height="9" fill="url(#hatch)"/>
+            <text class="lbl fade" x="8" y="454">ELEVATION 1 · SRC 01 · VEHICLE</text>
+            <text class="lbl fade" x="224" y="268">OTA</text>
+          </g>
+          <g class="p2">
+            <rect class="ink" x="40" y="60" width="130" height="40"/><text class="lbl fade" x="54" y="84">SRC 02</text><path class="ink t" d="M124 70 L158 70 M124 80 L158 80 M124 90 L148 90"/>
+            <rect class="ink" x="40" y="130" width="130" height="40"/><text class="lbl fade" x="54" y="154">SRC 03</text><path class="ink t" d="M124 140 L158 140 M124 150 L158 150 M124 160 L148 160"/>
+            <path class="ink" d="M170 80 C300 80 380 166 440 180"/>
+            <path class="ink" d="M170 150 C300 150 360 186 440 190"/>
+            <path class="ink" d="M214 352 C250 280 360 214 440 200"/>
+            <path class="ink" d="M356 450 C410 430 404 262 440 222"/>
+            <path class="ink" d="M40 466 C18 400 34 330 120 322 C260 310 380 262 440 236"/>
+          </g>
+          <g class="p3">
+            <rect class="ink b solid" x="440" y="165" width="100" height="95" rx="6"/>
+            <path class="ink t" d="M452 184 L528 184 M452 203 L528 203 M452 222 L528 222 M452 241 L528 241"/>
+            <text class="lbl fade" x="440" y="154">AZURE EVENT HUBS</text>
+          </g>
+          <g class="p4">
+            <path class="ink" d="M540 206 L600 206 M540 220 L600 220"/>
+            <path class="ink t" d="M550 198 L550 228 M590 198 L590 228"/>
+            <rect class="ink t" x="616" y="164" width="120" height="66"/>
+            <rect class="ink t" x="608" y="172" width="120" height="66"/>
+            <rect class="ink b solid" x="600" y="180" width="120" height="66"/>
+            <path class="ink" d="M618 213 L642 213 M630 201 L630 225 M622 205 L638 221 M638 205 L622 221"/>
+            <text class="lbl fade" x="652" y="209">PYSPARK</text><text class="lbl fade" x="652" y="226">ETL</text>
+            <path class="ink" d="M720 206 L748 206 L748 338 M720 220 L734 220 L734 331"/>
+          </g>
+          <g class="p5">
+            <path class="fade" fill="url(#hatch)" fill-rule="evenodd" d="M570 380 L840 380 L840 560 L570 560 Z M584 394 L826 394 L826 548 L584 548 Z"/>
+            <rect id="lvl" x="586" y="396" width="238" height="150" fill="url(#hatchFine)"/>
+            <path class="ink b" d="M570 380 L840 380 L840 560 L570 560 Z"/>
+            <path class="ink t" d="M584 394 L826 394 L826 548 L584 548 Z"/>
+            <path class="ink b" d="M570 380 L705 318 L840 380"/>
+            <path class="ink t" d="M584 380 L705 332 L826 380"/>
+            <path class="ink t" d="M584 446 L826 446 M584 498 L826 498"/>
+            <text class="lbl fade" x="705" y="372" text-anchor="middle">DELTA LAKE</text>
+            <text class="lbl fade" x="570" y="582">SECTION A–A · WAREHOUSE</text>
+            <path class="ink" d="M727 590 L755 590 L755 604 L741 616 L727 604 Z"/>
+            <text class="lbl fade" x="764" y="610">TO SHT 02</text>
+          </g>
+          <g class="dim1">
+            <path class="dimln" d="M846 394 L872 394 M846 548 L872 548"/>
+            <path class="dimln" d="M862 394 L862 548" marker-start="url(#tk)" marker-end="url(#tk)"/>
+            <text class="dimtxt" transform="translate(884 471) rotate(-90)" text-anchor="middle">90 TB+</text>
+          </g>
+          <g class="c1"><path class="ink t" d="M214 346 L190 262 L30 262"/><text class="hand pop" x="30" y="252">OTA telemetry, straight off the car</text></g>
+          <g class="c2"><path class="ink t" d="M512 165 L540 120 L560 120"/><text class="hand pop" x="566" y="126">many sources, one front door</text></g>
+          <g class="c3"><path class="ink t" d="M566 470 L522 500"/><text class="hand pop" x="388" y="524">pitched it,</text><text class="hand pop" x="402" y="552">then built it.</text></g>
+          <g class="stamp st1" transform="translate(470 318) rotate(-7)"><g class="st-in"><g filter="url(#stampTex)">
+            <rect class="st-b" x="-100" y="-34" width="200" height="68" rx="6"/><rect class="st-b2" x="-92" y="-26" width="184" height="52" rx="3"/>
+            <text class="st-t" x="0" y="7" text-anchor="middle">APPROVED</text><text class="st-s" x="0" y="20" text-anchor="middle">CENTRAL WAREHOUSE · 2022</text>
+          </g></g><rect class="st-ring" x="-100" y="-34" width="200" height="68" rx="6"/></g>
+          <path class="route" id="r1" d="M214 352 C250 280 360 214 440 200 L540 213 L741 213 L741 470 L741 592"/>
+          <g class="dot"><circle class="halo" r="14"/><circle class="core" r="6.5"/></g>
+        </svg>
+      </div>
+      <div class="titleblock">
+        <div class="c proj"><span>Project</span><b>K. Krishnappa · Field manual</b></div>
+        <div class="c sh"><span>Sheet</span><b>01<small>/06</small></b></div>
+        <div class="c ttl"><span>Title</span><b>Ingestion</b></div>
+        <div class="c rev"><span>Rev</span><b>A</b></div>
+        <div class="c"><span>Drawn</span><b>K. Krishnappa</b></div>
+        <div class="c"><span>Date</span><b>Mar–Dec 2022</b></div>
+        <div class="c"><span>Scale</span><b>1 : 90 TB</b></div>
+      </div>
+    </div>
+    <div class="shade-cover"></div>
+    <div class="shade"></div>
+  </div>
+</section>
+
+<!-- ================= SHEET 02 ================= -->
+<section class="sheet" id="s2" style="--h:400vh;z-index:2" aria-labelledby="t2" data-edge="torn">
+  <div class="stage">
+    <div class="tear-shadow"><i></i></div><div class="paper-fringe"></div><div class="paper-bg" style="--bp:20% 70%"></div>
+    <div class="frame">
+      <div class="zones"></div>
+      <header class="sheet-head"><p class="eyebrow">Sheet 02 / 06 · Pure Storage / Everpure · 2023–24</p><h2 class="sheet-title" id="t2">Fleet reconciliation</h2></header>
+      <aside class="notes">
+        <table class="spec"><caption>Schedule B — Role</caption>
+          <tr><th>Employer</th><td>Pure Storage / Everpure</td></tr>
+          <tr><th>Role</th><td>Member of Technical Staff 2</td></tr>
+          <tr><th>Period</th><td>Jan 2023 – Dec 2024</td></tr>
+          <tr><th>Stack</th><td>Temporal · OpenStack</td></tr>
+        </table>
+        <div class="fcards"><div class="fc-track">
+          <article class="fc on"><span class="fc-n">Fact 01 · The fleet</span><h4>2,000 testbeds<br>9,000+ VMs</h4><p>One OpenStack fleet to keep healthy.</p></article>
+          <article class="fc"><span class="fc-n">Fact 02 · The system</span><h4>Event-driven<br>reconciliation</h4><p>Reconciliation and rollout-safety services, built on Temporal.</p></article>
+          <article class="fc"><span class="fc-n">Fact 03 · The result</span><h4>MTTR<br>5 h → 10 min</h4><p>Mean time to recovery across the fleet, from five hours to ten minutes.</p></article>
+        </div></div>
+      </aside>
+      <div class="drawing">
+        <svg class="dwg" viewBox="0 0 900 620" role="img" aria-label="Exploded axonometric of a 2,000-testbed, 9,000+-VM fleet; a Temporal reconciler visits each flagged node and redraws it. MTTR shrinks from 5 hours to 10 minutes.">
+          <text class="lbl fade" x="80" y="22">DWG 02 · FLEET · EXPLODED AXONOMETRIC · NTS</text>
+          <g class="from"><path class="ink" d="M14 50 L42 50 L54 62 L42 74 L14 74 Z"/><text class="lbl fade" x="14" y="94">FROM SHT 01</text></g>
+          <g id="fleet"></g>
+          <g id="asm"></g>
+          <g id="plate"></g>
+          <g class="recon">
+            <circle class="ink b solid" cx="450" cy="86" r="20"/>
+            <path class="ink" marker-end="url(#arr)" d="M437 74 A18 18 0 0 1 466 80"/>
+            <path class="ink" marker-end="url(#arr)" d="M463 99 A18 18 0 0 1 434 92"/>
+          </g>
+          <g class="c-recon"><path class="ink t" d="M566 100 L590 74 L600 74"/><text class="lbl k pop" x="604" y="70">TEMPORAL · RECONCILER</text><text class="hand pop" x="604" y="104">flag → reconcile → redraw</text></g>
+          <g class="c-fleet"><path class="ink t" d="M150 326 L112 300 L24 300"/><text class="lbl-b pop" x="24" y="226">FLEET</text><text class="lbl pop" x="24" y="248">2,000 TESTBEDS</text><text class="lbl pop" x="24" y="267">9,000+ VMs</text><text class="lbl pop" x="24" y="286">OPENSTACK</text></g>
+          <g id="bks"></g>
+          <g id="fxs"></g>
+          <g class="to"><path class="ink" d="M836 318 L864 318 L876 330 L864 342 L836 342 Z"/><text class="lbl fade" x="876" y="364" text-anchor="end">TO SHT 03</text></g>
+          <g class="mttr">
+            <path class="ghost-dim" d="M120 572 L720 572" marker-start="url(#tk)" marker-end="url(#tk)"/>
+            <text class="lbl" x="730" y="576">WAS 5 H</text>
+            <path class="dimln" d="M120 592 L120 616"/>
+            <path class="dimln" id="mt-line" d="M120 604 L720 604"/>
+            <path class="sig-ln" id="mt-end" d="M720 592 L720 616"/>
+            <text class="lbl" x="24" y="608">MTTR</text>
+            <text class="mttr-v" id="mt-v" x="734" y="615">5h 00m</text>
+          </g>
+          <g class="stamp st2" transform="translate(770 494) rotate(-6)"><g class="st-in"><g filter="url(#stampTex)">
+            <rect class="st-b" x="-112" y="-34" width="224" height="68" rx="6"/><rect class="st-b2" x="-104" y="-26" width="208" height="52" rx="3"/>
+            <text class="st-t" x="0" y="7" text-anchor="middle">RECONCILED</text><text class="st-s" x="0" y="20" text-anchor="middle">FLEET · 2023–24</text>
+          </g></g><rect class="st-ring" x="-112" y="-34" width="224" height="68" rx="6"/></g>
+          <g id="arcs"></g>
+          <path class="route" id="r2in" d="M54 62 C200 30 330 56 430 84"/>
+          <g class="dot"><circle class="halo" r="14"/><circle class="core" r="6.5"/></g>
+        </svg>
+      </div>
+      <div class="titleblock">
+        <div class="c proj"><span>Project</span><b>K. Krishnappa · Field manual</b></div>
+        <div class="c sh"><span>Sheet</span><b>02<small>/06</small></b></div>
+        <div class="c ttl"><span>Title</span><b>Fleet reconciliation</b></div>
+        <div class="c rev"><span>Rev</span><b>B</b></div>
+        <div class="c"><span>Drawn</span><b>K. Krishnappa</b></div>
+        <div class="c"><span>Date</span><b>2023 – 2024</b></div>
+        <div class="c"><span>Scale</span><b style="letter-spacing:0">1:9,000 VMs</b></div>
+      </div>
+    </div>
+    <div class="shade"></div>
+  </div>
+</section>
+
+<!-- ================= SHEET 03 · ROLLOUT SAFETY ================= -->
+<section class="sheet" id="s3" style="--h:470vh;z-index:3" aria-labelledby="t3" data-edge="torn">
+  <div class="stage">
+    <div class="tear-shadow"><i></i></div><div class="paper-fringe"></div><div class="paper-bg" style="--bp:50% 40%"></div>
+    <div class="frame">
+      <div class="zones"></div>
+      <header class="sheet-head"><p class="eyebrow">Sheet 03 / 06 · Pure Storage / Everpure · 2023–24</p><h2 class="sheet-title" id="t3">Rollout safety</h2></header>
+      <aside class="notes notes-tight">
+        <table class="spec"><caption>Schedule C — Disruption manager</caption>
+          <tr><th>Employer</th><td>Pure Storage / Everpure</td></tr>
+          <tr><th>Role</th><td>Member of Technical Staff 2</td></tr>
+          <tr><th>Goal</th><td>Never disrupt a whole group at once</td></tr>
+        </table>
+        <div class="gnotes"><h3>General notes</h3><ol>
+          <li>Pure's internal <b>disruption-manager service</b>: the rollout-safety control point Dominator consults before a disruptive update.</li>
+          <li>Pushed to a whole group, a disruptive image restarts every VM at once: <b>test availability drops to zero</b>, and a bad image breaks tests.</li>
+          <li><b>Per-group concurrency budget</b>: a semaphore held in Consul. Only N machines in a group are disrupted at a time.</li>
+          <li><b>Test-aware gating</b>: a request waits until the tests running on that machine finish. <b>Canary</b> first, <b>fast revert</b>.</li>
+          <li><b>Pluggable</b> check / request / cancel interface, so other teams can write their own by implementing three methods.</li>
+          <li><b>~7× fewer DB reads</b> via a 100 s TTL Redis cache plus negotiated backoff.</li>
+        </ol></div>
+      </aside>
+      <div class="drawing">
+        <svg class="dwg" viewBox="0 0 900 620" role="img" aria-label="Elevation of one image group. Dominator consults the disruption manager before a disruptive update. A per-group budget (two, illustrative) lets machines through the gate a couple at a time, canary first, while the rest wait as requested and a machine with running tests holds.">
+          <text class="lbl fade" x="60" y="22">DWG 03 · ELEVATION — ONE IMAGE GROUP · NTS</text>
+          <g class="from"><path class="ink" d="M4 88 L30 88 L42 100 L30 112 L4 112 Z"/><text class="lbl fade" x="4" y="58">FROM SHT 02</text></g>
+          <g class="infra">
+            <path class="ink" d="M540 92 L598 92"/>
+            <path class="ink" d="M540 132 L770 132 L770 123"/>
+            <path class="rel fade" d="M813 90 L835 90"/>
+            <path class="ink" d="M420 152 L420 196"/>
+            <path class="ink" marker-end="url(#arr)" d="M220 100 L297 100"/>
+            <rect class="ink b solid" x="60" y="70" width="160" height="60" rx="4"/>
+            <rect class="ink b solid" x="300" y="56" width="240" height="96" rx="4"/>
+            <path class="ink solid" d="M598 66 L598 112 A42 10 0 0 0 682 112 L682 66"/><ellipse class="ink solid" cx="640" cy="66" rx="42" ry="10"/>
+            <path class="ink solid" d="M728 66 L728 112 A42 10 0 0 0 812 112 L812 66"/><ellipse class="ink solid" cx="770" cy="66" rx="42" ry="10"/>
+            <path class="ink t" d="M836 76 L836 106 A26 7 0 0 0 888 106 L888 76"/><ellipse class="ink t" cx="862" cy="76" rx="26" ry="7"/>
+            <text class="st-name fade" x="140" y="98" text-anchor="middle">DOMINATOR</text>
+            <text class="lbl fade" x="140" y="117" text-anchor="middle">IMAGE UPDATER</text>
+            <text class="lbl fade" x="258" y="90" text-anchor="middle" style="font-size:8px">ASKS</text>
+            <text class="st-name fade" x="420" y="90" text-anchor="middle">DISRUPTION MANAGER</text>
+            <text class="lbl fade" x="420" y="111" text-anchor="middle" style="font-size:8.2px;letter-spacing:.1em">ROLLOUT-SAFETY CONTROL POINT</text>
+            <text class="lbl fade" x="420" y="131" text-anchor="middle" style="font-size:8.5px">PURE · INTERNAL SERVICE</text>
+            <text class="st-name sm fade" x="640" y="97" text-anchor="middle">CONSUL</text>
+            <text class="st-name sm fade" x="770" y="97" text-anchor="middle">REDIS</text>
+            <text class="lbl fade" x="862" y="98" text-anchor="middle" style="font-size:8.5px">DB</text>
+            <text class="lbl fade" x="640" y="152" text-anchor="middle" style="font-size:8.5px">SEMAPHORE / GROUP</text>
+            <text class="lbl fade" x="770" y="152" text-anchor="middle" style="font-size:8.5px">TTL 100 S</text>
+          </g>
+          <g class="metric"><path class="ink t" d="M770 158 L770 176"/><text class="lbl-b pop" x="640" y="200">~7× FEWER DB READS</text><text class="lbl pop" x="640" y="220" style="font-size:8.5px">TTL CACHE + NEGOTIATED BACKOFF</text></g>
+          <g class="gauge">
+            <rect class="ink" x="352" y="196" width="136" height="60" rx="3"/>
+            <text class="lbl k fade" x="420" y="213" text-anchor="middle" style="font-size:9px">BUDGET 2 / GROUP</text>
+            <rect class="ink t" x="384" y="223" width="22" height="22"/><rect class="ink t" x="434" y="223" width="22" height="22"/>
+            <rect class="tok" x="387" y="226" width="16" height="16"/><rect class="tok" x="437" y="226" width="16" height="16"/>
+            <text class="lbl fade illus" x="496" y="250">N = 2 · illustrative</text>
+          </g>
+          <g class="c-n"><path class="ink t" d="M286 214 L350 224"/><text class="hand pop" x="60" y="198">N at a time,</text><text class="hand pop" x="60" y="226">never the whole group.</text></g>
+          <text class="lbl fade lanelbl" x="40" y="250" style="font-size:8.5px">QUEUE · IMAGE v1</text>
+          <text class="lbl fade lanelbl" x="806" y="250" text-anchor="end" style="font-size:8.5px">UPDATED · IMAGE v2</text>
+          <g class="gate">
+            <rect class="ink b solid" x="402" y="268" width="8" height="114"/>
+            <rect class="ink b solid" x="430" y="268" width="8" height="114"/>
+          </g>
+          <path class="ink t ground" d="M20 382 L880 382"/>
+          <rect class="fade groundf" x="20" y="382" width="860" height="9" fill="url(#hatch)"/>
+          <g id="vms"></g>
+          <g class="arms"><path class="ink" d="M420 326 L420 290 M420 326 L451 344 M420 326 L389 344"/><circle class="ink solid" cx="420" cy="326" r="5"/></g>
+          <g class="hold pop"><path class="tagbox" d="M219 292 L219 300"/><rect class="tagbox" x="164" y="252" width="110" height="40" rx="3"/>
+            <text class="lbl k h1" x="219" y="268" text-anchor="middle" style="font-size:9px">TESTS RUNNING</text>
+            <text class="lbl h2" x="219" y="284" text-anchor="middle" style="font-size:9px">· HOLD ·</text>
+            <text class="lbl k h3" x="219" y="276" text-anchor="middle" style="font-size:9px">TESTS DONE ✓</text></g>
+          <g class="c-rev"><path class="ink" marker-end="url(#arr)" d="M765 392 C720 458 384 458 341 394"/><text class="lbl k pop" x="552" y="468" text-anchor="middle">FAST REVERT</text></g>
+          <g class="to"><path class="ink" d="M850 264 L876 264 L888 276 L876 288 L850 288 Z"/><text class="lbl fade" x="888" y="256" text-anchor="end">TO SHT 04</text></g>
+          <g class="detc">
+            <text class="lbl k fade" x="40" y="492">DETAIL C · PLUGGABLE INTERFACE</text>
+            <rect class="ink" x="40" y="502" width="292" height="104" rx="3"/>
+            <text class="code fade" x="58" y="532">check(machine)   { … }</text>
+            <text class="code fade" x="58" y="560">request(machine) { … }</text>
+            <text class="code fade" x="58" y="588">cancel(machine)  { … }</text>
+          </g>
+          <g class="c-plug"><path class="ink t" d="M332 538 L352 538"/><text class="hand pop" x="358" y="530">three methods →</text><text class="hand pop" x="358" y="558">your own manager</text></g>
+          <g class="after"><text class="illus fade" x="358" y="588">Later: a generic Go version was</text><text class="illus fade" x="358" y="602">open-sourced by the Dominator maintainer</text></g>
+          <g class="legend">
+            <text class="lbl k fade" x="650" y="492" style="font-size:8.5px">STATES · DOMINATOR PROTOCOL</text>
+            <rect class="ink t" x="650" y="503" width="10" height="10"/><text class="lbl fade" x="668" y="512" style="font-size:8.5px">DENIED</text>
+            <rect class="ink t" x="746" y="503" width="10" height="10"/><text class="lbl fade" x="764" y="512" style="font-size:8.5px">REQUESTED</text>
+            <rect class="lg-p fade" x="650" y="521" width="10" height="10"/><text class="lbl fade" x="668" y="530" style="font-size:8.5px">PERMITTED</text>
+          </g>
+          <g class="stamp st-rs" transform="translate(766 578) rotate(-6)"><g class="st-in"><g filter="url(#stampTex)">
+            <rect class="st-b" x="-104" y="-30" width="208" height="60" rx="6"/><rect class="st-b2" x="-97" y="-23" width="194" height="46" rx="3"/>
+            <text class="st-t" x="0" y="4" text-anchor="middle" style="font-size:28px">STAGGERED ✓</text><text class="st-s" x="0" y="17" text-anchor="middle">NEVER THE WHOLE GROUP</text>
+          </g></g><rect class="st-ring" x="-104" y="-30" width="208" height="60" rx="6"/></g>
+          <path class="route" id="rsa" d="M42 100 L60 100 L300 100 L420 104 L420 196 L420 262"/>
+          <path class="route" id="rsb" d="M420 262 L420 276 L850 276"/>
+          <g class="dot"><circle class="halo" r="14"/><circle class="core" r="6.5"/></g>
+        </svg>
+      </div>
+      <div class="titleblock">
+        <div class="c proj"><span>Project</span><b>K. Krishnappa · Field manual</b></div>
+        <div class="c sh"><span>Sheet</span><b>03<small>/06</small></b></div>
+        <div class="c ttl"><span>Title</span><b>Rollout safety</b></div>
+        <div class="c rev"><span>Rev</span><b>C</b></div>
+        <div class="c"><span>Drawn</span><b>K. Krishnappa</b></div>
+        <div class="c"><span>Date</span><b>2023 – 2024</b></div>
+        <div class="c"><span>Scale</span><b>NTS</b></div>
+      </div>
+    </div>
+    <div class="shade"></div>
+  </div>
+</section>
+
+<!-- ================= SHEET 04 · TENANT ISOLATION ================= -->
+<section class="sheet" id="s4" style="--h:440vh;z-index:4" aria-labelledby="t4" data-edge="deckle">
+  <div class="stage">
+    <div class="tear-shadow"><i></i></div><div class="paper-fringe"></div><div class="paper-bg" style="--bp:80% 80%"></div>
+    <div class="frame">
+      <div class="zones"></div>
+      <header class="sheet-head"><p class="eyebrow">Sheet 04 / 06 · RoonCyber · 2026</p><h2 class="sheet-title" id="t4">Tenant isolation</h2></header>
+      <aside class="notes">
+        <table class="spec"><caption>Schedule D — Role</caption>
+          <tr><th>Employer</th><td>RoonCyber</td></tr>
+          <tr><th>Role</th><td>Software Engineer Co-op</td></tr>
+          <tr><th>Period</th><td>Jan – Aug 2026</td></tr>
+          <tr><th>System</th><td>Multi-tenant AI-security notifications</td></tr>
+        </table>
+        <div class="gnotes"><h3>General notes</h3><ol>
+          <li>Multi-tenant <b>AI-security notification platform</b>.</li>
+          <li><b>Per-tenant detectors</b>, isolated tenant by tenant.</li>
+          <li><b>Idempotent watermarks</b>: a redelivered event is a no&#8209;op.</li>
+          <li><b>Mutation-tested</b>.</li>
+          <li>Took over an <b>AI-identity pipeline</b> two weeks before a board-requested launch; <b>shipped on schedule</b>.</li>
+        </ol></div>
+      </aside>
+      <div class="drawing">
+        <svg class="dwg" viewBox="0 0 900 620" role="img" aria-label="Floor plan of six tenant rooms off a shared event-bus corridor, each with its own detector. A tracing overlay annotates per-tenant watermarks that turn redelivery into a no-op.">
+          <text class="lbl fade" x="60" y="32">DWG 04 · PLAN — TENANT FLOOR · LEVEL 01</text>
+          <g id="walls"></g>
+          <g id="doors"></g>
+          <g id="dets"></g>
+          <path class="ink bus" d="M44 270 L846 270"/>
+          <text class="lbl fade" x="500" y="290">SHARED INGRESS · EVENT BUS</text>
+          <g class="from"><path class="ink" d="M4 258 L30 258 L42 270 L30 282 L4 282 Z"/><text class="lbl fade" x="4" y="250">FROM SHT 03</text></g>
+          <g class="to"><path class="ink" d="M848 258 L874 258 L886 270 L874 282 L848 282 Z"/><text class="lbl fade" x="886" y="250" text-anchor="end">TO SHT 05</text></g>
+          <g class="regs"><g transform="translate(24 470)"><circle class="ink t" r="9"/><path class="ink t" d="M-15 0 L15 0 M0 -15 L0 15"/></g><g transform="translate(876 470)"><circle class="ink t" r="9"/><path class="ink t" d="M-15 0 L15 0 M0 -15 L0 15"/></g></g>
+          <g class="rings"><circle class="ring-o" cx="450" cy="145" r="20"/><circle class="ring-o" cx="450" cy="145" r="20"/><circle class="ring-o" cx="450" cy="145" r="20"/></g>
+          <path class="route" id="r3a" d="M18 270 L430 270 L430 200 Q430 160 450 145"/>
+          <path class="route" id="r3b" d="M450 145 Q430 160 430 200 L430 270 L866 270"/>
+          <g class="dot"><circle class="halo" r="14"/><circle class="core" r="6.5"/></g>
+        </svg>
+        <div class="vellum" aria-hidden="true">
+          <span class="tape a"></span><span class="tape b"></span><span class="vtag">Vellum · Overlay A</span>
+          <svg viewBox="0 0 900 620">
+            <g class="regs"><g transform="translate(24 470)"><circle class="ink t" r="9"/><path class="ink t" d="M-15 0 L15 0 M0 -15 L0 15"/></g><g transform="translate(876 470)"><circle class="ink t" r="9"/><path class="ink t" d="M-15 0 L15 0 M0 -15 L0 15"/></g></g>
+            <text class="lbl k fade" x="560" y="32">OVERLAY A · WATERMARK LOGIC</text>
+            <path class="ink sg" d="M403 233 L457 233"/>
+            <text class="hand pop" x="464" y="216">wm</text>
+            <g class="skip pop"><path class="sig-ln" d="M423 245 L437 259 M437 245 L423 259"/><text class="lbl k" x="412" y="256" text-anchor="end">DUP · SKIPPED</text></g>
+            <g class="ghost"><circle class="gh" r="8"/></g>
+            <g class="v1"><path class="ink" d="M250 484 L420 244"/><text class="hand pop" x="60" y="500">per-tenant watermark:</text><text class="hand pop" x="60" y="530">redelivery ≤ wm → no-op</text></g>
+            <g class="v2"><path class="ink" d="M606 98 L590 114"/><text class="hand pop" x="612" y="104">walls = isolation</text></g>
+            <g class="v4"><text class="hand pop" x="596" y="486">mutation-tested:</text><text class="hand pop" x="596" y="514">the tests got tested.</text></g>
+            <g class="tline"><path class="ink" d="M60 590 L760 590"/><path class="ink" d="M60 580 L60 600 M760 580 L760 600"/><text class="lbl k pop" x="60" y="614">T−14 DAYS · TOOK OVER AI-IDENTITY PIPELINE</text><text class="lbl k pop" x="760" y="614" text-anchor="end">BOARD-REQUESTED LAUNCH</text></g>
+            <path class="route" id="rt" data-notrail="1" d="M60 590 L760 590"/>
+            <path class="tmark" d="M0 -10 L7 2 L-7 2 Z"/>
+            <g class="stamp st3" transform="translate(452 520) rotate(-5)"><g class="st-in"><g filter="url(#stampTex)">
+              <rect class="st-b" x="-122" y="-34" width="244" height="68" rx="6"/><rect class="st-b2" x="-114" y="-26" width="228" height="52" rx="3"/>
+              <text class="st-t" x="0" y="7" text-anchor="middle">IDEMPOTENT ✓</text><text class="st-s" x="0" y="20" text-anchor="middle">REDELIVERY = NO-OP</text>
+            </g></g><rect class="st-ring" x="-122" y="-34" width="244" height="68" rx="6"/></g>
+            <g class="stamp o st3b" transform="translate(818 568) rotate(-8)"><g class="st-in"><g filter="url(#stampTex)">
+              <rect class="st-b" x="-82" y="-32" width="164" height="64" rx="6"/><rect class="st-b2" x="-75" y="-25" width="150" height="50" rx="3"/>
+              <text class="st-t" x="0" y="0" text-anchor="middle" style="font-size:23px">SHIPPED</text><text class="st-s" x="0" y="16" text-anchor="middle">ON SCHEDULE</text>
+            </g></g><rect class="st-ring" x="-82" y="-32" width="164" height="64" rx="6"/></g>
+          </svg>
+        </div>
+      </div>
+      <div class="titleblock">
+        <div class="c proj"><span>Project</span><b>K. Krishnappa · Field manual</b></div>
+        <div class="c sh"><span>Sheet</span><b>04<small>/06</small></b></div>
+        <div class="c ttl"><span>Title</span><b>Tenant isolation</b></div>
+        <div class="c rev"><span>Rev</span><b>D</b></div>
+        <div class="c"><span>Drawn</span><b>K. Krishnappa</b></div>
+        <div class="c"><span>Date</span><b>Jan–Aug 2026</b></div>
+        <div class="c"><span>Scale</span><b style="letter-spacing:0">1:N tenants</b></div>
+      </div>
+    </div>
+    <div class="shade"></div>
+  </div>
+</section>
+
+<!-- ================= SHEET 04 ================= -->
+<section class="sheet" id="s5" style="--h:380vh;z-index:5" aria-labelledby="t5" data-edge="torn">
+  <div class="stage">
+    <div class="tear-shadow"><i></i></div><div class="paper-fringe"></div><div class="paper-bg" style="--bp:40% 20%"></div>
+    <div class="frame">
+      <div class="zones"></div>
+      <header class="sheet-head"><p class="eyebrow">Sheet 05 / 06 · Side projects · Go + Temporal</p><h2 class="sheet-title" id="t5">Durable workflows</h2></header>
+      <aside class="notes">
+        <table class="spec"><caption>Schedule E — Projects</caption>
+          <tr><th>Beacon</th><td>Notification service in Go + Temporal</td></tr>
+          <tr><th>Author</th><td>Sole author</td></tr>
+          <tr><th>Stack 2</th><td>temporal-onprem-stack</td></tr>
+          <tr><th>What</th><td>Self-hosted Temporal with mTLS</td></tr>
+        </table>
+        <div class="gnotes"><h3>General notes</h3><ol>
+          <li><b>Beacon</b>: a notification service written in Go on Temporal. Sole author.</li>
+          <li>Failures are expected; the workflow <b>retries</b> and still completes.</li>
+          <li><b>temporal-onprem-stack</b>: self-hosted Temporal, workers and server talking over <b>mTLS</b>.</li>
+        </ol></div>
+      </aside>
+      <div class="drawing">
+        <svg class="dwg" viewBox="0 0 900 620" role="img" aria-label="State diagram of the Beacon notification workflow: the send activity times out three times, retries, then succeeds and the workflow completes. Detail B shows the self-hosted Temporal stack with mTLS between worker and server.">
+          <text class="lbl fade" x="60" y="22">DWG 05 · STATE DIAGRAM — BEACON · NOTIFICATION WORKFLOW</text>
+          <text class="lbl fade illus" x="60" y="40">Illustrative · state names and codes are not from the source</text>
+          <g class="from"><path class="ink" d="M4 188 L30 188 L42 200 L30 212 L4 212 Z"/><text class="lbl fade" x="4" y="178">FROM SHT 04</text></g>
+          <g class="states">
+            <circle class="ink b" cx="80" cy="200" r="20"/><circle class="fade fill-ink" cx="80" cy="200" r="9"/>
+            <rect class="ink b" x="160" y="172" width="140" height="56" rx="12"/>
+            <rect class="ink b" x="380" y="172" width="140" height="56" rx="12"/>
+            <rect class="ink b" x="600" y="172" width="140" height="56" rx="12"/>
+            <circle class="ink b" cx="820" cy="200" r="22"/><circle class="ink" cx="820" cy="200" r="14"/>
+            <text class="st-name fade" x="230" y="205" text-anchor="middle">ENQUEUE</text>
+            <text class="st-name fade" x="450" y="205" text-anchor="middle">SEND()</text>
+            <text class="st-name fade" x="670" y="205" text-anchor="middle">RECORD</text>
+            <text class="lbl fade" x="80" y="244" text-anchor="middle">START</text>
+            <text class="lbl fade" x="820" y="246" text-anchor="middle">DONE</text>
+          </g>
+          <g class="arrows">
+            <path class="ink" marker-end="url(#arr)" d="M101 200 L157 200"/>
+            <path class="ink" marker-end="url(#arr)" d="M300 200 L377 200"/>
+            <path class="ink" marker-end="url(#arr)" d="M520 200 L597 200"/>
+            <path class="ink" marker-end="url(#arr)" d="M740 200 L795 200"/>
+          </g>
+          <g class="loop"><path class="ink" marker-end="url(#arr)" d="M505 172 C525 96 375 96 395 170"/><text class="lbl fade" x="450" y="104" text-anchor="middle">RETRY POLICY</text></g>
+          <g class="fail pop"><path class="sig-ln" d="M530 176 L542 190 L532 196 L546 212"/><text class="hand o" x="552" y="174">timeout</text></g>
+          <text class="lbl k att att1" x="450" y="254" text-anchor="middle">ATTEMPT 1</text>
+          <text class="lbl k att att2" x="450" y="254" text-anchor="middle">ATTEMPT 2</text>
+          <text class="lbl k att att3" x="450" y="254" text-anchor="middle">ATTEMPT 3</text>
+          <text class="lbl k att att4" x="450" y="254" text-anchor="middle">ATTEMPT 4 · OK</text>
+          <g class="log">
+            <path class="ink t" d="M160 290 L520 290 M160 318 L520 318"/>
+            <text class="lbl k fade" x="160" y="309">RETRY LOG · send()</text>
+            <g class="row pop"><text class="lbl" x="168" y="342">#1</text><text class="lbl" x="214" y="342">send()</text><text class="lbl k" x="512" y="342" text-anchor="end">TIMEOUT</text></g>
+            <g class="row pop"><text class="lbl" x="168" y="368">#2</text><text class="lbl" x="214" y="368">send()</text><text class="lbl k" x="512" y="368" text-anchor="end">TIMEOUT</text></g>
+            <g class="row pop"><text class="lbl" x="168" y="394">#3</text><text class="lbl" x="214" y="394">send()</text><text class="lbl k" x="512" y="394" text-anchor="end">TIMEOUT</text></g>
+            <g class="row pop"><text class="lbl" x="168" y="420">#4</text><text class="lbl" x="214" y="420">send()</text><text class="lbl k" x="512" y="420" text-anchor="end">200 OK</text></g>
+            <g class="row pop"><path class="dimln" d="M160 434 L520 434"/><text class="lbl k" x="168" y="456">RECORD ✓ · WORKFLOW COMPLETE</text></g>
+          </g>
+          <g class="dmark"><circle class="ink" cx="670" cy="254" r="12"/><text class="lbl k fade" x="670" y="258" text-anchor="middle">B</text><path class="ink t" d="M674 266 L692 334"/></g>
+          <g class="detail">
+            <circle class="ink b" cx="720" cy="450" r="118"/>
+            <rect class="ink" x="628" y="430" width="78" height="42" rx="4"/><text class="lbl k fade" x="667" y="455" text-anchor="middle">WORKER</text>
+            <rect class="ink" x="734" y="430" width="78" height="42" rx="4"/><text class="lbl k fade" x="773" y="455" text-anchor="middle">TEMPORAL</text>
+            <path class="ink" marker-start="url(#arr)" marker-end="url(#arr)" d="M709 451 L731 451"/>
+            <rect class="ink" x="712" y="404" width="16" height="13" rx="2"/><path class="ink" d="M715 404 L715 399 A5 5 0 0 1 725 399 L725 404"/>
+            <rect class="ink t" x="652" y="388" width="30" height="22"/><path class="ink t" d="M656 395 L676 395 M656 401 L670 401"/><circle class="ink t" cx="677" cy="410" r="4"/>
+            <rect class="ink t" x="758" y="388" width="30" height="22"/><path class="ink t" d="M762 395 L782 395 M762 401 L776 401"/><circle class="ink t" cx="783" cy="410" r="4"/>
+            <text class="hand pop" x="646" y="510">mTLS, both ways</text>
+            <text class="lbl fade" x="720" y="536" text-anchor="middle">SELF-HOSTED</text>
+          </g>
+          <text class="lbl fade" x="720" y="596" text-anchor="middle">DETAIL B · TEMPORAL-ONPREM-STACK</text>
+          <g class="to"><path class="ink" d="M856 188 L876 188 L888 200 L876 212 L856 212 Z"/><text class="lbl fade" x="888" y="178" text-anchor="end">TO SHT 06</text></g>
+          <g class="stamp o st4" transform="translate(250 96) rotate(-8)"><g class="st-in"><g filter="url(#stampTex)">
+            <rect class="st-b" x="-96" y="-34" width="192" height="68" rx="6"/><rect class="st-b2" x="-88" y="-26" width="176" height="52" rx="3"/>
+            <text class="st-t" x="0" y="7" text-anchor="middle">RETRY ×3</text><text class="st-s" x="0" y="20" text-anchor="middle">DURABLE · NOT DROPPED</text>
+          </g></g><rect class="st-ring" x="-96" y="-34" width="192" height="68" rx="6"/></g>
+          <g class="stamp st4b" transform="translate(820 110) rotate(7)"><g class="st-in"><g filter="url(#stampTex)">
+            <rect class="st-b" x="-68" y="-32" width="136" height="64" rx="6"/><rect class="st-b2" x="-61" y="-25" width="122" height="50" rx="3"/>
+            <text class="st-t" x="0" y="8" text-anchor="middle">200 OK</text>
+          </g></g><rect class="st-ring" x="-68" y="-32" width="136" height="64" rx="6"/></g>
+          <path class="route" id="r4a" d="M30 200 L505 200"/>
+          <path class="route" id="r4l" d="M505 200 L505 172 C525 96 375 96 395 172 L395 200 L505 200"/>
+          <path class="route" id="r4b" d="M505 200 L820 200"/>
+          <path class="route" id="r4c" d="M820 200 L872 200"/>
+          <g class="dot"><circle class="halo" r="14"/><circle class="core" r="6.5"/></g>
+        </svg>
+      </div>
+      <div class="titleblock">
+        <div class="c proj"><span>Project</span><b>K. Krishnappa · Field manual</b></div>
+        <div class="c sh"><span>Sheet</span><b>05<small>/06</small></b></div>
+        <div class="c ttl"><span>Title</span><b>Durable workflows</b></div>
+        <div class="c rev"><span>Rev</span><b>—</b></div>
+        <div class="c"><span>Drawn</span><b>K. Krishnappa</b></div>
+        <div class="c"><span>Type</span><b>Side projects</b></div>
+        <div class="c"><span>Scale</span><b>NTS</b></div>
+      </div>
+    </div>
+    <div class="shade"></div>
+  </div>
+</section>
+
+<!-- ================= SHEET 06 · ISSUED FOR HIRE ================= -->
+<section class="sheet sclose" id="s6" style="--h:290vh;z-index:6" aria-labelledby="t6" data-edge="deckle">
+  <div class="stage">
+    <div class="tear-shadow"><i></i></div><div class="paper-fringe"></div><div class="paper-bg" style="--bp:60% 60%"></div>
+    <div class="frame">
+      <div class="zones"></div>
+      <header class="sheet-head"><p class="eyebrow">Sheet 06 / 06 · Transmittal · Issued for hire</p><h2 class="sheet-title" id="t6">Contact</h2></header>
+      <aside class="notes">
+        <table class="spec"><caption>Schedule F — Issue</caption>
+          <tr><th>Open to</th><td>Backend · Platform · Infra · SRE roles</td></tr>
+          <tr><th>Degree</th><td>MS Computer Science, Northeastern · May 2027</td></tr>
+          <tr><th>Set</th><td>Cover + five sheets, issued together</td></tr>
+          <tr><th>Reply</th><td>Email, GitHub or LinkedIn</td></tr>
+        </table>
+      </aside>
+      <div class="drawing">
+        <svg class="dwg" viewBox="0 0 900 380" role="img" aria-label="Transmittal: the five drawing sheets bound as one set and routed to you.">
+          <text class="lbl fade" x="60" y="20">DWG 06 · TRANSMITTAL · ISSUED SET</text>
+          <g class="from"><path class="ink" d="M4 158 L30 158 L42 170 L30 182 L4 182 Z"/><text class="lbl fade" x="4" y="150">FROM SHT 05</text></g>
+          <g id="set"></g>
+          <g class="tx">
+            <text class="lbl k fade" x="620" y="50">TRANSMITTAL</text>
+            <path class="ink t" d="M620 60 L880 60 M620 84 L880 84 M620 236 L880 236"/>
+            <text class="lbl fade" x="628" y="77" style="font-size:8px">SHT</text><text class="lbl fade" x="668" y="77" style="font-size:8px">TITLE</text><text class="lbl fade" x="872" y="77" text-anchor="end" style="font-size:8px">REV</text>
+            <g class="row pop"><text class="lbl" x="628" y="108">01</text><text class="lbl k" x="668" y="108">INGESTION</text><text class="lbl k" x="872" y="108" text-anchor="end">A</text></g>
+            <g class="row pop"><text class="lbl" x="628" y="134">02</text><text class="lbl k" x="668" y="134">FLEET RECONCILIATION</text><text class="lbl k" x="872" y="134" text-anchor="end">B</text></g>
+            <g class="row pop"><text class="lbl" x="628" y="160">03</text><text class="lbl k" x="668" y="160">ROLLOUT SAFETY</text><text class="lbl k" x="872" y="160" text-anchor="end">C</text></g>
+            <g class="row pop"><text class="lbl" x="628" y="186">04</text><text class="lbl k" x="668" y="186">TENANT ISOLATION</text><text class="lbl k" x="872" y="186" text-anchor="end">D</text></g>
+            <g class="row pop"><text class="lbl" x="628" y="212">05</text><text class="lbl k" x="668" y="212">DURABLE WORKFLOWS</text><text class="lbl k" x="872" y="212" text-anchor="end">—</text></g>
+            <text class="lbl k fade" x="620" y="258" style="font-size:8.5px">STATUS · ISSUED FOR HIRE</text>
+          </g>
+          <g class="c6"><text class="hand pop" x="24" y="338">questions? send redlines</text><path class="ink t" d="M222 332 L282 346"/></g>
+          <g class="to"><path class="ink" d="M286 342 L314 342 L314 358 L300 372 L286 358 Z"/><text class="lbl k fade" x="324" y="364">TO: YOU ↓</text></g>
+          <path class="route" id="r6a" d="M42 170 L96 170 C220 170 300 250 300 350"/>
+          <g class="dot"><circle class="halo" r="14"/><circle class="core" r="6.5"/></g>
+        </svg>
+      </div>
+      <div class="cta-block">
+        <p class="eyebrow">Issue to · open to backend / platform / infra / SRE roles</p>
+        <div class="cta-row">
+          <a class="btn-mail" href="mailto:"><span class="hole" aria-hidden="true"></span><span>Email me</span><span class="arr" aria-hidden="true">→</span></a>
+          <a class="btn-cv" href="#resume" title="Résumé (placeholder link)">Résumé <small>PDF</small></a>
+        </div>
+        <div class="links">
+          <a href="https://github.com/kushalkrishnappa" target="_blank" rel="noopener">GitHub ↗<span>github.com/kushalkrishnappa</span></a>
+          <a href="https://linkedin.com/in/kushalkrishnappa" target="_blank" rel="noopener">LinkedIn ↗<span>linkedin.com/in/kushalkrishnappa</span></a>
+        </div>
+      </div>
+      <svg class="final-stamp" viewBox="0 0 330 140" aria-hidden="true">
+        <g class="stamp o st5" transform="translate(165 70) rotate(-9)"><g class="st-in"><g filter="url(#stampTex)">
+          <rect class="st-b" x="-152" y="-52" width="304" height="104" rx="8" style="stroke-width:4.5"/><rect class="st-b2" x="-142" y="-42" width="284" height="84" rx="4"/>
+          <text class="st-t" x="0" y="9" text-anchor="middle" style="font-size:38px;letter-spacing:.04em">ISSUED FOR HIRE</text><text class="st-s" x="0" y="30" text-anchor="middle" style="font-size:8px">K. KRISHNAPPA · MS CS · MAY 2027</text>
+        </g></g><rect class="st-ring" x="-152" y="-52" width="304" height="104" rx="8"/></g>
+      </svg>
+      <div class="titleblock">
+        <div class="c proj"><span>Project</span><b>K. Krishnappa · Field manual</b></div>
+        <div class="c sh"><span>Sheet</span><b>06<small>/06</small></b></div>
+        <div class="c ttl"><span>Title</span><b>Issued for hire</b></div>
+        <div class="c rev"><span>Rev</span><b>D</b></div>
+        <div class="c"><span>Drawn</span><b>K. Krishnappa</b></div>
+        <div class="c"><span>Date</span><b>Nov 2026</b></div>
+        <div class="c"><span>Status</span><b>For hire</b></div>
+      </div>
+    </div>
+    <div class="shade"></div>
+  </div>
+</section>
+
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>
+(function(){
+'use strict';
+var DOC = document.documentElement;
+var $ = function(s, r){ return (r||document).querySelector(s); };
+var $$ = function(s, r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); };
+var MOTION = DOC.classList.contains('motion') && !!window.gsap && !!window.ScrollTrigger;
+if (!MOTION) DOC.classList.remove('motion');
+function rng(seed){ var s = seed % 2147483647; if (s <= 0) s += 2147483646; return function(){ s = s * 16807 % 2147483647; return (s - 1) / 2147483646; }; }
+var f1 = function(n){ return (Math.round(n*10)/10).toString(); };
+
+/* ---------- zones on every frame ---------- */
+$$('.frame').forEach(function(fr){
+  var z = $('.zones', fr); if (!z) return;
+  var h = '', cols = 8, rows = 6, L = 'ABCDEF';
+  for (var i = 0; i < cols; i++){
+    var x = ((i + .5) / cols * 100).toFixed(3) + '%';
+    h += '<span class="zt" style="left:'+x+'">'+(i+1)+'</span><span class="zb" style="left:'+x+'">'+(i+1)+'</span>';
+    if (i) { var xx = (i/cols*100).toFixed(3)+'%'; h += '<i class="t" style="left:'+xx+'"></i><i class="b" style="left:'+xx+'"></i>'; }
+  }
+  for (var j = 0; j < rows; j++){
+    var y = ((j + .5) / rows * 100).toFixed(3) + '%';
+    h += '<span class="zl" style="top:'+y+'">'+L[j]+'</span><span class="zr" style="top:'+y+'">'+L[j]+'</span>';
+    if (j) { var yy = (j/rows*100).toFixed(3)+'%'; h += '<i class="l" style="top:'+yy+'"></i><i class="r" style="top:'+yy+'"></i>'; }
+  }
+  z.innerHTML = h;
+});
+
+/* ---------- torn / deckled edges ---------- */
+function edgePts(seed, kind){
+  var r = rng(seed), pts = [], x = 0;
+  var p1 = r()*6.28, p2 = r()*6.28, p3 = r()*6.28;
+  var torn = kind !== 'deckle';
+  while (x < 100){
+    var y;
+    if (torn){
+      var w = Math.sin(x*.07+p1)*.55 + Math.sin(x*.23+p2)*.3 + Math.sin(x*.9+p3)*.15;
+      y = 20 + w*13 + (r()-.5)*7;
+      if (r() < .06) y += 4 + r()*8;
+    } else {
+      y = 10 + Math.sin(x*.5+p1)*2.5 + (r()-.5)*6 + (r() < .12 ? r()*5 : 0);
+    }
+    pts.push([x, Math.max(2, Math.min(38, y))]);
+    x += torn ? (.3 + r()*.9) : (.25 + r()*.45);
+  }
+  pts.push([100, pts[pts.length-1][1]]);
+  return pts;
+}
+function topPoly(pts, dy, jit, seed){
+  var r = rng(seed||1);
+  return 'polygon(' + pts.map(function(p){ return p[0].toFixed(2)+'% '+(p[1]+dy-(jit? r()*jit:0)).toFixed(1)+'px'; }).join(',') + ',100% 100%,0 100%)';
+}
+function botPoly(pts, dy, jit, seed){
+  var r = rng(seed||1);
+  return 'polygon(0 0,100% 0,' + pts.slice().reverse().map(function(p){ return p[0].toFixed(2)+'% calc(100% - '+Math.max(0,(p[1]+dy-(jit? r()*jit:0))).toFixed(1)+'px)'; }).join(',') + ')';
+}
+$$('.sheet').forEach(function(sec, i){
+  var st = $('.stage', sec), pts = edgePts(101 + i*37, sec.dataset.edge);
+  $('.paper-bg', st).style.clipPath = topPoly(pts, 0);
+  $('.paper-fringe', st).style.clipPath = topPoly(pts, -1.6, 2.6, 7+i);
+  $('.tear-shadow i', st).style.clipPath = topPoly(pts, 22, 0);
+});
+(function(){
+  var c = $('#cover'), pts = edgePts(77, 'torn');
+  $('.paper-bg', c).style.clipPath = botPoly(pts, 0);
+  $('.paper-fringe', c).style.clipPath = botPoly(pts, -1.6, 2.6, 5);
+  $('.tear-shadow i', c).style.clipPath = botPoly(pts, 30, 0);
+})();
+
+/* ---------- name: split + measured guides ---------- */
+$$('.name .word').forEach(function(w){
+  var t = w.textContent; w.textContent = '';
+  for (var i = 0; i < t.length; i++){ var s = document.createElement('span'); s.className = 'ch'; s.textContent = t[i]; w.appendChild(s); }
+});
+function nameMetrics(){
+  var h1 = $('.name'); if (!h1) return;
+  var cs = getComputedStyle(h1), fs = parseFloat(cs.fontSize), lh = parseFloat(cs.lineHeight);
+  if (!lh || isNaN(lh)) lh = fs * .8;
+  var ctx = document.createElement('canvas').getContext('2d');
+  ctx.font = '900 ' + fs + 'px "Big Shoulders Stencil Display"';
+  var m = ctx.measureText('KRISHNAPPA');
+  var asc = m.fontBoundingBoxAscent || fs*.9, desc = m.fontBoundingBoxDescent || fs*.25, cap = m.actualBoundingBoxAscent || fs*.7;
+  var base = (lh - (asc + desc)) / 2 + asc;
+  h1.style.setProperty('--base', base.toFixed(1) + 'px');
+  h1.style.setProperty('--cap', (base - cap).toFixed(1) + 'px');
+  h1.style.setProperty('--caph', cap.toFixed(1) + 'px');
+}
+
+/* ---------- sheet 02: fleet (generated axonometric) ---------- */
+var FLEET = {};
+(function(){
+  var g = $('#fleet'); if (!g) return;
+  var E = 374, F = 196, H = 12, S = 36, PITCH = 44;
+  var P = function(x, y, e, f){ e = e === undefined ? E : e; f = f === undefined ? F : f; return [e + .866*(x - y), f + .5*(x + y)]; };
+  var pt = function(a){ return f1(a[0]) + ' ' + f1(a[1]); };
+  var html = '<path class="ink t" d="M'+pt(P(-14,-14))+' L'+pt(P(446,-14))+' L'+pt(P(446,270))+' L'+pt(P(-14,270))+' Z"/>';
+  var broken = [7, 12, 23, 26, 33, 38, 44, 51], bset = {};
+  broken.forEach(function(k){ bset[k] = 1; });
+  var tops = {}, centers = {};
+  for (var j = 0; j < 6; j++) for (var i = 0; i < 10; i++){
+    var k = j*10 + i, x = i*PITCH, y = j*PITCH;
+    var top = 'M'+pt(P(x,y))+' L'+pt(P(x+S,y))+' L'+pt(P(x+S,y+S))+' L'+pt(P(x,y+S))+' Z';
+    var detail = ' M'+pt(P(x+6,y+12))+' L'+pt(P(x+30,y+12))+' M'+pt(P(x+6,y+24))+' L'+pt(P(x+30,y+24));
+    var R = P(x+S,y), Fr = P(x+S,y+S), Lf = P(x,y+S);
+    var side = 'M'+f1(R[0])+' '+f1(R[1])+' L'+f1(R[0])+' '+f1(R[1]+H)+' L'+f1(Fr[0])+' '+f1(Fr[1]+H)+' L'+f1(Lf[0])+' '+f1(Lf[1]+H)+' L'+f1(Lf[0])+' '+f1(Lf[1])+' M'+f1(Fr[0])+' '+f1(Fr[1])+' L'+f1(Fr[0])+' '+f1(Fr[1]+H);
+    html += '<path class="ink nt" d="'+top+detail+'"/><path class="ink t ns" d="'+side+'"/>';
+    tops[k] = top; centers[k] = P(x+S/2, y+S/2);
+    if (bset[k]) {
+      tops[k+'x'] = 'M'+pt(P(x+5,y+5))+' L'+pt(P(x+S-5,y+S-5))+' M'+pt(P(x+S-5,y+5))+' L'+pt(P(x+5,y+S-5));
+    }
+  }
+  g.innerHTML = html;
+  // plate (reconciler) — exploded above the fleet
+  var e2 = 428, f2 = 20, pw = 160, pd = 110, T = 8;
+  var q = function(x,y){ return P(x,y,e2,f2); };
+  var pl = '<path class="ink b solid" d="M'+pt(q(0,0))+' L'+pt(q(pw,0))+' L'+pt(q(pw,pd))+' L'+pt(q(0,pd))+' Z"/>';
+  var a = q(pw,0), b = q(pw,pd), c = q(0,pd);
+  pl += '<path class="ink t" d="M'+f1(a[0])+' '+f1(a[1])+' L'+f1(a[0])+' '+f1(a[1]+T)+' L'+f1(b[0])+' '+f1(b[1]+T)+' L'+f1(c[0])+' '+f1(c[1]+T)+' L'+f1(c[0])+' '+f1(c[1])+' M'+f1(b[0])+' '+f1(b[1])+' L'+f1(b[0])+' '+f1(b[1]+T)+'"/>';
+  pl += '<path class="ink t" d="M'+pt(q(14,14))+' L'+pt(q(pw-14,14))+' L'+pt(q(pw-14,pd-14))+' L'+pt(q(14,pd-14))+' Z"/>';
+  $('#plate').innerHTML = pl;
+  $('#asm').innerHTML = [a,b,c].map(function(p){ return '<path class="ctr fade" d="M'+f1(p[0])+' '+f1(p[1]+T+4)+' L'+f1(p[0])+' '+f1(p[1]+T+92)+'"/>'; }).join('');
+  // broken overlays + fixed redraws
+  var bh = '', fh = '';
+  broken.forEach(function(k){
+    var cc = centers[k];
+    bh += '<g class="bk" data-k="'+k+'"><path class="o-top" d="'+tops[k]+'"/><path class="o-x" d="'+tops[k+'x']+'"/></g>';
+    fh += '<g class="fx" data-k="'+k+'"><path class="ink b" d="'+tops[k]+'"/><path class="ink b" d="M'+f1(cc[0]-7)+' '+f1(cc[1])+' L'+f1(cc[0]-2)+' '+f1(cc[1]+4)+' L'+f1(cc[0]+8)+' '+f1(cc[1]-5)+'"/></g>';
+  });
+  $('#bks').innerHTML = bh; $('#fxs').innerHTML = fh;
+  // hop arcs: reconciler -> n1 -> n2 ... -> connector
+  var start = [450, 86], prev = start, ah = '';
+  var hopPts = broken.map(function(k){ return centers[k]; }).concat([[838, 330]]);
+  hopPts.forEach(function(p, idx){
+    var mx = (prev[0] + p[0]) / 2, my = Math.min(prev[1], p[1]) - (idx === 0 ? 30 : 46);
+    ah += '<path class="route hop" d="M'+f1(prev[0])+' '+f1(prev[1])+' Q'+f1(mx)+' '+f1(my)+' '+f1(p[0])+' '+f1(p[1])+'"/>';
+    prev = p;
+  });
+  $('#arcs').innerHTML = ah;
+  FLEET.broken = broken;
+})();
+
+/* ---------- sheet 03: floor plan (generated) ---------- */
+(function(){
+  var W = $('#walls'); if (!W) return;
+  var walls = [[60,50,780,14],[60,436,780,14],[60,64,14,176],[60,300,14,136],[826,64,14,176],[826,300,14,136],
+    [74,226,71,14],[195,226,210,14],[455,226,210,14],[715,226,111,14],
+    [74,300,71,14],[195,300,210,14],[455,300,210,14],[715,300,111,14],
+    [313,64,14,162],[573,64,14,162],[313,314,14,122],[573,314,14,122]];
+  var fill = '', outl = '';
+  walls.forEach(function(w){
+    fill += '<rect class="fade" x="'+w[0]+'" y="'+w[1]+'" width="'+w[2]+'" height="'+w[3]+'" fill="url(#hatch)"/>';
+    outl += '<rect class="ink" x="'+w[0]+'" y="'+w[1]+'" width="'+w[2]+'" height="'+w[3]+'"/>';
+  });
+  W.innerHTML = fill + outl;
+  var d = '';
+  [145, 405, 665].forEach(function(x){
+    d += '<path class="ink t" d="M'+x+' 226 L'+x+' 176 M'+(x+50)+' 226 A50 50 0 0 0 '+x+' 176"/>';
+    d += '<path class="ink t" d="M'+x+' 314 L'+x+' 364 M'+(x+50)+' 314 A50 50 0 0 1 '+x+' 364"/>';
+  });
+  $('#doors').innerHTML = d;
+  var dets = '', names = 'ABCDEF';
+  [[193.5,145],[450,145],[706.5,145],[193.5,375],[450,375],[706.5,375]].forEach(function(c, i){
+    var x = c[0], y = c[1];
+    dets += '<path class="ink dr" d="M'+(x-27)+' '+y+' A27 27 0 1 0 '+(x+27)+' '+y+' A27 27 0 1 0 '+(x-27)+' '+y+'"/>';
+    dets += '<circle class="ink" cx="'+x+'" cy="'+y+'" r="18"/><circle class="fade fill-ink" cx="'+x+'" cy="'+y+'" r="4"/>';
+    dets += '<path class="ink t" d="M'+(x+24)+' '+(y-9)+' A12 12 0 0 1 '+(x+24)+' '+(y+9)+' M'+(x+30)+' '+(y-14)+' A18 18 0 0 1 '+(x+30)+' '+(y+14)+'"/>';
+    dets += '<text class="lbl fade" x="'+x+'" y="'+(y+(i<3?40:-28))+'" text-anchor="middle">DET · '+names[i]+'</text>';
+    var rx = [88,341,601][i%3], ry = i < 3 ? 88 : 426;
+    dets += '<text class="lbl k fade" x="'+rx+'" y="'+ry+'">TENANT '+names[i]+'</text>';
+  });
+  $('#dets').innerHTML = dets;
+})();
+
+/* ---------- sheet 03: one image group of VMs (generated) ---------- */
+var RS = { qx: function(i){ return 44 + i*40; }, order: [7, 6, 5, 3, 2, 4, 1, 0], laneX: function(k){ return 750 - k*40; } };
+(function(){
+  var g = $('#vms'); if (!g) return;
+  var STATES = [['idle','IMAGE v1'],['req','REQUESTED'],['per','PERMITTED'],['den','DENIED'],['done','v2 ✓']];
+  var h = '';
+  for (var i = 0; i < 8; i++){
+    h += '<g class="vm" data-i="'+i+'" transform="translate('+RS.qx(i)+' 300)">' +
+      '<rect class="ink b solid" x="0" y="0" width="30" height="80" rx="2"/>' +
+      '<rect class="ink t" x="4" y="5" width="22" height="9"/><rect class="img2" x="4" y="5" width="22" height="9"/>' +
+      STATES.map(function(s){ return '<text class="vst v-'+s[0]+'" transform="translate(15 49) rotate(-90)" text-anchor="middle">'+s[1]+'</text>'; }).join('') +
+      (i === 7 ? '<text class="lbl k" x="15" y="-8" text-anchor="middle" style="font-size:8.5px">CANARY</text>' : '') +
+      '</g>';
+  }
+  g.innerHTML = h;
+})();
+function rsState(vm, st){ ['idle','req','per','den','done'].forEach(function(k){ var t = vm.querySelector('.v-'+k); if (t) t.style.opacity = (k === st ? 1 : 0); }); }
+function rsStatic(){
+  var vms = $$('#vms .vm'); if (!vms.length) return;
+  [7, 6, 5].forEach(function(id, k){ vms[id].setAttribute('transform', 'translate(' + RS.laneX(k) + ' 300)'); rsState(vms[id], 'done'); vms[id].querySelector('.img2').style.opacity = 1; });
+  [3, 2].forEach(function(id){ rsState(vms[id], 'per'); });
+  [4, 1, 0].forEach(function(id){ rsState(vms[id], 'req'); });
+  $$('#s3 .tok').forEach(function(t){ t.style.opacity = 1; });
+}
+
+/* ---------- sheet 06: the issued set (generated) ---------- */
+(function(){
+  var g = $('#set'); if (!g) return;
+  var names = ['INGESTION','FLEET RECONCILIATION','ROLLOUT SAFETY','TENANT ISOLATION','DURABLE WORKFLOWS'], h = '';
+  for (var i = 0; i < 5; i++){
+    var x = 96 + i*56, y = 40 + i*20, w = 230, hh = 150;
+    h += '<g class="setsheet">' +
+      '<rect class="ink solid" x="'+x+'" y="'+y+'" width="'+w+'" height="'+hh+'"/>' +
+      '<rect class="ink t" x="'+(x+6)+'" y="'+(y+6)+'" width="'+(w-12)+'" height="'+(hh-12)+'"/>' +
+      '<rect class="ink t" x="'+(x+6)+'" y="'+(y+hh-30)+'" width="84" height="24"/>' +
+      '<text class="lbl k fade" x="'+(x+12)+'" y="'+(y+20)+'" style="font-size:9px">0'+(i+1)+'</text>' +
+      (i === 4 ? '<text class="lbl fade" x="'+(x+12)+'" y="'+(y+hh-14)+'" style="font-size:7px">'+names[i]+'</text>' +
+        '<path class="ink t" d="M'+(x+60)+' '+(y+60)+' L'+(x+170)+' '+(y+60)+' M'+(x+60)+' '+(y+50)+' L'+(x+60)+' '+(y+70)+' M'+(x+115)+' '+(y+50)+' L'+(x+115)+' '+(y+70)+' M'+(x+170)+' '+(y+50)+' L'+(x+170)+' '+(y+70)+'"/>' : '') +
+      '</g>';
+  }
+  g.innerHTML = h;
+})();
+
+/* ---------- ink prep, routes + trails ---------- */
+$$('.dwg .ink, .vellum .ink').forEach(function(el){
+  el.setAttribute('pathLength', '1');
+  if (MOTION) {
+    ['marker-end','marker-start'].forEach(function(a){ var v = el.getAttribute(a); if (v) { el.dataset[a === 'marker-end' ? 'me' : 'ms'] = v; el.removeAttribute(a); } });
+  }
+});
+$$('.route').forEach(function(r){
+  if (r.dataset.notrail) return;
+  var t = r.cloneNode(); t.removeAttribute('id'); t.setAttribute('class', 'trail'); t.setAttribute('pathLength', '1');
+  var svg = r.ownerSVGElement, dot = $('.dot', svg);
+  if (r.classList.contains('hop')) r.parentNode.insertBefore(t, r);
+  else if (dot) svg.insertBefore(t, dot); else svg.appendChild(t);
+  r._trail = t; r._len = r.getTotalLength();
+});
+function place(m, route, p){
+  var L = route._len || (route._len = route.getTotalLength());
+  var pt = route.getPointAtLength(L * Math.max(0, Math.min(1, p)));
+  m.setAttribute('transform', 'translate(' + pt.x.toFixed(2) + ' ' + pt.y.toFixed(2) + ')');
+}
+var DOTS = {
+  s1: [$('#r1')], s2: [$('#r2in')], s3: [$('#rsa')], s4: [$('#r3a')], s5: [$('#r4a')], s6: [$('#r6a')]
+};
+Object.keys(DOTS).forEach(function(id){ var svg = $('#'+id+' .dwg'); place($('.dot', svg), DOTS[id][0], 0); });
+
+/* ---------- MTTR helpers ---------- */
+function mttrAt(p){ return Math.exp(Math.log(300) + p * (Math.log(10) - Math.log(300))); }
+function fmtM(m){ if (m >= 59.5) { var h = Math.floor(m/60), mm = Math.round(m - h*60); if (mm === 60) { h++; mm = 0; } return h + 'h ' + (mm < 10 ? '0' : '') + mm + 'm'; } return Math.round(m) + ' min'; }
+function setMTTR(p){
+  var m = mttrAt(p), x = 120 + 600 * (m / 300);
+  $('#mt-line').setAttribute('d', 'M120 604 L' + x.toFixed(1) + ' 604');
+  $('#mt-end').setAttribute('d', 'M' + x.toFixed(1) + ' 592 L' + x.toFixed(1) + ' 616');
+  var v = $('#mt-v'); v.setAttribute('x', (x + 14).toFixed(1)); v.textContent = fmtM(m);
+}
+
+/* ---------- static (reduced motion / no-JS-lib) final state ---------- */
+if (!MOTION) {
+  nameMetrics();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(nameMetrics);
+  Object.keys(DOTS).forEach(function(id){ var svg = $('#'+id+' .dwg'); var last = { s1:'#r1', s2:'.hop:last-of-type', s3:'#rsb', s4:'#r3b', s5:'#r4c', s6:'#r6a' }[id]; var r = $(last, svg); if (r) place($('.dot', svg), r, 1); });
+  setMTTR(1);
+  rsStatic();
+  $$('#arcs .trail').forEach(function(t){ t.style.stroke = 'rgba(232,242,249,.3)'; });
+  $$('.fc').forEach(function(c){ c.classList.add('on'); });
+  var railA = $$('.rail a'), parts = [$('#cover')].concat($$('.sheet'));
+  var upd = function(){ var idx = 0; parts.forEach(function(el, i){ if (el.getBoundingClientRect().top < innerHeight * .5) idx = i; }); railA.forEach(function(a, k){ a.classList.toggle('on', k === idx); }); };
+  window.addEventListener('scroll', upd, { passive: true }); upd();
+  $$('[data-go]').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); parts[+a.dataset.go].scrollIntoView(); }); });
+  window.__fmStarted = true;
+  return;
+}
+
+/* ===================================================================== */
+/* ============================== MOTION =============================== */
+/* ===================================================================== */
+gsap.registerPlugin(ScrollTrigger);
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+window.scrollTo(0, 0);
+
+var lenis = null;
+try {
+  if (window.Lenis) {
+    lenis = new Lenis({ lerp: .11, wheelMultiplier: .95, smoothWheel: true });
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add(function(t){ lenis.raf(t * 1000); });
+    gsap.ticker.lagSmoothing(0);
+  }
+} catch (e) { lenis = null; }
+
+var sheets = $$('.sheet');
+var VH = function(){ return window.innerHeight; };
+
+function draw(tl, els, pos, dur, stagger, ease){
+  els = Array.isArray(els) ? els : (els ? [els] : []);
+  if (!els.length) return;
+  dur = dur || 1; stagger = stagger || 0;
+  tl.to(els, { strokeDashoffset: 0, duration: dur, stagger: stagger, ease: ease || 'power1.inOut' }, pos);
+  var solids = els.filter(function(e){ return e.classList.contains('solid'); });
+  if (solids.length) tl.to(solids, { fillOpacity: 1, duration: dur * .5 }, pos + dur * .45);
+  els.forEach(function(el, i){
+    var at = pos + i*stagger + dur*.92;
+    if (el.dataset.me) tl.set(el, { attr: { 'marker-end': el.dataset.me } }, at);
+    if (el.dataset.ms) tl.set(el, { attr: { 'marker-start': el.dataset.ms } }, at);
+  });
+}
+function fade(tl, els, pos, dur){ if (els && (els.length === undefined || els.length)) tl.to(els, { opacity: 1, duration: dur || .4, stagger: .03 }, pos); }
+function pop(tl, els, pos, dur){ if (!els || !els.length) return; tl.fromTo(els, { opacity: 0, scale: .86, transformOrigin: '0% 100%' }, { opacity: 1, scale: 1, duration: dur || .35, ease: 'back.out(2.2)', stagger: .06 }, pos); }
+function callout(tl, g, pos){ if (!g) return; draw(tl, $$('.ink', g), pos, .35, 0, 'power2.out'); pop(tl, $$('.hand, .lbl, .lbl-b', g), pos + .28); }
+function stamp(tl, g, pos, frame){
+  if (!g) return;
+  var inner = $('.st-in', g), ring = $('.st-ring', g);
+  tl.fromTo(inner, { scale: 2.3, opacity: 0, transformOrigin: '50% 50%' }, { scale: 1, opacity: 1, duration: .32, ease: 'power4.in' }, pos);
+  tl.fromTo(ring, { scale: 1, opacity: .75, transformOrigin: '50% 50%' }, { scale: 1.32, opacity: 0, duration: .4, ease: 'power2.out', immediateRender: false }, pos + .32);
+  if (frame) { tl.to(frame, { y: 3, duration: .03 }, pos + .3); tl.to(frame, { y: 0, duration: .16, ease: 'power2.out' }, pos + .33); }
+}
+function travel(tl, route, mover, pos, dur, ease, noTrail){
+  var o = { p: 0 }, trail = noTrail ? null : route._trail;
+  tl.fromTo(o, { p: 0 }, { p: 1, duration: dur, ease: ease || 'power1.inOut', immediateRender: false, onUpdate: function(){
+    place(mover, route, o.p);
+    if (trail) trail.style.strokeDashoffset = (1.02 * (1 - o.p)).toFixed(4);
+  } }, pos);
+}
+function mkTL(sec){
+  var first = sec.id === 's1', last = sec.id === 's6';
+  return gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: {
+    trigger: sec, start: first ? 'top -100%' : 'top top',
+    end: function(){ return '+=' + Math.max(10, sec.offsetHeight - VH() * (first ? 3 : last ? 1 : 2)); },
+    scrub: .7, invalidateOnRefresh: true
+  } });
+}
+
+/* ---------- intro (load) ---------- */
+function intro(){
+  var tl = gsap.timeline({ delay: .1 });
+  tl.set('.cover .frame', { visibility: 'visible' })
+    .from('.cover .zones', { opacity: 0, duration: .8 }, 0)
+    .from('.cover .guides i', { scaleX: 0, duration: 1.1, ease: 'power3.inOut', stagger: .1 }, 0)
+    .from('.cover .ch', { yPercent: 108, duration: .95, ease: 'power4.out', stagger: .032 }, .22)
+    .from('.cover .cap-dim', { scaleY: 0, duration: .7, ease: 'power3.inOut' }, .55)
+    .from('.cover-eyebrow, .cover .role, .cover .tagline', { opacity: 0, y: 12, duration: .7, stagger: .1, ease: 'power2.out' }, .85)
+    .from('.cover .titleblock, .cover .revs, .cover .scroll-cue', { opacity: 0, y: 14, duration: .8, stagger: .08, ease: 'power2.out' }, .95)
+    .from('#herodot', { scale: 0, duration: .55, ease: 'back.out(3)' }, 1.35)
+    .from('.dot-note', { opacity: 0, x: -10, duration: .55, ease: 'power2.out' }, 1.55)
+    .add(function(){ $$('.cover .word').forEach(function(w){ w.classList.add('free'); }); });
+}
+
+/* ---------- cover lift + hero dot ---------- */
+var A = { x: 0, y: 0 }, T = { x: 0, y: 0 };
+function offsetIn(el, root){ var x = 0, y = 0; while (el && el !== root) { x += el.offsetLeft; y += el.offsetTop; el = el.offsetParent; } return { x: x, y: y }; }
+function measureDot(){
+  var cover = $('#cover'), anc = $('.dot-anchor'), h1 = $('.name');
+  var o = offsetIn(anc, cover), fs = parseFloat(getComputedStyle(h1).fontSize);
+  A.x = o.x + fs * .13 + 7; A.y = o.y - 9;
+  var svg = $('#s1 .dwg'), st = $('#s1 .stage');
+  var m = svg.getScreenCTM(), sr = st.getBoundingClientRect();
+  var p = svg.createSVGPoint(); p.x = 214; p.y = 352; p = p.matrixTransform(m);
+  T.x = p.x - sr.left; T.y = p.y - sr.top;
+}
+function buildCover(){
+  var chars = $$('.cover .ch'), r = rng(42);
+  var lift = gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: { trigger: '#s1', start: 'top top', end: '+=100%', scrub: .6, invalidateOnRefresh: true } });
+  chars.forEach(function(c, i){
+    var rx = (r() - .5) * 1.1, ry = -(.3 + r() * .75), rot = (r() - .5) * 90, d = r() * .14;
+    lift.to(c, { x: function(){ return rx * innerWidth * .55; }, y: function(){ return ry * innerHeight; }, rotation: rot, opacity: 0, ease: 'power2.in', duration: .52 }, d);
+  });
+  lift.to('.cover .guides i, .cover .cap-dim, .cover .dot-note, .cover .scroll-cue', { opacity: 0, duration: .25 }, 0);
+  lift.to('.cover .cover-sub', { y: -40, opacity: 0, duration: .4, ease: 'power2.in' }, .08);
+  lift.to('#cover', { yPercent: -114, rotation: -3.2, xPercent: -1.5, transformOrigin: '100% 0%', ease: 'power2.in', duration: .74 }, .24);
+  lift.fromTo('#s1 .shade-cover', { opacity: .62 }, { opacity: 0, duration: .76 }, .24);
+  var hd = $('#herodot'), o = { p: 0 };
+  lift.fromTo(o, { p: 0 }, { p: 1, duration: .8, ease: 'power1.inOut', immediateRender: false, onUpdate: function(){
+    var p = o.p, cx = (A.x + T.x) / 2, cy = Math.min(A.y, T.y) - 170;
+    var x = (1-p)*(1-p)*A.x + 2*(1-p)*p*cx + p*p*T.x, y = (1-p)*(1-p)*A.y + 2*(1-p)*p*cy + p*p*T.y;
+    gsap.set(hd, { x: x, y: y });
+  } }, .14);
+  lift.set(hd, { autoAlpha: 0 }, .95);
+  lift.set('#cover', { autoAlpha: 0 }, 1);
+}
+
+/* ---------- sheet entries (sheet-over-sheet) ---------- */
+function buildEntries(){
+  sheets.forEach(function(sec, i){
+    if (!i) return;
+    var prev = sheets[i-1], st = $('.stage', sec), pst = $('.stage', prev), odd = i % 2;
+    gsap.timeline({ scrollTrigger: { trigger: sec, start: 'top bottom', end: 'top top', scrub: .5 } })
+      .fromTo(st, { rotation: odd ? 1.5 : -1.3, x: odd ? 26 : -22, transformOrigin: odd ? '0% 0%' : '100% 0%' }, { rotation: 0, x: 0, ease: 'power1.out' }, 0)
+      .fromTo($('.shade', prev), { opacity: 0 }, { opacity: .62, ease: 'none' }, 0)
+      .fromTo(pst, { scale: 1 }, { scale: .955, transformOrigin: '50% 0%', ease: 'none' }, 0);
+  });
+}
+
+/* ---------- sheet 01 ---------- */
+function buildS1(){
+  var sec = $('#s1'), svg = $('.dwg', sec), fr = $('.frame', sec), tl = mkTL(sec), q = function(s){ return $$(s, svg); };
+  var lis = $$('.gnotes li', sec), dot = $('.dot', svg);
+  tl.to(lis[0], { opacity: 1, duration: .4 }, 0);
+  draw(tl, q('.p1 .ink'), 0, 1.1, .045);
+  fade(tl, q('.p1 .fade'), .8, .5);
+  fade(tl, q('svg > .lbl.fade'), 0, .5);
+  draw(tl, q('.p2 .ink'), 1.1, 1, .07);
+  fade(tl, q('.p2 .fade'), 1.5);
+  callout(tl, $('.c1', svg), 2.1);
+  draw(tl, q('.p3 .ink'), 2.3, .8, .06); fade(tl, q('.p3 .fade'), 2.7);
+  tl.to(lis[1], { opacity: 1, duration: .4 }, 2.5);
+  callout(tl, $('.c2', svg), 2.9);
+  draw(tl, q('.p4 .ink'), 3.1, .8, .05); fade(tl, q('.p4 .fade'), 3.5);
+  draw(tl, q('.p5 .ink'), 3.8, 1.1, .05); fade(tl, q('.p5 .fade'), 4.4, .5);
+  tl.to(lis[2], { opacity: 1, duration: .4 }, 4.2);
+  tl.fromTo('#lvl', { scaleY: 0, transformOrigin: '50% 100%' }, { scaleY: 1, duration: 1.4, ease: 'power1.out' }, 7.0);
+  travel(tl, $('#r1'), dot, 5.1, 2.6);
+  tl.fromTo(q('.dim1'), { scaleY: 0, opacity: 0, transformOrigin: '50% 50%' }, { scaleY: 1, opacity: 1, duration: .6, ease: 'power2.out' }, 7.5);
+  callout(tl, $('.c3', svg), 8.0);
+  stamp(tl, $('.st1', svg), 8.6, fr);
+  tl.to({}, { duration: .5 }, 9.2);
+}
+
+/* ---------- sheet 02 ---------- */
+function buildS2(){
+  var sec = $('#s2'), svg = $('.dwg', sec), fr = $('.frame', sec), tl = mkTL(sec), q = function(s){ return $$(s, svg); };
+  var dot = $('.dot', svg), cards = $$('.fc', sec), track = $('.fc-track', sec);
+  var cardH = function(){ return cards[0].offsetHeight; };
+  fade(tl, q('svg > .lbl.fade, .from .fade'), 0, .4);
+  draw(tl, q('.from .ink'), 0, .4);
+  draw(tl, q('#fleet > path:first-child'), 0, .6);
+  draw(tl, q('#fleet .nt, #fleet .ns'), .25, .45, .02);
+  callout(tl, $('.c-fleet', svg), 2.3);
+  // card 2
+  tl.to(track, { y: function(){ return -cardH(); }, duration: .6, ease: 'power2.inOut' }, 3.3);
+  tl.to(cards[0], { opacity: .32, duration: .4 }, 3.3);
+  tl.add(function(){}, 3.3);
+  tl.set(cards[1], { className: 'fc on' }, 3.5); tl.set(cards[0], { className: 'fc' }, 3.5);
+  draw(tl, q('#plate .ink'), 3.5, .8, .08);
+  draw(tl, q('.recon .ink'), 3.9, .6, .1);
+  fade(tl, q('#asm .fade'), 4.2, .5);
+  callout(tl, $('.c-recon', svg), 4.4);
+  tl.fromTo(q('.bk'), { opacity: 0, scale: .6, transformOrigin: '50% 50%' }, { opacity: 1, scale: 1, duration: .3, stagger: .06, ease: 'back.out(3)' }, 4.9);
+  travel(tl, $('#r2in'), dot, 5.5, .7);
+  // card 3 + MTTR
+  tl.to(track, { y: function(){ return -2 * cardH(); }, duration: .6, ease: 'power2.inOut' }, 6.3);
+  tl.to(cards[1], { opacity: .32, duration: .4 }, 6.3);
+  tl.set(cards[2], { className: 'fc on' }, 6.5); tl.set(cards[1], { className: 'fc' }, 6.5);
+  tl.fromTo(q('.mttr'), { opacity: 0 }, { opacity: 1, duration: .4 }, 6.3);
+  var hops = q('.hop'), bks = q('.bk'), fxs = q('.fx'), t0 = 6.8, step = .45;
+  hops.forEach(function(h, i){
+    var t = t0 + i*step;
+    travel(tl, h, dot, t, .3, 'power2.inOut');
+    if (i < bks.length) {
+      tl.to(bks[i], { opacity: 0, duration: .12 }, t + .28);
+      draw(tl, $$('.ink', fxs[i]), t + .28, .16, .04);
+      tl.to(h._trail, { stroke: 'rgba(232,242,249,.28)', duration: .25 }, t + .4);
+    }
+  });
+  var mt = { p: 0 };
+  tl.fromTo(mt, { p: 0 }, { p: 1, duration: step * bks.length, immediateRender: false, ease: 'none', onUpdate: function(){ setMTTR(mt.p); } }, t0 + .2);
+  stamp(tl, $('.st2', svg), t0 + step*bks.length + .1, fr);
+  fade(tl, q('.to .fade'), t0 + step*bks.length + .3);
+  draw(tl, q('.to .ink'), t0 + step*bks.length - .2, .4);
+  tl.to({}, { duration: .5 }, t0 + step*hops.length + .2);
+  setMTTR(0);
+}
+
+/* ---------- sheet 03 ---------- */
+function buildS3(){
+  var sec = $('#s4'), svg = $('.dwg', sec), fr = $('.frame', sec), vel = $('.vellum', sec), vs = $('svg', vel), tl = mkTL(sec);
+  var q = function(s){ return $$(s, svg); }, v = function(s){ return $$(s, vs); };
+  var lis = $$('.gnotes li', sec), dot = $('.dot', svg);
+  tl.fromTo(vel, { xPercent: 118, rotation: 4, transformOrigin: '0% 100%' }, { xPercent: 118, rotation: 4, duration: .01 }, 0);
+  fade(tl, q('svg > .lbl.fade, .from .fade, .to .fade'), 0, .4);
+  draw(tl, q('.from .ink, .to .ink, .regs .ink'), 0, .5, .03);
+  tl.to(lis[0], { opacity: 1, duration: .4 }, 0);
+  draw(tl, q('#walls .ink'), .1, .9, .05);
+  fade(tl, q('#walls .fade'), .9, .6);
+  draw(tl, q('#doors .ink'), 1.6, .6, .06);
+  draw(tl, q('#dets .ink'), 2.0, .6, .04);
+  draw(tl, q('.ink.bus'), 1.2, .9);
+  fade(tl, q('#dets .fade'), 2.3, .5);
+  tl.to(lis[1], { opacity: 1, duration: .4 }, 2.2);
+  travel(tl, $('#r3a'), dot, 3.0, 1.5);
+  tl.fromTo(q('.ring-o'), { scale: 1, opacity: .9, transformOrigin: '50% 50%' }, { scale: 2.8, opacity: 0, stagger: .12, duration: .6, ease: 'power2.out', immediateRender: false }, 4.45);
+  // vellum
+  tl.to(vel, { xPercent: 0, rotation: 0, duration: 1.1, ease: 'power2.out' }, 5.0);
+  draw(tl, v('.regs .ink'), 5.9, .4);
+  fade(tl, v('.lbl.fade'), 6.0, .4);
+  draw(tl, v('.ink.sg'), 6.2, .3);
+  pop(tl, v('.hand').filter(function(t){ return t.textContent === 'wm'; }), 6.4);
+  callout(tl, $('.v2', vs), 6.5);
+  var ghost = $('.ghost', vs);
+  tl.fromTo(ghost, { opacity: 0 }, { opacity: 1, duration: .1 }, 6.9);
+  travel(tl, { getTotalLength: function(){ return 447; }, getPointAtLength: function(l){ return l < 412 ? { x: 18 + l, y: 270 } : { x: 430, y: 270 - (l - 412) }; }, _len: 447 }, ghost, 6.9, 1.0, 'power2.out', true);
+  pop(tl, v('.skip'), 7.9);
+  tl.to(ghost, { opacity: .25, duration: .3 }, 8.0);
+  tl.to(lis[2], { opacity: 1, duration: .4 }, 7.9);
+  callout(tl, $('.v1', vs), 8.0);
+  stamp(tl, $('.st3', vs), 8.5, fr);
+  pop(tl, v('.v4 .hand'), 9.0);
+  tl.to(lis[3], { opacity: 1, duration: .4 }, 9.0);
+  draw(tl, v('.tline .ink'), 9.4, .5, .1);
+  pop(tl, v('.tline .lbl'), 9.6);
+  var tm = $('.tmark', vs);
+  tl.fromTo(tm, { opacity: 0 }, { opacity: 1, duration: .1 }, 9.8);
+  travel(tl, $('#rt', vs), tm, 9.8, 1.0, 'none', true);
+  tl.to(lis[4], { opacity: 1, duration: .4 }, 10.0);
+  stamp(tl, $('.st3b', vs), 10.85, fr);
+  travel(tl, $('#r3b'), dot, 11.3, .9);
+  tl.to({}, { duration: .4 }, 12.2);
+  place(tm, $('#rt', vs), 0);
+  place(ghost, $('#r3a'), 0);
+}
+
+/* ---------- sheet 04 ---------- */
+function buildS4(){
+  var sec = $('#s5'), svg = $('.dwg', sec), fr = $('.frame', sec), tl = mkTL(sec), q = function(s){ return $$(s, svg); };
+  var lis = $$('.gnotes li', sec), dot = $('.dot', svg), fail = $('.fail', svg), atts = q('.att'), rows = q('.row');
+  fade(tl, q('svg > .lbl.fade, .from .fade'), 0, .4);
+  draw(tl, q('.from .ink'), 0, .4);
+  tl.to(lis[0], { opacity: 1, duration: .4 }, 0);
+  draw(tl, q('.states .ink'), .1, .9, .1);
+  fade(tl, q('.states .fade'), .7, .5);
+  draw(tl, q('.arrows .ink'), 1.0, .5, .12);
+  draw(tl, q('.loop .ink'), 1.6, .6); fade(tl, q('.loop .fade'), 1.9);
+  draw(tl, q('.log .ink'), 2.0, .5); fade(tl, q('.log .fade'), 2.2);
+  travel(tl, $('#r4a'), dot, 2.7, 1.3);
+  var t = 4.0, loop = $('#r4l');
+  for (var i = 0; i < 4; i++){
+    tl.set(atts[i], { opacity: 1 }, t); if (i) tl.set(atts[i-1], { opacity: 0 }, t);
+    pop(tl, [rows[i]], t);
+    if (i < 3) {
+      tl.fromTo(fail, { opacity: 0, scale: .6, transformOrigin: '0% 50%' }, { opacity: 1, scale: 1, duration: .14, ease: 'back.out(3)', immediateRender: i === 0 }, t + .05);
+      tl.to(fail, { opacity: .2, duration: .2 }, t + .4);
+      travel(tl, loop, dot, t + .5, .75);
+      t += 1.35;
+    }
+  }
+  tl.to(lis[1], { opacity: 1, duration: .4 }, 6.0);
+  stamp(tl, $('.st4', svg), t - .55, fr);
+  travel(tl, $('#r4b'), dot, t + .3, 1.0);
+  pop(tl, [rows[4]], t + 1.2);
+  stamp(tl, $('.st4b', svg), t + 1.25, fr);
+  var d0 = t + 1.8;
+  draw(tl, q('.dmark .ink'), d0, .5, .1); fade(tl, q('.dmark .fade'), d0 + .1);
+  draw(tl, q('.detail .ink'), d0 + .4, 1.0, .05);
+  fade(tl, q('.detail .fade'), d0 + 1.0, .5);
+  fade(tl, q('svg > .lbl.fade'), d0 + 1.0, .5);
+  pop(tl, q('.detail .hand'), d0 + 1.3);
+  tl.to(lis[2], { opacity: 1, duration: .4 }, d0 + .8);
+  draw(tl, q('.to .ink'), d0 + 1.4, .4); fade(tl, q('.to .fade'), d0 + 1.5);
+  travel(tl, $('#r4c'), dot, d0 + 1.7, .5);
+  tl.to({}, { duration: .5 }, d0 + 2.2);
+}
+
+/* ---------- sheet 03: rollout safety ---------- */
+function buildRS(){
+  var sec = $('#s3'), svg = $('.dwg', sec), fr = $('.frame', sec), tl = mkTL(sec), q = function(s){ return $$(s, svg); };
+  var lis = $$('.gnotes li', sec), dot = $('.dot', svg), vms = q('.vm'), toks = q('.tok'), arms = $('.arms', svg), hold = $('.hold', svg);
+  var ST = ['idle','req','per','den','done'];
+  function st(i, s, t){ ST.forEach(function(k){ tl.set($('.v-'+k, vms[i]), { opacity: k === s ? 1 : 0 }, t); }); }
+  fade(tl, q('svg > .lbl.fade, .from .fade'), 0, .4);
+  draw(tl, q('.from .ink'), 0, .4);
+  tl.to(lis[0], { opacity: 1, duration: .4 }, 0);
+  draw(tl, q('.infra .ink'), .1, 1.1, .05);
+  fade(tl, q('.infra .fade'), .7, .5);
+  draw(tl, q('.gauge .ink'), .9, .6, .1); fade(tl, q('.gauge .fade'), 1.2);
+  draw(tl, q('.gate .ink'), 1.1, .5, .1);
+  draw(tl, q('.ground'), 1.1, .6); fade(tl, q('.groundf, .lanelbl'), 1.4);
+  draw(tl, q('.vm .ink'), 1.3, .45, .025);
+  draw(tl, q('.arms .ink'), 1.6, .4);
+  tl.to(lis[1], { opacity: 1, duration: .4 }, 1.7);
+  callout(tl, $('.c-n', svg), 2.0);
+  travel(tl, $('#rsa'), dot, 2.3, 1.1);
+  // the update arrives: every machine asks
+  fade(tl, q('.legend .fade'), 3.2, .4); draw(tl, q('.legend .ink'), 3.2, .3, .05);
+  for (var i = 0; i < 8; i++) st(i, 'req', 3.4 + (7 - i) * .04);
+  tl.to(lis[2], { opacity: 1, duration: .4 }, 3.4);
+  pop(tl, [hold], 3.7);
+  var turn = 0, lane = 0;
+  function pass(ids, t){
+    ids.forEach(function(id, k){ st(id, 'per', t + k*.05); tl.to(toks[k], { opacity: 1, duration: .08 }, t + k*.05); });
+    turn += 1;
+    tl.to(arms, { rotation: 120 * turn, svgOrigin: '420 326', duration: .55, ease: 'power2.inOut' }, t + .2);
+    ids.forEach(function(id, k){
+      var x = RS.laneX(lane++);
+      tl.to(vms[id], { x: x, duration: .75, ease: 'power2.inOut' }, t + .2 + k*.12);
+      tl.to($('.img2', vms[id]), { opacity: 1, duration: .15 }, t + .95 + k*.12);
+      st(id, 'done', t + 1.0 + k*.12);
+      tl.to(toks[k], { opacity: 0, duration: .08 }, t + 1.0 + k*.12);
+    });
+  }
+  pass([7], 4.0);                       // canary first
+  tl.to(lis[3], { opacity: 1, duration: .4 }, 4.0);
+  callout(tl, $('.c-rev', svg), 5.0);   // fast revert path back
+  pass([6, 5], 5.6);
+  pass([3, 2], 6.9);                    // #4 holds for its tests; #3 and #2 go first
+  st(1, 'den', 7.15); st(1, 'req', 7.75); // budget full -> denied, asks again
+  tl.to($$('.h1, .h2', hold), { opacity: 0, duration: .15 }, 8.2);
+  tl.to($('.h3', hold), { opacity: 1, duration: .15 }, 8.25);
+  tl.to(hold, { opacity: 0, duration: .25 }, 8.65);
+  pass([4, 1], 8.8);
+  pass([0], 10.1);
+  stamp(tl, $('.st-rs', svg), 11.2, fr);
+  tl.to(lis[4], { opacity: 1, duration: .4 }, 11.4);
+  fade(tl, q('.detc .fade'), 11.4, .5); draw(tl, q('.detc .ink'), 11.4, .5);
+  callout(tl, $('.c-plug', svg), 11.8);
+  tl.to(lis[5], { opacity: 1, duration: .4 }, 12.2);
+  callout(tl, $('.metric', svg), 12.2);
+  fade(tl, q('.after .fade'), 12.6, .5);
+  draw(tl, q('.to .ink'), 12.6, .4); fade(tl, q('.to .fade'), 12.7);
+  travel(tl, $('#rsb'), dot, 12.9, .9);
+  tl.to({}, { duration: .5 }, 13.8);
+}
+
+/* ---------- sheet 06: issued for hire ---------- */
+function buildClose(){
+  var sec = $('#s6'), svg = $('.dwg', sec), fr = $('.frame', sec), tl = mkTL(sec), q = function(s){ return $$(s, svg); };
+  var dot = $('.dot', svg);
+  fade(tl, q('svg > .lbl.fade, .from .fade'), 0, .4);
+  draw(tl, q('.from .ink'), 0, .4);
+  draw(tl, q('#set .ink'), .1, .9, .04);
+  fade(tl, q('#set .fade'), .7, .4);
+  draw(tl, q('.tx .ink'), .6, .5, .1); fade(tl, q('.tx .fade'), .8, .4);
+  pop(tl, q('.tx .row'), 1.0);
+  travel(tl, $('#r6a'), dot, 1.6, 1.4);
+  callout(tl, $('.c6', svg), 2.4);
+  draw(tl, q('.to .ink'), 2.6, .4); fade(tl, q('.to .fade'), 2.8);
+  tl.to(dot, { opacity: 0, duration: .15 }, 3.0);
+  tl.fromTo($('.btn-mail .hole', sec), { scale: 0 }, { scale: 1, duration: .35, ease: 'back.out(3)' }, 3.05);
+  tl.fromTo($('.btn-mail', sec), { y: 0 }, { y: -6, duration: .12, ease: 'power2.out' }, 3.05);
+  tl.to($('.btn-mail', sec), { y: 0, duration: .3, ease: 'bounce.out' }, 3.17);
+  stamp(tl, $('.st5', sec), 3.8, fr);
+  tl.to({}, { duration: 1.4 }, 4.4);
+}
+
+/* ---------- rail + nav ---------- */
+var railLinks = $$('.rail a'), prog = $('.rail-prog'), curIdx = -1;
+function setActive(i){ if (i === curIdx) return; curIdx = i; railLinks.forEach(function(a, k){ a.classList.toggle('on', k === i); }); }
+function updateActive(){
+  var idx = 0;
+  if (window.scrollY > VH() * .55) { idx = 1; sheets.forEach(function(s, i){ if (i > 0 && s.getBoundingClientRect().top < VH() * .5) idx = i + 1; }); }
+  setActive(idx);
+}
+function targetY(i){
+  if (i <= 0) return 0;
+  var sec = sheets[i-1];
+  if (i === 1) return VH() * 1.04;
+  return sec.offsetTop + (sec.offsetHeight - 2*VH()) * .02;
+}
+function go(i){ var y = targetY(i); if (lenis) lenis.scrollTo(y, { duration: 1.6 }); else window.scrollTo({ top: y, behavior: 'smooth' }); }
+$$('[data-go]').forEach(function(a){ a.addEventListener('click', function(e){ e.preventDefault(); go(+a.dataset.go); }); });
+
+function start(){
+  window.__fmStarted = true;
+  nameMetrics();
+  measureDot();
+  gsap.set('#herodot', { x: A.x, y: A.y });
+  intro();
+  buildCover();
+  buildEntries();
+  buildS1(); buildS2(); buildRS(); buildS3(); buildS4(); buildClose();
+  ScrollTrigger.create({ start: 0, end: 'max', onUpdate: function(self){ prog.style.transform = 'scaleY(' + self.progress.toFixed(4) + ')'; updateActive(); } });
+  gsap.to('.ms-ring', { rotation: 360, svgOrigin: '50 50', ease: 'none', scrollTrigger: { start: 0, end: 'max', scrub: .6 } });
+  ScrollTrigger.addEventListener('refreshInit', function(){ nameMetrics(); });
+  ScrollTrigger.addEventListener('refresh', function(){ measureDot(); if (window.scrollY < 2) gsap.set('#herodot', { x: A.x, y: A.y }); });
+  ScrollTrigger.refresh();
+  updateActive();
+}
+var started = false;
+function once(){ if (started) return; started = true; try { start(); } catch (e) { console.error(e); DOC.classList.remove('motion'); } }
+if (document.fonts && document.fonts.ready) { document.fonts.ready.then(once); setTimeout(once, 2500); } else { once(); }
+})();
+</script>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <linearGradient id="popSheen" x1="0" y1="0" x2="1" y2="0" gradientUnits="objectBoundingBox" spreadMethod="repeat">
+    <stop offset="0" stop-color="var(--ink)" style="stop-color:var(--ink)"/>
+    <stop offset=".35" stop-color="var(--ink)" style="stop-color:var(--ink)"/>
+    <stop offset=".45" style="stop-color:var(--sig)"/>
+    <stop offset=".55" style="stop-color:var(--pop2)"/>
+    <stop offset=".65" style="stop-color:var(--ink)"/>
+    <stop offset="1" style="stop-color:var(--ink)"/>
+    <animateTransform attributeName="gradientTransform" type="translate" from="-1 0" to="1 0" dur="4.5s" repeatCount="indefinite"/>
+  </linearGradient>
+</defs></svg>
+<script>
+(function(){
+  var root = document.documentElement;
+  var idx = -1;
+  var sheets = Array.prototype.slice.call(document.querySelectorAll('.sheet'));
+
+  /* build flow overlays on structural strokes */
+  var SEL = '.dwg path.ink.b, .dwg line.ink.b, .dwg polyline.ink.b, .dwg rect.ink.b, .dwg path.ink:not(.t), .dwg line.ink:not(.t), .dwg polyline.ink:not(.t), .dwg .sig-ln, .dwg .dimln';
+  var pairs = [];
+  Array.prototype.forEach.call(document.querySelectorAll(SEL), function(el, n){
+    if (el.closest('.stamp') || el.closest('defs') || el.closest('pattern')) return;
+    try { if (el.getTotalLength && el.getTotalLength() < 60) return; } catch(e){ return; }
+    var c = el.cloneNode(false); c.removeAttribute('id'); c.removeAttribute('style');
+    c.setAttribute('class', 'flow' + (n % 3 === 1 ? ' alt' : '')); c.setAttribute('pathLength', '100');
+    c.style.setProperty('--fd', (2.2 + (n % 5) * .45).toFixed(2) + 's');
+    c.style.setProperty('--fdl', (-(n * .37) % 3).toFixed(2) + 's');
+    el.parentNode.insertBefore(c, el.nextSibling);
+    pairs.push([el, c, el.closest('.sheet') || el.closest('.cover')]);
+  });
+
+  function drawn(el){
+    var cs = getComputedStyle(el), op = parseFloat(cs.opacity);
+    if (op < .5) return false;
+    var p = el.parentNode; while (p && p.nodeType === 1 && p.tagName !== 'svg'){ if (parseFloat(getComputedStyle(p).opacity) < .5) return false; p = p.parentNode; }
+    var off = parseFloat(el.style.strokeDashoffset || cs.strokeDashoffset || 0);
+    return !(Math.abs(off) > 2);
+  }
+  function activeIndex(){
+    var vh = innerHeight, a = 0;
+    if (scrollY > vh * .55){ a = 1; sheets.forEach(function(s, i){ if (i > 0 && s.getBoundingClientRect().top < vh * .5) a = i + 1; }); }
+    return a;
+  }
+  function tick(){
+    var a = activeIndex();
+    if (a !== idx){
+      idx = a;
+      sheets.forEach(function(s, i){ var on = (i + 1) === a; s.classList.toggle('is-on', on);
+        if (on){ s.classList.remove('sweep'); void s.offsetWidth; s.classList.add('sweep'); } });
+    }
+    var host = a === 0 ? document.querySelector('.cover') : sheets[a - 1];
+    pairs.forEach(function(p){ p[1].classList.toggle('live', p[2] === host && drawn(p[0])); });
+    if (host) Array.prototype.forEach.call(host.querySelectorAll('.gnotes li'), function(li){ li.classList.toggle('lit', parseFloat(getComputedStyle(li).opacity) > .8); });
+  }
+  setInterval(tick, 200); addEventListener('scroll', function(){ requestAnimationFrame(tick); }, { passive:true }); tick();
+})();
+</script>
+</body>
+</html>

@@ -43,3 +43,11 @@ next-env.d.ts
 
 # Superpowers brainstorming
 .superpowers/
+
+# impeccable tooling / runtime (keep on disk, out of git)
+.agents/
+.impeccable/mocks/
+.impeccable/review/
+.impeccable/build/
+.impeccable/questions/
+skills-lock.json

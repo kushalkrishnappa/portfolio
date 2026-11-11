@@ -1,61 +1,81 @@
 import type { Metadata } from "next";
+import "@/app/components/manual/field-manual.css";
+import { fmFontVars } from "@/app/components/manual/fonts";
+import { SvgDefs } from "@/app/components/manual/SvgDefs";
+import { PageChrome } from "@/app/components/manual/Chrome";
+import Leaf from "@/app/components/manual/Leaf";
+import SpecTable from "@/app/components/manual/SpecTable";
+import FieldNotesLog from "@/app/components/manual/FieldNotesLog";
 import { getAllPosts } from "@/lib/blog";
-import SectionHeader from "@/app/components/SectionHeader";
+import { APPENDIX_TOTAL, MANUAL_REV } from "@/data/manual";
+
+const DESCRIPTION = "Writing on distributed systems, infrastructure automation, and security.";
 
 export const metadata: Metadata = {
-  title: "Blog — Kushal Krishnappa",
-  description: "Writing on distributed systems, infrastructure automation, and security.",
+  title: "Field notes",
+  description: DESCRIPTION,
 };
 
+/**
+ * /blogs — "Field Notes": the full log of posts from the blog manifest, on the
+ * Field Manual's paper as an expanded Appendix C. Each entry links out to the
+ * post (same links as before); an empty or failed manifest shows a quiet line.
+ */
 export default async function BlogIndex() {
   const posts = await getAllPosts();
-
+  const n = posts.length;
   return (
-    <div className="min-h-screen bg-black text-gray-300 font-mono">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl pt-12 sm:pt-20 pb-16">
-        <SectionHeader command="ls ~/blog" />
-        <div className="pl-4 border-l-2 border-gray-700">
-          {posts.length === 0 ? (
-            <div className="bg-gray-900 border border-dashed border-yellow-600/60 rounded-lg p-8 text-center">
-              <p className="text-yellow-400 text-base mb-2">⚠ Working on it…</p>
-              <p className="text-gray-500 text-sm">
-                Writing my first posts on distributed systems, infrastructure automation, and
-                security. Check back soon.
-              </p>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {posts.map((post) => (
-                <a
-                  key={post.slug}
-                  href={post.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block bg-gray-900 border border-gray-800 rounded-lg p-5 hover:border-gray-700 transition-colors"
-                >
-                  <div className="flex justify-between items-baseline gap-4">
-                    <h2 className="text-white font-bold">{post.title}</h2>
-                    <span className="text-gray-500 text-xs shrink-0 whitespace-nowrap tabular-nums">
-                      {post.date}
-                    </span>
-                  </div>
-                  <p className="text-gray-400 text-sm my-2">{post.summary}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {post.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="text-xs border border-gray-700 rounded px-2 py-0.5 text-cyan-400"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
+    <div className={`fm fn-page ${fmFontVars}`}>
+      <SvgDefs />
+      <PageChrome />
+      <main>
+        <Leaf
+          id="field-notes"
+          as="h1"
+          eyebrow="Appendix C · Field notes · Complete log"
+          title="Field notes"
+          bp="50% 80%"
+          titleBlock={{
+            no: "C",
+            noLabel: "Appendix",
+            of: APPENDIX_TOTAL,
+            title: "Field notes",
+            rev: MANUAL_REV,
+            cells: [
+              { label: "Drawn", value: "K. Krishnappa" },
+              { label: "Entries", value: n ? String(n).padStart(2, "0") : "None" },
+              { label: "Status", value: "Open" },
+            ],
+          }}
+        >
+          <div className="leaf-grid">
+            <aside className="leaf-notes">
+              <SpecTable
+                caption="Schedule C — Log"
+                rows={[
+                  ["Subjects", "Distributed systems · infrastructure automation · security"],
+                  ["Entries", n ? String(n).padStart(2, "0") : "None filed yet"],
+                  ["Latest", posts[0]?.date || "—"],
+                ]}
+              />
+              <p className="leaf-more" data-row>
+                {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- full load for the manual's motion gate */}
+                <a href="/">
+                  <span aria-hidden="true">←</span> Back to the manual
                 </a>
-              ))}
+              </p>
+            </aside>
+            <div className="leaf-main">
+              <FieldNotesLog
+                posts={posts}
+                tags
+                emptyLink={false}
+                emptyNote="First entries on distributed systems, infrastructure automation and security are in progress."
+              />
             </div>
-          )}
-        </div>
-      </div>
+          </div>
+        </Leaf>
+      </main>
     </div>
   );
 }

@@ -1,51 +1,18 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/*
+ * Site base. Every page is a Field Manual surface: its tokens, type and
+ * furniture live in components/manual/field-manual.css (see DESIGN.md).
+ * This only sets the near-black ground for the instant before that sheet
+ * paints, and keeps the page from scrolling sideways. `clip` (not `hidden`)
+ * so body never becomes a scroll container and sticky stages still pin.
+ */
+html,
+body {
+  background: #06080c;
+  color: #e9edf3;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-@keyframes slideLeft {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
-
-.animate-slideLeft {
-  animation: slideLeft 15s linear infinite;
-}
-
-/* Smooth anchor scrolling, disabled for users who prefer reduced motion. */
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    scroll-behavior: smooth;
-  }
-}
-
-/* Offsets in-page anchor targets so headings clear the fixed nav bar. */
-section[id] {
-  scroll-margin-top: 6rem;
+  overflow-x: clip;
 }

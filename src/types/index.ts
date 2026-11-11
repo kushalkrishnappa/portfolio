@@ -23,32 +23,18 @@ export interface About {
 
 export interface Profile {
   name: string;
+  role: string;
   tagline: string;
+  /** Public résumé contact email — rendered as the Contact section's CTA. */
+  email: string;
   availability: string;
+  nowLine: string;
+  /** Prior employers, most recent first — rendered in the hero's BEFORE line. */
+  before: string[];
+  chips: string[];
   about: About;
   quickInfo: QuickInfo[];
   socials: Social[];
-}
-
-export interface ImpactMetric {
-  value: string;
-  label: string;
-}
-
-export interface Experience {
-  period: string;
-  company: string;
-  role: string;
-  location: string;
-  achievements: string[];
-}
-
-export interface Project {
-  name: string;
-  description: string;
-  tech: string[];
-  features: string[];
-  impact: string;
 }
 
 export interface SkillGroup {
@@ -61,12 +47,14 @@ export interface Education {
   degree: string;
   period: string;
   gpa?: string;
+  honors?: string;
   coursework: string[];
 }
 
 export interface Publication {
   title: string;
   venue: string;
+  year: string;
   description: string;
   url?: string;
 }
