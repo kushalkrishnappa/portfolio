@@ -17,9 +17,10 @@ import { useFieldManual } from "./motion/useFieldManual";
 
 interface FieldManualProps {
   /**
-   * APPENDICES SLOT — A · Parts list, B · Specifications, C · Field notes.
-   * Rendered between sheet 05 and sheet 06 (same paper and title block, NOT
-   * pinned). Built in a follow-up task; page.tsx passes them in.
+   * APPENDICES SLOT — A · Parts list, B · Specifications, C · Field notes
+   * (sheets/Appendices.tsx; page.tsx passes them in with the server-fetched
+   * blog posts). Rendered between sheet 05 and sheet 06: same paper and title
+   * block, NOT pinned.
    */
   appendices?: ReactNode;
 }
@@ -40,9 +41,7 @@ export default function FieldManual({ appendices }: FieldManualProps) {
         <Rollout />
         <Tenant />
         <Workflows />
-        {/* ============ APPENDICES SLOT (A Parts list · B Specifications · C Field notes) ============ */}
         {appendices}
-        {/* ========================================================================================= */}
         <Contact />
         <RfiSheet />
       </main>

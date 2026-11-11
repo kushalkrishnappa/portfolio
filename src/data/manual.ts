@@ -11,7 +11,11 @@
  * components under src/app/components/manual/sheets/.
  */
 
+import { skillGroups } from "./skills";
+
 export type CompanyName = "mercedes" | "everpure" | "rooncyber";
+/** Every official mark the manual may show: the employers plus the school (Appendix B). */
+export type MarkName = CompanyName | "northeastern";
 
 export interface TitleCell {
   label: string;
@@ -201,7 +205,7 @@ export const sheets: SheetMeta[] = [
       rows: [
         ["Open to", "Backend · Platform · Infra · SRE roles"],
         ["Degree", "MS Computer Science, Northeastern · May 2027"],
-        ["Set", "Cover + five sheets, issued together"],
+        ["Set", "Cover, five sheets + appendices A–C"],
         ["Reply", "Email, GitHub or LinkedIn"],
       ],
     },
@@ -209,6 +213,60 @@ export const sheets: SheetMeta[] = [
     height: "290vh",
     edge: "deckle",
     bp: "60% 60%",
+  },
+];
+
+/**
+ * Appendices — reference sheets between sheet 05 and sheet 06. Same paper and
+ * title block as the story sheets, but NOT pinned: their rows draw in on scroll.
+ */
+export interface AppendixMeta {
+  id: string;
+  letter: "A" | "B" | "C";
+  /** Short label for the sheet index (shown beside the letter). */
+  railLabel: string;
+  title: string;
+  eyebrow: string;
+  titleCells: [TitleCell, TitleCell, TitleCell];
+  edge: "torn" | "deckle";
+  bp: string;
+}
+
+export const APPENDIX_TOTAL = "C";
+
+/** Total parts in Appendix A's bill of materials (one per listed skill). */
+export const PARTS_TOTAL = skillGroups.reduce((n, g) => n + g.skills.length, 0);
+
+export const appendices: AppendixMeta[] = [
+  {
+    id: "appx-a",
+    letter: "A",
+    railLabel: "Parts",
+    title: "Parts list",
+    eyebrow: "Appendix A · Bill of materials · Tools and platforms",
+    titleCells: [drawn, { label: "Qty", value: `${PARTS_TOTAL} parts` }, { label: "Scale", value: "NTS" }],
+    edge: "torn",
+    bp: "30% 60%",
+  },
+  {
+    id: "appx-b",
+    letter: "B",
+    railLabel: "Specs",
+    title: "Specifications",
+    eyebrow: "Appendix B · Education · Publication · Certifications",
+    titleCells: [drawn, { label: "Date", value: MANUAL_DATE }, { label: "Scale", value: "NTS" }],
+    edge: "deckle",
+    bp: "70% 50%",
+  },
+  {
+    id: "appx-c",
+    letter: "C",
+    railLabel: "Notes",
+    title: "Field notes",
+    eyebrow: "Appendix C · Writing · Log of entries",
+    titleCells: [drawn, { label: "Type", value: "Log" }, { label: "Status", value: "Open" }],
+    edge: "torn",
+    bp: "50% 80%",
   },
 ];
 

@@ -9,7 +9,7 @@ import { education } from "./education";
 import { publications } from "./publications";
 import { certifications } from "./certifications";
 import { systems } from "./systems";
-import { sheets, fleetFacts, coverRevisions } from "./manual";
+import { sheets, fleetFacts, coverRevisions, appendices, PARTS_TOTAL } from "./manual";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -43,7 +43,11 @@ const allData: Record<string, unknown> = {
   manualSheets: sheets,
   fleetFacts,
   coverRevisions,
+  appendices,
 };
+
+const SRC = path.resolve(__dirname, "..");
+const readSrc = (rel: string) => fs.readFileSync(path.join(SRC, rel), "utf8");
 
 describe("data layer — private denylist", () => {
   it("contains no private Jira keys or PR/ticket numbers", () => {
@@ -138,5 +142,62 @@ describe("field manual — binding content rules", () => {
 
   it("never claims RoonCyber customers", () => {
     expect(manualText).not.toMatch(/customer/i);
+  });
+});
+
+describe("appendices — A parts list, B specifications, C field notes", () => {
+  it("are A, B, C in order with unique ids and rail labels", () => {
+    expect(appendices.map((a) => a.letter)).toEqual(["A", "B", "C"]);
+    expect(new Set(appendices.map((a) => a.id)).size).toBe(3);
+    for (const a of appendices) {
+      expect(a.id).toMatch(/^appx-[abc]$/);
+      expect(a.railLabel.length).toBeGreaterThan(0);
+      expect(a.eyebrow).toContain(`Appendix ${a.letter}`);
+    }
+  });
+
+  it("counts every listed skill as one part", () => {
+    expect(PARTS_TOTAL).toBe(skillGroups.reduce((n, g) => n + g.skills.length, 0));
+    const skills = skillGroups.flatMap((g) => g.skills);
+    expect(new Set(skills).size).toBe(skills.length);
+  });
+
+  it("lists the Northeastern MS CS (4.0, May 2027) first, then the undergrad degree", () => {
+    const [ms, bt] = education;
+    expect(ms.school).toBe("Northeastern University");
+    expect(ms.degree).toMatch(/M\.S\. Computer Science/);
+    expect(ms.gpa).toMatch(/^4\.0/);
+    expect(ms.period).toMatch(/May 2027$/);
+    expect(bt?.school).toBe("PES University");
+  });
+
+  it("dates the publication IEEE 2022", () => {
+    expect(publications[0]).toMatchObject({ venue: "IEEE", year: "2022" });
+    expect(publications[0].url).toMatch(/^https:\/\/ieeexplore\.ieee\.org\//);
+  });
+
+  it("has a name for every certification", () => {
+    expect(certifications.length).toBeGreaterThan(0);
+    for (const c of certifications) expect(c.name.trim().length).toBeGreaterThan(0);
+  });
+
+  it("puts the official Northeastern logo on its native black chip", () => {
+    const mark = readSrc("app/components/manual/CompanyMark.tsx");
+    expect(mark).toMatch(/northeastern:\s*\{[^}]*src: "\/logos\/northeastern\.svg"[^}]*ground: "#000"/);
+    expect(fs.existsSync(path.resolve(SRC, "../public/logos/northeastern.svg"))).toBe(true);
+  });
+
+  it("never filters, masks, clips or fades a logo chip (brand rules)", () => {
+    const css = readSrc("app/components/manual/field-manual.css");
+    const chipRules = css.match(/\.chip[^{]*\{[^}]*\}/g) ?? [];
+    expect(chipRules.length).toBeGreaterThan(0);
+    for (const r of chipRules) expect(r).not.toMatch(/filter|mask|clip-path|opacity|mix-blend/);
+  });
+
+  it("keeps the appendix copy clear of the binding content rules", () => {
+    const copy = readSrc("app/components/manual/sheets/Appendices.tsx");
+    const text = [copy, collectStrings(appendices, []).join("\n")].join("\n");
+    expect(text).not.toMatch(/customer/i);
+    expect(PRIVATE_DENYLIST.test(text)).toBe(false);
   });
 });

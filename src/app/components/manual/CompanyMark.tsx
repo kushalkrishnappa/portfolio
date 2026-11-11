@@ -1,11 +1,11 @@
 import Image from "next/image";
 import type { CSSProperties } from "react";
-import type { CompanyName } from "@/data/manual";
+import type { MarkName } from "@/data/manual";
 
-export type { CompanyName };
+export type { MarkName };
 
 /**
- * CompanyMark — an employer's official logo, rendered PURE: the original,
+ * CompanyMark — an employer's (or the school's) official logo, rendered PURE: the original,
  * unmodified file from `public/logos/<name>.svg`, in its own colours, on a
  * solid chip of its native background ("the logo's own ground"), like a
  * manufacturer's nameplate fixed to the drawing.
@@ -24,10 +24,12 @@ interface MarkDef {
   ground: string;
 }
 
-const MARKS: Record<CompanyName, MarkDef> = {
+const MARKS: Record<MarkName, MarkDef> = {
   mercedes: { label: "Mercedes-Benz", src: "/logos/mercedes.svg", w: 64, h: 64, ground: "#000" },
   everpure: { label: "Everpure (Pure Storage)", src: "/logos/everpure.svg", w: 177, h: 31, ground: "#fff" },
   rooncyber: { label: "RoonCyber", src: "/logos/rooncyber.svg", w: 675, h: 66, ground: "#fff" },
+  // Official lockup (red N, white wordmark), shown on its native black ground.
+  northeastern: { label: "Northeastern University", src: "/logos/northeastern.svg", w: 486, h: 180, ground: "#000" },
 };
 
 /**
@@ -36,21 +38,22 @@ const MARKS: Record<CompanyName, MarkDef> = {
  * is additionally capped at the chip width minus its clear space
  * (object-fit: contain inside that box — never stretched).
  */
-export const LOGO_FIT: Record<CompanyName, number> = {
+export const LOGO_FIT: Record<MarkName, number> = {
   mercedes: 0.82,
   everpure: 0.52,
   rooncyber: 0.4,
+  northeastern: 0.9,
 };
 
 /** Chip contexts. Every chip in one context has the SAME outer box. */
 export type ChipSize = "plate" | "rev" | "tb";
 
-export function markLabel(name: CompanyName): string {
+export function markLabel(name: MarkName): string {
   return MARKS[name].label;
 }
 
 interface CompanyMarkProps {
-  name: CompanyName;
+  name: MarkName;
   /** Which fixed chip box to use (sizes live in field-manual.css, `.chip-<size>`). */
   size: ChipSize;
   className?: string;

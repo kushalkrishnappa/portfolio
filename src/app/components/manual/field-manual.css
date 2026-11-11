@@ -158,7 +158,7 @@ html.lenis,html.lenis body{height:auto}
 .nav a:hover,.nav a:focus-visible{border-color:var(--ink);background:rgba(9,38,74,.95);outline:none}
 .nav a .k{color:var(--ink2);margin-right:6px}
 
-.rail{position:fixed;right:34px;top:50%;transform:translateY(-50%);z-index:60;height:min(48vh,440px);width:98px;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end}
+.rail{position:fixed;right:34px;top:50%;transform:translateY(-50%);z-index:60;height:min(54vh,480px);width:98px;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end}
 .rail-head{position:absolute;top:-30px;right:0;font:500 7.5px/1 var(--f-mono);letter-spacing:.22em;color:var(--ink2);white-space:nowrap;text-transform:uppercase}
 .rail-line{position:absolute;right:3px;top:0;bottom:0;width:1px;background:var(--ink3)}
 .rail-line::before{content:"";position:absolute;right:0;top:0;bottom:0;width:5px;background:repeating-linear-gradient(to bottom,var(--ink3) 0 1px,transparent 1px 11px)}
@@ -363,13 +363,13 @@ html:not(.motion) .scroll-cue i{animation:none}
 .gnotes li.lit b{ background-size:100% 2px; color:#fff !important }
 .gnotes li.lit::before{ color:var(--sig) !important }
 .spec tr:first-child td{ background:linear-gradient(90deg, var(--sig), var(--pop2)) no-repeat 0 100% / 0% 2px; transition:background-size 1.1s cubic-bezier(.2,.7,.2,1) .3s }
-.sheet.is-on .spec tr:first-child td{ background-size:min(100%, 18ch) 2px }
-.eyebrow{ transition:color .6s } .sheet.is-on .eyebrow{ color:var(--ink) }
+.sheet.is-on .spec tr:first-child td,.appx.is-on .spec tr:first-child td{ background-size:min(100%, 18ch) 2px }
+.eyebrow{ transition:color .6s } .sheet.is-on .eyebrow,.appx.is-on .eyebrow{ color:var(--ink) }
 
 /* 4 · TITLES: one colour sweep passes through the stencil letters on arrival */
 .sheet-title{ background:linear-gradient(100deg, var(--ink) 0 38%, var(--sig) 46%, var(--pop2) 54%, var(--ink) 62% 100%);
   background-size:300% 100%; background-position:0% 0; -webkit-background-clip:text; background-clip:text; color:transparent }
-.sheet.sweep .sheet-title{ animation:titleSweep 1.8s cubic-bezier(.3,.6,.2,1) 1 both }
+.sheet.sweep .sheet-title,.appx.sweep .sheet-title{ animation:titleSweep 1.8s cubic-bezier(.3,.6,.2,1) 1 both }
 @keyframes titleSweep{ from{ background-position:100% 0 } to{ background-position:0% 0 } }
 
 /* 5 · NODES: diagram hot spots breathe between the two pops */
@@ -378,7 +378,7 @@ html:not(.motion) .scroll-cue i{animation:none}
 .stamp.o{ animation:stampBreath 3.2s ease-in-out infinite }
 @keyframes stampBreath{ 0%,100%{ --stamp:var(--sig) } 50%{ --stamp:var(--pop2) } }
 
-@media (prefers-reduced-motion: reduce){ .flow{ display:none } .fc h4,.lbl-b,.hot,.tmark,.dot .core,.stamp.o,.sheet .sheet-title{ animation:none !important } }
+@media (prefers-reduced-motion: reduce){ .flow{ display:none } .fc h4,.lbl-b,.hot,.tmark,.dot .core,.stamp.o,.sheet .sheet-title,.leaf .sheet-title{ animation:none !important } }
 
 
 /* ---- v3 additions ---- */
@@ -434,7 +434,8 @@ html.motion:not(.fm-live) #herodot{visibility:hidden}
 .sheet-head.has-plate{right:118px}
 .plate{position:relative;flex:none;margin-top:17px;padding:6px;display:flex;color:var(--ink)}
 .plate-body{display:flex;align-items:center;gap:14px}
-.plate-cap{display:block;max-width:13ch;font:500 8.5px/1.6 var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:var(--ink2);padding-right:6px}
+/* caption: explicit lines (never broken at a hyphen), centred on the chip */
+.plate-cap{display:flex;flex-direction:column;justify-content:center;gap:3px;font:500 8.5px/1.45 var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:var(--ink2);white-space:nowrap;padding-right:8px}
 .plate-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
 .plate .pf{fill:none;stroke:var(--ink2);stroke-width:1}
 .plate .flow{stroke-width:1.6;stroke-dasharray:2.5 97.5}
@@ -449,10 +450,10 @@ html.motion:not(.fm-live) #herodot{visibility:hidden}
    plate's chip slides up into place. All done within ~0.9s. The logo is never animated. */
 .motion .plate .pf{stroke-dasharray:1 3;stroke-dashoffset:1.02}
 .motion .plate .tick,.motion .plate .plate-lbl,.motion .plate .plate-body{opacity:0}
-.motion .sheet.sweep .plate .pf{animation:plateDraw .55s cubic-bezier(.55,0,.25,1) .05s both}
-.motion .sheet.sweep .plate .tick{animation:plateTick .35s cubic-bezier(.2,.8,.2,1) .05s both}
-.motion .sheet.sweep .plate .plate-lbl{animation:plateFade .3s ease-out .25s both}
-.motion .sheet.sweep .plate .plate-body{animation:plateIn .5s cubic-bezier(.2,.8,.2,1) .4s both}
+.motion .sheet.sweep .plate .pf,.motion .appx .in .plate .pf{animation:plateDraw .55s cubic-bezier(.55,0,.25,1) .05s both}
+.motion .sheet.sweep .plate .tick,.motion .appx .in .plate .tick{animation:plateTick .35s cubic-bezier(.2,.8,.2,1) .05s both}
+.motion .sheet.sweep .plate .plate-lbl,.motion .appx .in .plate .plate-lbl{animation:plateFade .3s ease-out .25s both}
+.motion .sheet.sweep .plate .plate-body,.motion .appx .in .plate .plate-body{animation:plateIn .5s cubic-bezier(.2,.8,.2,1) .4s both}
 @keyframes plateDraw{from{stroke-dashoffset:1.02}to{stroke-dashoffset:0}}
 @keyframes plateTick{from{opacity:0;transform:scale(1.9)}to{opacity:1;transform:none}}
 @keyframes plateFade{from{opacity:0}to{opacity:1}}
@@ -507,7 +508,7 @@ html:not(.motion) .rfi-sheet .tear-shadow{display:none}
   .head-row{flex-direction:column-reverse;align-items:flex-start;gap:0}
   .plate{margin:16px 0 4px;padding:5px}
   .chip-plate{--cw:150px;--chh:44px;--cp:10px}
-  .plate-cap{font-size:7.5px;max-width:14ch}
+  .plate-cap{font-size:7px;gap:2px;padding-right:4px}
   .plate-lbl{font-size:6px}
   .sheet.has-plate .drawing{top:206px;height:calc(40vh - 36px)}
   .sheet.has-plate .notes{top:calc(206px + 40vh - 32px)}
@@ -519,4 +520,162 @@ html:not(.motion) .rfi-sheet .tear-shadow{display:none}
   .rfi-sheet .rfi{margin-top:22px}
   .rfi-cap b{display:none}
   .rfi input,.rfi textarea{font-size:16px}
+}
+
+/* =====================================================================
+   Leaves: unpinned sheets. The appendices (A Parts list, B Specifications,
+   C Field notes) between sheets 05 and 06, and the /blogs Field Notes page.
+   Same paper, frame, zones, header and title block as a pinned sheet, but
+   as tall as their content.
+   ===================================================================== */
+.leaf{position:relative}
+.leaf-stage{position:relative;min-height:100vh;padding:var(--inset);will-change:transform}
+.leaf .frame{position:relative;inset:auto;min-height:calc(100vh - 2 * var(--inset));display:flex;flex-direction:column}
+.leaf-head{position:relative;padding:56px 230px 0 34px}
+.leaf-body{position:relative;flex:1 0 auto;padding:46px 118px 76px 34px}
+.leaf .titleblock{position:relative;left:auto;bottom:auto;flex:none}
+.leaf-tail{display:none}
+/* In the live manual the appendices stack like sheets: each slides over its
+   predecessor, sticks once its end is reached (the hook sets the negative
+   sticky top) and its 100vh tail is the overlap the next sheet slides over. */
+html.fm-live .appx{margin-top:-100vh}
+html.fm-live .appx + .sheet{margin-top:-100vh}
+html.fm-live .appx .leaf-stage{position:sticky}
+html.fm-live .appx .leaf-tail{display:block;height:100vh}
+
+.leaf-grid{display:grid;grid-template-columns:var(--col) minmax(0,1fr);column-gap:42px;align-items:start}
+.leaf-grid-2{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);column-gap:72px}
+.leaf-main{position:relative;min-width:0}
+.leaf-notes .gnotes{margin-top:26px}
+.leaf-more{margin:26px 0 0}
+.leaf-more a,.log-none a{font:500 9px/1.4 var(--f-mono);letter-spacing:.2em;text-transform:uppercase;text-decoration:none;color:var(--ink);border-bottom:1px solid var(--ink3);padding-bottom:3px;transition:border-color .25s}
+.leaf-more a:hover,.leaf-more a:focus-visible,.log-none a:hover,.log-none a:focus-visible{border-color:var(--sig);outline:none}
+.cap{font:500 8.5px/1 var(--f-mono);letter-spacing:.22em;text-transform:uppercase;color:var(--ink2);margin:0 0 14px}
+.cap-2{margin-top:46px}
+.hand-note{position:absolute;right:0;top:-46px;margin:0;font:400 30px/1 var(--f-hand);color:var(--ink);transform:rotate(-2deg);pointer-events:none}
+
+/* rows: a hairline rule on top of each row (draws in under motion) */
+.leaf [data-row]{position:relative}
+.bom-r::before,.bom-t::before,.kv > div::before,.pub::before,.certs li::before,.log-r::before,.log-none::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--ink3);transform-origin:0 50%}
+.bom-t::before{height:1.5px;background:var(--ink2)}
+
+/* key phrases: the Heat underline sweeps in as the row lands */
+.leaf .hl{font-weight:600;color:var(--ink);background:linear-gradient(90deg,var(--sig),var(--pop2)) no-repeat 0 100% / 0% 2px;transition:background-size .9s cubic-bezier(.2,.7,.2,1) .45s,color .6s}
+.leaf .in .hl,html:not(.motion) .leaf .hl{background-size:100% 2px;color:#fff}
+.sheen{background:linear-gradient(100deg, var(--ink) 0%, var(--ink) 30%, var(--sig) 45%, var(--pop2) 55%, var(--ink) 70%, var(--ink) 100%);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sheen 4.5s linear infinite}
+
+/* draw-in (motion only; static and reduced motion show every row drawn) */
+.motion .appx [data-row]::before{transform:scaleX(0);transition:transform .75s cubic-bezier(.55,0,.25,1)}
+.motion .appx [data-row].in::before{transform:none}
+.motion .appx [data-row] > *{opacity:0;transform:translateY(9px);transition:opacity .5s ease-out .12s,transform .7s cubic-bezier(.2,.8,.2,1) .12s}
+.motion .appx [data-row] > :nth-child(2){transition-delay:.18s}
+.motion .appx [data-row] > :nth-child(3){transition-delay:.24s}
+.motion .appx [data-row] > :nth-child(4){transition-delay:.3s}
+.motion .appx [data-row].in > *{opacity:1;transform:none}
+.motion .appx .gnotes li[data-note]{opacity:.2;transition:opacity .6s ease-out}
+.motion .appx .gnotes li[data-note].in{opacity:1}
+.motion .appx .hand-note{opacity:0;transition:opacity .8s ease-out .5s}
+.motion .appx.is-on .hand-note{opacity:1}
+
+/* ---------- Appendix A · bill of materials ---------- */
+.bom{position:relative}
+.bom-h,.bom-r,.bom-t{display:grid;grid-template-columns:52px minmax(140px,.85fr) minmax(0,2.5fr) 48px;column-gap:20px;align-items:center}
+.bom-h{font:500 7.5px/1 var(--f-mono);letter-spacing:.22em;text-transform:uppercase;color:var(--ink2);padding:0 0 11px;border-bottom:1.5px solid var(--ink2)}
+.bom-r{padding:10px 0 9px;min-height:52px}
+.bom-h + .bom-r::before{display:none}
+.balloon{display:inline-grid;place-items:center;width:30px;height:30px;border:1px solid var(--ink2);border-radius:50%;font:500 9px/1 var(--f-mono);letter-spacing:.02em;color:var(--ink);font-variant-numeric:tabular-nums;transition:border-color .5s}
+.bom-r.in .balloon{border-color:var(--ink)}
+.bom-a{font:500 9.5px/1.45 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--ink)}
+.bom-p{font:500 16px/1.45 var(--f-text);color:var(--ink)}
+.bom-p .sep{color:var(--ink2)}
+.bom-h .bom-q{font:inherit;color:inherit;letter-spacing:inherit}
+.bom-q{text-align:right;font:500 11px/1 var(--f-mono);letter-spacing:.08em;color:var(--ink2);font-variant-numeric:tabular-nums}
+.bom-t{padding:16px 0 0;align-items:end}
+.bom-tl{grid-column:1/4;font:500 8.5px/1 var(--f-mono);letter-spacing:.22em;text-transform:uppercase;color:var(--ink2);padding-bottom:6px}
+.bom-tq{font:735 44px/.86 var(--f-disp);letter-spacing:.02em;background:linear-gradient(100deg, var(--ink) 0%, var(--ink) 30%, var(--sig) 45%, var(--pop2) 55%, var(--ink) 70%, var(--ink) 100%);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sheen 4.5s linear infinite}
+
+/* ---------- Appendix B · specifications ---------- */
+.deg + .deg{margin-top:40px}
+.deg-head{display:flex;align-items:center;gap:28px;padding:0 0 16px}
+.deg .plate{margin-top:0}
+.deg-id{min-width:0}
+.deg-n{margin:0;font:735 clamp(30px,2.8vw,42px)/.92 var(--f-disp);text-transform:uppercase;letter-spacing:.02em}
+.deg:not(.deg-ms) .deg-n{font-size:clamp(24px,2.1vw,31px)}
+.deg-s{margin:9px 0 0;font:500 9.5px/1.3 var(--f-mono);letter-spacing:.18em;text-transform:uppercase;color:var(--ink2)}
+.kv{margin:0}
+.kv > div{display:grid;grid-template-columns:96px minmax(0,1fr);column-gap:12px;padding:8px 0 8px}
+.kv dt{font:500 8px/1.8 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--ink2)}
+.kv dd{margin:0;font:500 14.5px/1.4 var(--f-text)}
+.pub{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:30px;padding:18px 0 20px}
+.pub-v{margin:0;display:flex;flex-direction:column;font:735 60px/.84 var(--f-disp);text-transform:uppercase;letter-spacing:.02em}
+.pub-y{font:500 11px/1 var(--f-mono);letter-spacing:.24em;color:var(--ink2);margin-top:12px}
+.pub-b{min-width:0}
+.pub-t{margin:0;font:600 19px/1.3 var(--f-text);letter-spacing:-.005em}
+.pub-t a{text-decoration:none;background:linear-gradient(var(--ink3),var(--ink3)) no-repeat 0 100% / 100% 1px;transition:background .3s}
+.pub-t a:hover,.pub-t a:focus-visible{background-image:linear-gradient(90deg,var(--sig),var(--pop2));outline:none}
+.pub-t a span{font:500 13px/1 var(--f-mono)}
+.pub-d{margin:10px 0 0;font-size:14.5px;line-height:1.5;color:var(--ink2);max-width:54ch}
+.certs{list-style:none;margin:0;padding:0}
+.certs li{display:grid;grid-template-columns:52px minmax(0,1fr) auto;column-gap:16px;align-items:baseline;padding:11px 0 10px}
+.cert-n{font:500 8.5px/1 var(--f-mono);letter-spacing:.1em;color:var(--ink2)}
+.cert-t{font:500 15px/1.35 var(--f-text)}
+.cert-v{font:500 8px/1 var(--f-mono);letter-spacing:.18em;text-transform:uppercase;text-decoration:none;color:var(--ink2);border-bottom:1px solid var(--ink3);padding-bottom:3px;white-space:nowrap;transition:color .25s,border-color .25s}
+.cert-v:hover,.cert-v:focus-visible{color:var(--ink);border-color:var(--sig);outline:none}
+
+/* ---------- Appendix C + /blogs · field-notes log ---------- */
+.log-h,.log-r a{display:grid;grid-template-columns:52px 104px minmax(0,1fr) 36px;column-gap:20px;align-items:baseline}
+.log-h{font:500 7.5px/1 var(--f-mono);letter-spacing:.22em;text-transform:uppercase;color:var(--ink2);padding:0 0 11px;border-bottom:1.5px solid var(--ink2)}
+.log-list{list-style:none;margin:0;padding:0}
+.log-h + .log-list .log-r:first-child::before{display:none}
+.log-r a{padding:17px 0 17px;text-decoration:none;color:var(--ink)}
+.log-n,.log-d{font:500 9.5px/1.4 var(--f-mono);letter-spacing:.12em;color:var(--ink2);font-variant-numeric:tabular-nums}
+.log-t{min-width:0}
+.log-title{display:inline;font:735 27px/1.05 var(--f-disp);text-transform:uppercase;letter-spacing:.02em;background:linear-gradient(90deg,var(--sig),var(--pop2)) no-repeat 0 100% / 0% 2px;transition:background-size .6s cubic-bezier(.2,.7,.2,1)}
+.log-x{display:-webkit-box;margin-top:8px;font-size:14.5px;line-height:1.5;color:var(--ink2);max-width:64ch;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.log-tags{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px}
+.log-tags span{font:500 8px/1 var(--f-mono);letter-spacing:.16em;text-transform:uppercase;color:var(--ink2)}
+.log-tags span::before{content:"#";color:var(--ink3);margin-right:2px}
+.log-a{justify-self:end;font:500 15px/1 var(--f-mono);color:var(--ink2);transition:transform .25s,color .25s}
+.log-r a:hover .log-title,.log-r a:focus-visible .log-title{background-size:100% 2px}
+.log-r a:hover .log-a,.log-r a:focus-visible .log-a{transform:translate(3px,-3px);color:var(--sig)}
+.log-r a:focus-visible{outline:none}
+.log-h .log-a{font:inherit;color:inherit}
+.log-none{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:baseline;justify-content:space-between;margin:0;padding:20px 0 18px;font:500 15px/1.4 var(--f-text);color:var(--ink2)}
+
+/* ---------- sheet index: the appendices, grouped under the numbered sheets ---------- */
+.rail-grp{position:relative;display:flex;flex-direction:column;align-items:flex-end;gap:2px;padding:3px 0}
+.rail-grp::before,.rail-grp::after{content:"";position:absolute;right:0;width:7px;height:1px;background:var(--ink2)}
+.rail-grp::before{top:0} .rail-grp::after{bottom:0}
+.rail-grp a{padding:1px 0}
+.rail-grp .lab{font-size:7px;letter-spacing:.16em}
+.rail-grp .n{font-size:8px;min-width:12px;text-align:right}
+.rail-grp .sq{flex-basis:5px;width:5px;height:5px;margin:0 1px;transform:rotate(45deg)}
+.rail-grp a.on .sq{transform:rotate(45deg) scale(1.35)}
+
+@media (max-width:760px){
+  .leaf-head{padding:50px 34px 0 14px}
+  .leaf-body{padding:28px 32px 52px 14px}
+  .leaf-grid,.leaf-grid-2{grid-template-columns:minmax(0,1fr);row-gap:34px}
+  .hand-note{display:none}
+  .cap-2{margin-top:34px}
+  .bom-h,.bom-r,.bom-t{grid-template-columns:34px minmax(0,1fr) 26px;column-gap:12px}
+  .bom-h > :nth-child(3){display:none}
+  .bom-r{grid-template-areas:"i a q" "i p p";row-gap:3px;align-items:start;padding:10px 0}
+  .bom-r .bom-i{grid-area:i} .bom-r .bom-a{grid-area:a;font-size:8.5px} .bom-r .bom-p{grid-area:p;font-size:14px} .bom-r .bom-q{grid-area:q}
+  .bom-tl{grid-column:1/3}
+  .balloon{width:26px;height:26px;font-size:8px}
+  .deg-head{flex-direction:column;align-items:flex-start;gap:14px}
+  .kv > div{grid-template-columns:78px minmax(0,1fr)}
+  .kv dd{font-size:13.5px}
+  .pub{grid-template-columns:minmax(0,1fr);row-gap:12px}
+  .pub-v{flex-direction:row;align-items:baseline;gap:14px;font-size:44px}
+  .pub-t{font-size:17px}
+  .certs li{grid-template-columns:40px minmax(0,1fr);row-gap:6px}
+  .cert-v{grid-column:2;justify-self:start}
+  .log-h{display:none}
+  .log-h + .log-list .log-r:first-child::before{display:block}
+  .log-r a{grid-template-columns:36px minmax(0,1fr) 16px;grid-template-areas:"n d a" "n t a";row-gap:6px;column-gap:10px}
+  .log-n{grid-area:n} .log-d{grid-area:d} .log-t{grid-area:t} .log-a{grid-area:a}
+  .log-title{font-size:22px}
+  .log-x{font-size:13.5px}
 }

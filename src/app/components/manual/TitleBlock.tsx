@@ -7,12 +7,17 @@ interface TitleBlockProps {
   rev: string;
   cells: [TitleCell, TitleCell, TitleCell];
   client?: CompanyName;
+  /** Label of the number cell ("Sheet"; "Appendix" on the appendices). */
+  noLabel?: string;
+  /** The "of" total after the number (sheets: /06; appendices: /C). */
+  of?: string;
+  className?: string;
 }
 
 /** The sheet's title block: project, sheet no., title, rev, drawn/date/scale. */
-export default function TitleBlock({ no, title, rev, cells, client }: TitleBlockProps) {
+export default function TitleBlock({ no, title, rev, cells, client, noLabel = "Sheet", of = SHEET_TOTAL, className }: TitleBlockProps) {
   return (
-    <div className="titleblock">
+    <div className={className ? `titleblock ${className}` : "titleblock"}>
       <div className="c proj">
         {client ? (
           <span className="has-client">
@@ -28,10 +33,10 @@ export default function TitleBlock({ no, title, rev, cells, client }: TitleBlock
         <b>{MANUAL_PROJECT}</b>
       </div>
       <div className="c sh">
-        <span>Sheet</span>
+        <span>{noLabel}</span>
         <b>
           {no}
-          <small>/{SHEET_TOTAL}</small>
+          <small>/{of}</small>
         </b>
       </div>
       <div className="c ttl">

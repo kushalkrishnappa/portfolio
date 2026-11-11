@@ -95,6 +95,7 @@ export interface Education {
 export interface Publication {
   title: string;
   venue: string;
+  year: string;
   description: string;
   url?: string;
 }

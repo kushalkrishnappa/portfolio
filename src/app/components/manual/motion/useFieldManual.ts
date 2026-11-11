@@ -8,6 +8,10 @@
  *  - The cover intro + lift, sheet-over-sheet entries, and one scrubbed
  *    timeline per sheet (draw / fade / pop / callout / stamp / travel).
  *  - The colour runtime: flow comets on drawn lines, lit notes, title sweeps.
+ *  - The appendices (unpinned leaves between 05 and 06): they stack like
+ *    sheets (slide over, stick at their end, get slid over), their rows
+ *    draw in as they scroll into view, and they take part in the rail, the
+ *    title sweep and the sheet-over-sheet entries.
  *  - prefers-reduced-motion: no Lenis, no timelines — every sheet is laid out
  *    statically, fully drawn (the `html:not(.motion)` CSS path).
  *
@@ -29,7 +33,7 @@ declare global {
   }
 }
 
-/** The story sheets, in order. Appendices (when added) are not part of the pinned story. */
+/** The story sheets, in order (the pinned, scrubbed sheets). Appendices are not part of it. */
 const STORY = ["s1", "s2", "s3", "s4", "s5", "s6"] as const;
 
 const useIsoLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
@@ -69,8 +73,12 @@ function mountFieldManual(root: HTMLElement): () => void {
     DOC.classList.remove("motion");
   }
 
-  const storySheets = STORY.map((id) => document.getElementById(id)).filter((x): x is HTMLElement => !!x);
   const sheetEl = (id: string) => document.getElementById(id) as HTMLElement;
+  /** Every sheet after the cover in DOM order: story sheets and appendix leaves (01–05, A–C, 06). */
+  const flow = $$<HTMLElement>(".sheet, .appx");
+  /** What the rail and nav address: the cover, then the flow. Ids match `data-go`. */
+  const parts = [$("#cover") as HTMLElement, ...flow].filter(Boolean);
+  const isLeaf = (el: Element) => el.classList.contains("appx");
 
   /* ---------- torn / deckled edges ---------- */
   const clipped: HTMLElement[] = [];
@@ -79,7 +87,7 @@ function mountFieldManual(root: HTMLElement): () => void {
     el.style.clipPath = v;
     clipped.push(el);
   };
-  $$<HTMLElement>(".sheet, .rfi-sheet").forEach((sec, domIdx) => {
+  $$<HTMLElement>(".sheet, .appx, .rfi-sheet").forEach((sec, domIdx) => {
     const si = STORY.indexOf(sec.id as (typeof STORY)[number]);
     const i = si >= 0 ? si : sec.classList.contains("rfi-sheet") ? STORY.length : STORY.length + 1 + domIdx;
     const pts = edgePts(101 + i * 37, sec.dataset.edge || (sec.classList.contains("rfi-sheet") ? "deckle" : "torn"));
@@ -212,7 +220,7 @@ function mountFieldManual(root: HTMLElement): () => void {
   }
 
   /* ---------- colour runtime (flows / lit / sweep) ---------- */
-  const stopColour = colourRuntime(root, storySheets);
+  const stopColour = colourRuntime(root, flow);
   undo.push(stopColour);
 
   /* ---------- static (reduced motion) final state ---------- */
@@ -236,20 +244,18 @@ function mountFieldManual(root: HTMLElement): () => void {
     $$<SVGPathElement>("#arcs .trail").forEach((t) => (t.style.stroke = "rgba(232,242,249,.3)"));
     $$(".fc").forEach((c) => c.classList.add("on"));
     const railA = $$(".rail a");
-    const parts = [$("#cover") as HTMLElement, ...storySheets];
     const upd = () => {
       let idx = 0;
       parts.forEach((el, i) => {
-        if (el && el.getBoundingClientRect().top < innerHeight * 0.5) idx = i;
+        if (el.getBoundingClientRect().top < innerHeight * 0.5) idx = i;
       });
-      railA.forEach((a, k) => a.classList.toggle("on", k === idx));
+      railA.forEach((a) => a.classList.toggle("on", a.dataset.go === parts[idx].id));
     };
     window.addEventListener("scroll", upd, { passive: true });
     upd();
     const onGo = (e: Event) => {
       e.preventDefault();
-      const i = Number((e.currentTarget as HTMLElement).dataset.go);
-      parts[i]?.scrollIntoView();
+      document.getElementById((e.currentTarget as HTMLElement).dataset.go || "")?.scrollIntoView();
     };
     const gos = $$("[data-go]");
     gos.forEach((a) => a.addEventListener("click", onGo));
@@ -288,8 +294,17 @@ function mountFieldManual(root: HTMLElement): () => void {
     lenis = null;
   });
 
-  const sheets = storySheets;
   const VH = () => window.innerHeight;
+
+  /* ---------- leaves (appendices): stick at their end ---------- */
+  // A leaf is as tall as its content. Its stage sticks with a negative top so
+  // that it holds still once its END reaches the viewport bottom; the leaf's
+  // 100vh tail is the overlap the next sheet slides over (like a pinned stage).
+  const leafStages = $$<HTMLElement>(".appx .leaf-stage");
+  function fitLeaves() {
+    leafStages.forEach((st) => (st.style.top = Math.min(0, VH() - st.offsetHeight) + "px"));
+  }
+  undo.push(() => leafStages.forEach((st) => (st.style.top = "")));
 
   function draw(tl: TL, input: Element | Element[] | null | undefined, pos: number, dur = 1, stagger = 0, ease?: string) {
     const els = Array.isArray(input) ? input : input ? [input] : [];
@@ -435,17 +450,39 @@ function mountFieldManual(root: HTMLElement): () => void {
   }
 
   /* ---------- sheet entries (sheet-over-sheet) ---------- */
+  // Each sheet or leaf slides over the one before it in the flow, so 06's
+  // predecessor is Appendix C and A's is 05. A stuck leaf is taller than the
+  // viewport, so it recedes about the point at the viewport's top edge.
+  const stageOf = (sec: Element) => $(isLeaf(sec) ? ".leaf-stage" : ".stage", sec) as HTMLElement;
   function buildEntries() {
-    sheets.forEach((sec, i) => {
+    flow.forEach((sec, i) => {
       if (!i) return;
-      const prev = sheets[i - 1], st = $(".stage", sec), pst = $(".stage", prev), odd = i % 2;
+      const prev = flow[i - 1], st = stageOf(sec), pst = stageOf(prev), odd = i % 2;
+      const recede = isLeaf(prev) ? () => "50% " + Math.max(0, pst.offsetHeight - VH()) + "px" : "50% 0%";
       gsap
-        .timeline({ scrollTrigger: { trigger: sec, start: "top bottom", end: "top top", scrub: 0.5 } })
+        .timeline({ scrollTrigger: { trigger: sec, start: "top bottom", end: "top top", scrub: 0.5, invalidateOnRefresh: true } })
         .fromTo(st, { rotation: odd ? 1.5 : -1.3, x: odd ? 26 : -22, transformOrigin: odd ? "0% 0%" : "100% 0%" }, { rotation: 0, x: 0, ease: "power1.out" }, 0)
         .fromTo($(".shade", prev), { opacity: 0 }, { opacity: 0.62, ease: "none" }, 0)
-        .fromTo(pst, { scale: 1 }, { scale: 0.955, transformOrigin: "50% 0%", ease: "none" }, 0);
+        .fromTo(pst, { scale: 1, transformOrigin: recede }, { scale: 0.955, transformOrigin: recede, ease: "none" }, 0);
     });
   }
+
+  /* ---------- appendices: rows draw in ---------- */
+  // Not scrubbed: each row (and each general note) draws in once as it enters
+  // the viewport. Its hairline rule draws, the cells rise in, its key phrase
+  // lights (all CSS, keyed on `.in`; see field-manual.css "leaves").
+  const rowsIn: Element[] = [];
+  function buildAppendices() {
+    $$(".appx [data-row], .appx [data-note]").forEach((row) => {
+      const show = () => {
+        if (row.classList.contains("in")) return;
+        row.classList.add("in");
+        rowsIn.push(row);
+      };
+      ScrollTrigger.create({ trigger: row, start: "top 94%", onEnter: show, onEnterBack: show, onLeave: show });
+    });
+  }
+  undo.push(() => rowsIn.forEach((r) => r.classList.remove("in")));
 
   /* ---------- sheet 01 · ingestion ---------- */
   function buildS1() {
@@ -721,32 +758,35 @@ function mountFieldManual(root: HTMLElement): () => void {
   function setActive(i: number) {
     if (i === curIdx) return;
     curIdx = i;
-    railLinks.forEach((a, k) => a.classList.toggle("on", k === i));
+    railLinks.forEach((a) => a.classList.toggle("on", a.dataset.go === parts[i]?.id));
   }
   function updateActive() {
     let idx = 0;
     if (window.scrollY > VH() * 0.55) {
       idx = 1;
-      sheets.forEach((s, i) => {
+      flow.forEach((s, i) => {
         if (i > 0 && s.getBoundingClientRect().top < VH() * 0.5) idx = i + 1;
       });
     }
     setActive(idx);
   }
-  function targetY(i: number) {
+  function targetY(el: HTMLElement) {
+    const i = parts.indexOf(el);
     if (i <= 0) return 0;
-    const sec = sheets[i - 1];
     if (i === 1) return VH() * 1.04;
-    return sec.offsetTop + (sec.offsetHeight - 2 * VH()) * 0.02;
+    if (isLeaf(el)) return el.offsetTop;
+    return el.offsetTop + (el.offsetHeight - 2 * VH()) * 0.02;
   }
-  function go(i: number) {
-    const y = targetY(i);
+  function go(id: string) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const y = targetY(el);
     if (lenis) lenis.scrollTo(y, { duration: 1.6 });
     else window.scrollTo({ top: y, behavior: "smooth" });
   }
   const onGo = (e: Event) => {
     e.preventDefault();
-    go(Number((e.currentTarget as HTMLElement).dataset.go));
+    go((e.currentTarget as HTMLElement).dataset.go || "");
   };
   const gos = $$("[data-go]");
   gos.forEach((a) => a.addEventListener("click", onGo));
@@ -755,7 +795,19 @@ function mountFieldManual(root: HTMLElement): () => void {
   /* ---------- start (after fonts) ---------- */
   let ctx: gsap.Context | null = null;
   let cancelled = false;
-  const onRefreshInit = () => nameMetrics();
+  const onRefreshInit = () => {
+    nameMetrics();
+    fitLeaves();
+  };
+  // A leaf that changes height (a late font or image) re-fits and re-measures.
+  let roTimer = 0;
+  const ro =
+    typeof ResizeObserver !== "undefined"
+      ? new ResizeObserver(() => {
+          window.clearTimeout(roTimer);
+          roTimer = window.setTimeout(() => ctx && ScrollTrigger.refresh(), 150);
+        })
+      : null;
   const onRefresh = () => {
     measureDot();
     if (window.scrollY < 2) gsap.set("#herodot", { x: A.x, y: A.y });
@@ -765,6 +817,7 @@ function mountFieldManual(root: HTMLElement): () => void {
     try {
       ctx = gsap.context(() => {
         DOC.classList.add("fm-live");
+        fitLeaves();
         nameMetrics();
         measureDot();
         gsap.set("#herodot", { x: A.x, y: A.y });
@@ -777,6 +830,7 @@ function mountFieldManual(root: HTMLElement): () => void {
         buildTenant();
         buildWorkflows();
         buildClose();
+        buildAppendices();
         ScrollTrigger.create({
           start: 0,
           end: "max",
@@ -791,6 +845,7 @@ function mountFieldManual(root: HTMLElement): () => void {
       ScrollTrigger.addEventListener("refresh", onRefresh);
       ScrollTrigger.refresh();
       updateActive();
+      leafStages.forEach((st) => ro?.observe(st));
     } catch (e) {
       console.error(e);
       DOC.classList.remove("motion");
@@ -803,6 +858,8 @@ function mountFieldManual(root: HTMLElement): () => void {
   undo.push(() => {
     cancelled = true;
     window.clearTimeout(fallback);
+    window.clearTimeout(roTimer);
+    ro?.disconnect();
     ScrollTrigger.removeEventListener("refreshInit", onRefreshInit);
     ScrollTrigger.removeEventListener("refresh", onRefresh);
     ctx?.revert();
@@ -843,7 +900,7 @@ function colourRuntime(root: HTMLElement, sheets: HTMLElement[]): () => void {
     c.style.setProperty("--fd", isPlate ? "9s" : (2.2 + (n % 5) * 0.45).toFixed(2) + "s");
     c.style.setProperty("--fdl", isPlate ? "0s" : (-(n * 0.37) % 3).toFixed(2) + "s");
     el.parentNode?.insertBefore(c, el.nextSibling);
-    pairs.push([el, c, el.closest(".sheet") || el.closest(".cover"), isPlate]);
+    pairs.push([el, c, el.closest(".sheet, .appx, .cover"), isPlate]);
   });
 
   function drawn(el: Element, strict: boolean) {

@@ -1,7 +1,15 @@
-/** The "KK" drafting-stamp monogram (top-left). Its ring text turns with scroll. */
-export default function Monogram() {
+/**
+ * The "KK" drafting-stamp monogram (top-left). Its ring text turns with scroll
+ * on the manual. Elsewhere (/blogs) it is a plain link home.
+ */
+export default function Monogram({ href }: { href?: string }) {
   return (
-    <a className="mono-stamp" href="#top" aria-label="Kushal Krishnappa — back to cover" data-go="0">
+    <a
+      className="mono-stamp"
+      href={href ?? "#top"}
+      aria-label={href ? "Kushal Krishnappa — field manual home" : "Kushal Krishnappa — back to cover"}
+      data-go={href ? undefined : "cover"}
+    >
       <svg viewBox="0 0 100 100" aria-hidden="true">
         <defs>
           <path id="mcirc" d="M50 50 m-37 0 a37 37 0 1 1 74 0 a37 37 0 1 1 -74 0" />
