@@ -92,8 +92,8 @@ export default function Rollout() {
             <rect className="film" x="-14" y="312" width="928" height="318" />
             <rect className="film-tape" x="-36" y="306" width="98" height="22" transform="rotate(-24 13 317)" />
             <rect className="film-tape" x="846" y="606" width="98" height="22" transform="rotate(-24 895 617)" />
-            <rect className="film-tab" x="700" y="294" width="198" height="18" />
-            <text className="film-tag" x="799" y="307" textAnchor="middle">INCIDENT REPORT · OVERLAY B</text>
+            <rect className="film-tab" x="452" y="294" width="198" height="18" />
+            <text className="film-tag" x="551" y="307" textAnchor="middle">INCIDENT REPORT · OVERLAY B</text>
             <text className="lbl k fade" x="24" y="334">INCIDENT · RETRY STORM · FIRST DISRUPTIVE ROLLOUT</text>
             <path className="ink t" d="M40 354 L40 520 L572 520" pathLength={1} />
             <text className="lbl fade" x="46" y="352" style={{ fontSize: "7.5px" }}>DB LOAD</text>

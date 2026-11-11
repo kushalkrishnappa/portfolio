@@ -380,22 +380,22 @@ export function buildAssembly(k: Kit) {
   note(tl, lis[2], 3.4);
   k.callout(tl, k.$(".c-cost", svg), 4.4);
   note(tl, lis[3], 4.5);
-  // the autonomy dial: an autonomous loop → an interactive arbiter
-  tl.to(dial, { opacity: 1, duration: 0.1 }, 5.6);
-  tl.fromTo(k.$(".strike8", svg), { scaleX: 0, transformOrigin: "0% 50%" }, { scaleX: 1, duration: 0.3 }, 5.9);
-  tl.to(dial, { rotation: 0, svgOrigin: "500 204", duration: 0.6, ease: "back.out(1.6)" }, 6.0);
-  k.callout(tl, k.$(".c-auto", svg), 6.4);
-  note(tl, lis[4], 6.2);
+  // the autonomy dial turns as the feature reaches IMPLEMENT: an autonomous loop → an interactive arbiter
+  tl.to(dial, { opacity: 1, duration: 0.1 }, 6.6);
+  tl.fromTo(k.$(".strike8", svg), { scaleX: 0, transformOrigin: "0% 50%" }, { scaleX: 1, duration: 0.3 }, 6.9);
+  tl.to(dial, { rotation: 0, svgOrigin: "500 204", duration: 0.6, ease: "back.out(1.6)" }, 7.0);
+  k.callout(tl, k.$(".c-auto", svg), 7.3);
+  note(tl, lis[4], 7.1);
   // the incident: a part for a machine that was off → reject → a probe on research
-  k.draw(tl, q(".reject .ink"), 6.6, 0.4);
-  k.fade(tl, q(".reject .fade"), 6.8, 0.3);
+  k.draw(tl, q(".reject .ink"), 7.5, 0.4);
+  k.fade(tl, q(".reject .fade"), 7.7, 0.3);
   const part = k.$(".part", svg);
   gsap.set(part, { y: -70, opacity: 0 });
-  tl.to(part, { opacity: 1, duration: 0.05 }, 6.9);
-  tl.to(part, { y: 0, duration: 0.35, ease: "power2.in" }, 6.9);
-  k.draw(tl, q(".probe .ink"), 7.4, 0.4);
-  k.fade(tl, q(".probe .fade"), 7.6, 0.3);
-  note(tl, lis[5], 7.5);
+  tl.to(part, { opacity: 1, duration: 0.05 }, 7.8);
+  tl.to(part, { y: 0, duration: 0.35, ease: "power2.in" }, 7.8);
+  k.draw(tl, q(".probe .ink"), 8.3, 0.4);
+  k.fade(tl, q(".probe .fade"), 8.5, 0.3);
+  note(tl, lis[5], 8.4);
   // the dock
   k.callout(tl, k.$(".m8", svg), T0 + D);
   k.stamp(tl, k.$(".st-gated", svg), T0 + D + 0.3, fr);
