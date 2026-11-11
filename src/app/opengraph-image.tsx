@@ -1,19 +1,36 @@
 import { ImageResponse } from "next/og";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
+import { profile } from "@/data/profile";
 
-// Static OG card rendered at build/edge with next/og. Uses only built-in
-// system sans weights — no remote font fetch, so it never blocks the build.
-export const runtime = "edge";
-export const alt = "Kushal Krishnappa — Backend & Platform Engineer";
+// OG card in the Field Manual world: the near-black drafting ground with its
+// grid, the stencil name, the orange request dot (the one Heat accent) and the
+// role. Rendered once at build (static), Node runtime.
+//
+// Fonts are tiny glyph subsets of two OFL families, bundled in src/assets/og
+// so the build never fetches anything: Big Shoulders Stencil (opsz 72,
+// wght 900 — the Display cut) for "KUSHAL KRISHNAPPA", Martian Mono 500 for
+// the labels. Re-subset them if this copy changes.
+export const alt = `${profile.name} — Backend & Platform Engineer`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-// Palette mirrors globals.css tokens.
-const BG = "#0A0A0A";
-const BONE = "#ECECEA";
-const ACCENT = "#4DD4E0";
-const DIM = "#8A8F96";
+// Field Manual tokens (components/manual/field-manual.css).
+const PAPER = "#0b0e14";
+const INK = "#e9edf3";
+const INK2 = "rgba(233,237,243,.60)";
+const INK3 = "rgba(233,237,243,.26)";
+const GRID = "rgba(233,237,243,.055)";
+const GRID_FINE = "rgba(233,237,243,.028)";
+const SIG = "#ff5a1f";
+const POP2 = "#ffd60a";
 
-export default function OpengraphImage() {
+const font = (f: string) => readFile(join(process.cwd(), "src/assets/og", f));
+
+export default async function OpengraphImage() {
+  const [stencil, mono] = await Promise.all([font("BigShouldersStencil-900-subset.ttf"), font("MartianMono-500-subset.ttf")]);
+  const [first, ...rest] = profile.name.toUpperCase().split(" ");
+  const label = { fontFamily: "Mono", fontSize: 15, letterSpacing: 4.5, color: INK2 } as const;
   return new ImageResponse(
     (
       <div
@@ -21,101 +38,65 @@ export default function OpengraphImage() {
           width: "100%",
           height: "100%",
           display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          background: BG,
-          padding: "72px 80px",
-          fontFamily:
-            'system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif',
+          background: PAPER,
+          backgroundImage: `linear-gradient(${GRID} 1px, transparent 1px), linear-gradient(90deg, ${GRID} 1px, transparent 1px), linear-gradient(${GRID_FINE} 1px, transparent 1px), linear-gradient(90deg, ${GRID_FINE} 1px, transparent 1px)`,
+          backgroundSize: "120px 120px, 120px 120px, 24px 24px, 24px 24px",
+          padding: 26,
         }}
       >
-        {/* Top: accent eyebrow detail */}
-        <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
-          <div style={{ width: 56, height: 4, background: ACCENT }} />
-          <div
-            style={{
-              color: ACCENT,
-              fontSize: 24,
-              letterSpacing: 6,
-              textTransform: "uppercase",
-              fontWeight: 600,
-            }}
-          >
-            Portfolio
+        <div style={{ position: "relative", display: "flex", flexDirection: "column", width: "100%", height: "100%", border: `2px solid ${INK2}`, padding: "44px 56px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 16, ...label }}>
+            <div style={{ width: 34, height: 1, background: INK2 }} />
+            FIELD MANUAL · SHEET 00 / 06 · COVER
           </div>
-        </div>
-
-        {/* Center: monumental wordmark */}
-        <div style={{ display: "flex", flexDirection: "column" }}>
+          <div style={{ display: "flex", flexDirection: "column", marginTop: 26, fontFamily: "Stencil", fontSize: 178, lineHeight: 0.82, color: INK }}>
+            <div style={{ display: "flex" }}>{first}</div>
+            <div style={{ display: "flex", alignItems: "flex-end" }}>
+              {rest.join(" ")}
+              <div style={{ width: 26, height: 26, borderRadius: 13, background: SIG, marginLeft: 12, marginBottom: 14 }} />
+            </div>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 24, marginTop: 38 }}>
+            <div style={{ display: "flex", flexShrink: 0, whiteSpace: "nowrap", fontFamily: "Mono", fontSize: 17, letterSpacing: 4, color: INK, border: `1.5px solid ${INK2}`, padding: "10px 16px 9px" }}>
+              BACKEND &amp; PLATFORM ENGINEER
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", whiteSpace: "nowrap", ...label, fontSize: 12, letterSpacing: 1.5 }}>
+              MS CS @ NORTHEASTERN · OPEN TO FULL-TIME MAY 2027
+              <div style={{ display: "flex", width: 120, height: 3, marginTop: 10, backgroundImage: `linear-gradient(90deg, ${SIG}, ${POP2})` }} />
+            </div>
+          </div>
           <div
             style={{
+              position: "absolute",
+              left: 0,
+              bottom: 0,
               display: "flex",
-              color: BONE,
-              fontSize: 132,
-              fontWeight: 900,
-              lineHeight: 0.92,
-              letterSpacing: -4,
+              borderTop: `2px solid ${INK2}`,
+              borderRight: `2px solid ${INK2}`,
+              background: "rgba(11,14,20,.92)",
             }}
           >
-            KUSHAL
-          </div>
-          <div
-            style={{
-              display: "flex",
-              color: BONE,
-              fontSize: 132,
-              fontWeight: 900,
-              lineHeight: 0.92,
-              letterSpacing: -4,
-            }}
-          >
-            KRISHNAPPA
-          </div>
-          <div
-            style={{
-              display: "flex",
-              color: DIM,
-              fontSize: 34,
-              fontWeight: 500,
-              marginTop: 26,
-              letterSpacing: 0.5,
-            }}
-          >
-            Backend &amp; platform engineer
-          </div>
-        </div>
-
-        {/* Footer: mono-styled domain line */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <div
-            style={{
-              color: DIM,
-              fontSize: 26,
-              letterSpacing: 2,
-              fontFamily: 'ui-monospace, "SFMono-Regular", Menlo, monospace',
-            }}
-          >
-            kushalkrishnappa.com
-          </div>
-          <div
-            style={{
-              color: DIM,
-              fontSize: 26,
-              letterSpacing: 2,
-              fontFamily: 'ui-monospace, "SFMono-Regular", Menlo, monospace',
-            }}
-          >
-            Go · Kubernetes · Temporal · AWS
+            {[
+              ["PROJECT", "K. KRISHNAPPA · FIELD MANUAL"],
+              ["SHEET", "00 / 06"],
+              ["REV", "D"],
+              ["ISSUED", "KUSHALKRISHNAPPA.COM"],
+            ].map(([k, v], i) => (
+              <div key={k} style={{ display: "flex", flexDirection: "column", padding: "10px 16px 11px", borderLeft: i ? `1px solid ${INK3}` : "none" }}>
+                <div style={{ display: "flex", ...label, fontSize: 10, letterSpacing: 3 }}>{k}</div>
+                <div style={{ display: "flex", fontFamily: "Mono", fontSize: 15, letterSpacing: 2, color: INK, marginTop: 6 }}>{v}</div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
     ),
-    { ...size }
+    {
+      ...size,
+      fonts: [
+        { name: "Stencil", data: stencil, weight: 900, style: "normal" },
+        { name: "Mono", data: mono, weight: 500, style: "normal" },
+      ],
+    },
   );
 }
