@@ -19,7 +19,8 @@ const focusRing =
 export default function Navigation() {
   const pathname = usePathname();
   // The embed signature route is a bare, standalone surface — no fixed nav.
-  if (pathname?.startsWith("/embed")) return null;
+  // The homepage (Field Manual) carries its own chrome: monogram, nav, sheet index.
+  if (pathname === "/" || pathname?.startsWith("/embed")) return null;
 
   const downloadResume = () => {
     const link = document.createElement("a");

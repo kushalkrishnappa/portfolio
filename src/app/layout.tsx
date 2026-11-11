@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { Archivo, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navigation from "./components/Navigation";
-import SmoothScroll from "./components/motion/SmoothScroll";
-import Cursor from "./components/motion/Cursor";
 import { profile } from "@/data/profile";
 
 // Clean body sans.
@@ -84,6 +82,13 @@ export const metadata: Metadata = {
   },
 };
 
+// Field Manual motion gate. Runs before first paint (like v3's head script):
+// on the homepage, unless the visitor prefers reduced motion, mark <html> with
+// `motion` so sheets start undrawn. If the motion runtime has not started
+// within 5s (JS failed or is very slow), fall back to the static, fully drawn
+// layout and remember that so the runtime stays static too.
+const fieldManualGate = `(function(){try{if(location.pathname!=="/")return;var d=document.documentElement;var m=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;if(!m)d.classList.add("motion");setTimeout(function(){if(!window.__fmStarted){window.__fmGaveUp=true;d.classList.remove("motion");}},5000);}catch(e){}})();`;
+
 // JSON-LD Person structured data — sameAs points at the socials in profile.ts.
 const personJsonLd = {
   "@context": "https://schema.org",
@@ -101,8 +106,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: fieldManualGate }} />
         <link rel="icon" href="/kk.ico" sizes="32x32" />
         <link rel="icon" href="/kk.svg" type="image/svg+xml" />
         <link rel="shortcut icon" href="/kk.ico" />
@@ -113,11 +119,8 @@ export default function RootLayout({
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${archivo.variable} antialiased`}>
-        <SmoothScroll>
-          <Navigation />
-          {children}
-        </SmoothScroll>
-        <Cursor />
+        <Navigation />
+        {children}
       </body>
     </html>
   );
