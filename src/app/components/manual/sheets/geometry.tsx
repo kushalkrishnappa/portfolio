@@ -148,7 +148,7 @@ export function FleetArcs() {
   );
 }
 
-/* ---------------- sheet 04 · tenant floor plan ---------------- */
+/* ---------------- sheet 05 · tenant floor plan ---------------- */
 const WALLS: [number, number, number, number][] = [
   [60, 50, 780, 14], [60, 436, 780, 14], [60, 64, 14, 176], [60, 300, 14, 136], [826, 64, 14, 176], [826, 300, 14, 136],
   [74, 226, 71, 14], [195, 226, 210, 14], [455, 226, 210, 14], [715, 226, 111, 14],
@@ -196,7 +196,7 @@ export function FloorDetectors() {
             <circle className="fade fill-ink" cx={x} cy={y} r="4" />
             <path className="ink t" d={`M${x + 24} ${y - 9} A12 12 0 0 1 ${x + 24} ${y + 9} M${x + 30} ${y - 14} A18 18 0 0 1 ${x + 30} ${y + 14}`} pathLength={1} />
             <text className="lbl fade" x={x} y={y + (i < 3 ? 40 : -28)} textAnchor="middle">
-              {`DET · ${TENANTS[i]}`}
+              {`ROWS · ${TENANTS[i]}`}
             </text>
             <text className="lbl k fade" x={rx} y={ry}>
               {`TENANT ${TENANTS[i]}`}
@@ -239,12 +239,12 @@ export function ImageGroup() {
   );
 }
 
-/* ---------------- sheet 06 · the issued set ---------------- */
+/* ---------------- sheet 10 · the issued set ---------------- */
 export function IssuedSet() {
   return (
     <g id="set">
-      {Array.from({ length: 5 }, (_, i) => {
-        const x = 96 + i * 56, y = 40 + i * 20, w = 230, hh = 150;
+      {Array.from({ length: 9 }, (_, i) => {
+        const x = 96 + i * 32, y = 34 + i * 12, w = 230, hh = 150;
         return (
           <g key={i} className="setsheet">
             <rect className="ink solid" x={x} y={y} width={w} height={hh} pathLength={1} />
@@ -253,7 +253,7 @@ export function IssuedSet() {
             <text className="lbl k fade" x={x + 12} y={y + 20} style={{ fontSize: "9px" }}>
               {`0${i + 1}`}
             </text>
-            {i === 4 && (
+            {i === 8 && (
               <>
                 <text className="lbl fade" x={x + 12} y={y + hh - 14} style={{ fontSize: "7px" }}>
                   DURABLE WORKFLOWS

@@ -14,6 +14,8 @@ interface LeafProps {
   /** Paper blotch offset (background-position). */
   bp: string;
   z?: number;
+  /** The shade the lifting cover casts (the general-data band, the first leaf under the cover). */
+  shadeCover?: boolean;
   titleBlock: {
     no: string;
     noLabel?: string;
@@ -35,7 +37,7 @@ interface LeafProps {
  * next sheet can slide over it in turn (the motion hook sets the stage's
  * negative sticky `top`; `.leaf-tail` adds the 100vh of overlap).
  */
-export default function Leaf({ id, className, eyebrow, title, as: H = "h2", edge, bp, z, titleBlock, children }: LeafProps) {
+export default function Leaf({ id, className, eyebrow, title, as: H = "h2", edge, bp, z, shadeCover, titleBlock, children }: LeafProps) {
   const titleId = `t-${id ?? "leaf"}`;
   return (
     <section
@@ -62,6 +64,7 @@ export default function Leaf({ id, className, eyebrow, title, as: H = "h2", edge
           <div className="leaf-body">{children}</div>
           <TitleBlock {...titleBlock} />
         </div>
+        {shadeCover && <div className="shade-cover" />}
         <div className="shade" />
       </div>
       <div className="leaf-tail" aria-hidden="true" />

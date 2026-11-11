@@ -2,7 +2,7 @@
 import React from "react";
 
 /**
- * ContactForm — sheet 06's "Request for information" transmittal.
+ * ContactForm — sheet 10's "Request for information" transmittal.
  *
  * Posts { name, email, message } to /api/contact (nodemailer); the route
  * validates that all three fields are present. The inputs are `required`
@@ -75,8 +75,8 @@ export default function ContactForm({ className }: { className?: string }) {
       aria-labelledby={`${uid}-cap`}
     >
       <p className="rfi-cap" id={`${uid}-cap`}>
-        <span>Schedule G — Request for information</span>
-        <b aria-hidden="true">RFI · 06</b>
+        <span>Schedule L — Request for information</span>
+        <b aria-hidden="true">RFI · 10</b>
       </p>
       <div className="rfi-grid">
         <div className="rfi-f">

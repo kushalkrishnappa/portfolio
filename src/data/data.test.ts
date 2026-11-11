@@ -5,7 +5,7 @@ import { skillGroups } from "./skills";
 import { education } from "./education";
 import { publications } from "./publications";
 import { certifications } from "./certifications";
-import { sheets, fleetFacts, coverRevisions, appendices, PARTS_TOTAL } from "./manual";
+import { sheets, fleetFacts, coverRevisions, appendices, generalData, generalDataMore, PARTS_TOTAL, SHEET_TOTAL } from "./manual";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -36,6 +36,8 @@ const allData: Record<string, unknown> = {
   fleetFacts,
   coverRevisions,
   appendices,
+  generalData,
+  generalDataMore,
 };
 
 const SRC = path.resolve(__dirname, "..");
@@ -73,9 +75,36 @@ describe("shipped copy — retired claims", () => {
     expect(hits).toEqual([]);
   });
 
-  it("never states the undefensible 90% automation metric", () => {
-    // copy lives in .ts/.tsx (CSS has unrelated percentages)
-    const hits = files.filter((f) => /\.tsx?$/.test(f) && /90\s?%/.test(fs.readFileSync(f, "utf8")));
+  it("never states the retired 90% automation / MTTD metric", () => {
+    // "90% coverage gate" (Beacon) and "availability above 90%" are allowed; the old
+    // "90% automation" and "MTTD −90%" claims are not. Copy lives in .ts/.tsx.
+    const retired = /automat\w*[^.\n]{0,40}90\s?%|90\s?%[^.\n]{0,40}automat|MTT[DR][^.\n]{0,30}90\s?%|90\s?%[^.\n]{0,30}MTT[DR]/i;
+    const hits = files.filter((f) => /\.tsx?$/.test(f) && retired.test(fs.readFileSync(f, "utf8")));
+    expect(hits).toEqual([]);
+  });
+
+  it("keeps the floor exclusions off the site", () => {
+    // someone else's record or work (see the content inventory, floor exclusions)
+    const floor = new RegExp(
+      [["spot", "award"], ["you", "tube"], ["leet", "code"], ["lend", "wise"], ["hacker", "rank"]].map((w) => w.join("")).join("|"),
+      "i",
+    );
+    const hits = files.filter((f) => /\.tsx?$/.test(f) && floor.test(fs.readFileSync(f, "utf8")));
+    expect(hits).toEqual([]);
+  });
+
+  it("uses no internal tool, table, route or service names", () => {
+    const internal = new RegExp(
+      [
+        ["pu", "ca"], ["ral", "ph"], ["cnapp-", "(api|consumer|dashboard)"], ["external", "-api"], ["ai_", "notify"],
+        ["notification", "_settings"], ["service_identity", "_links"], ["customer_api", "_tokens"], ["assets", "db"],
+        ["un", "ext"], ["auto sim", " rehab"],
+      ]
+        .map(([a, b]) => `\\b${a}${b}\\b`)
+        .join("|"),
+      "i",
+    );
+    const hits = files.filter((f) => /\.tsx?$/.test(f) && internal.test(fs.readFileSync(f, "utf8")));
     expect(hits).toEqual([]);
   });
 
@@ -112,9 +141,9 @@ describe("profile — retired RA role", () => {
 describe("field manual — binding content rules", () => {
   const sheetSrc = (name: string) =>
     fs.readFileSync(path.resolve(__dirname, "../app/components/manual/sheets", name), "utf8");
-  // the reader-facing copy: notes, schedules, fact cards, revisions
+  // the reader-facing copy: notes, schedules, fact cards, revisions, general data
   const manualText = collectStrings(
-    { copy: sheets.map((s) => [s.eyebrow, s.notes ?? [], s.schedule ?? []]), fleetFacts, coverRevisions },
+    { copy: sheets.map((s) => [s.eyebrow, s.notes ?? [], s.schedule ?? []]), fleetFacts, coverRevisions, generalData, generalDataMore },
     [],
   ).join("\n");
   // text lettered inside a drawing (JSX text nodes)
@@ -132,10 +161,34 @@ describe("field manual — binding content rules", () => {
     expect(src).toContain("N = 2 · illustrative");
   });
 
-  it("states no group size of 3,000 and no availability percentage", () => {
-    const text = manualText + drawingText("Rollout.tsx");
-    expect(text).not.toMatch(/3,000/);
-    expect(text).not.toMatch(/\d+(\.\d+)?\s?%/);
+  it("keeps the illustrative budget labelled, even with the real pool size shown", () => {
+    // Marketing policy (2026-11): the 3,000-machine pool and availability figures are
+    // allowed; the drawn budget of 2 stays labelled illustrative.
+    expect(drawingText("Rollout.tsx")).toContain("BUDGET 2 / GROUP");
+    expect(sheetSrc("Rollout.tsx")).toContain("N = 2 · illustrative");
+  });
+
+  it("credits authorship the defensible way (floor)", () => {
+    const tenant = sheets.find((s) => s.id === "s5")!.notes!.join(" ");
+    // he designed the M2M system and built the request path, not the key lifecycle endpoints
+    expect(tenant).toMatch(/built its request path/);
+    expect(manualText).not.toMatch(/(built|wrote)[^.]{0,40}(key lifecycle|token (create|lifecycle)|lifecycle endpoints)/i);
+    // the in-kernel eBPF sensor is not his; the Rust analyzer sanitizer and the UI are
+    expect(manualText).not.toMatch(/(wrote|built|authored)[^.]{0,30}eBPF (programs?|sensor)/i);
+    expect(manualText + drawingText("Workflows.tsx")).not.toMatch(/dsapanicle/i);
+  });
+
+  it("numbers every sheet out of the same total", () => {
+    expect(SHEET_TOTAL).toBe(String(sheets.length).padStart(2, "0"));
+    sheets.forEach((s, i) => {
+      expect(s.no).toBe(String(i + 1).padStart(2, "0"));
+      expect(s.id).toBe(`s${i + 1}`);
+      expect(s.eyebrow).toContain(`Sheet ${s.no} / ${SHEET_TOTAL}`);
+    });
+    // every work sheet (01–08) has a cover revision row with its client chip
+    const work = sheets.filter((s) => s.client);
+    expect(coverRevisions.map((r) => r.rev)).toEqual(work.map((s) => s.rev));
+    expect(coverRevisions.map((r) => r.client)).toEqual(work.map((s) => s.client));
   });
 
   it("labels the Beacon state diagram illustrative", () => {
@@ -173,8 +226,8 @@ describe("appendices — A parts list, B specifications, C field notes", () => {
     expect(bt?.school).toBe("PES University");
   });
 
-  it("dates the publication IEEE 2022", () => {
-    expect(publications[0]).toMatchObject({ venue: "IEEE", year: "2022" });
+  it("dates the publication IEEE CONECCT 2022", () => {
+    expect(publications[0]).toMatchObject({ venue: "IEEE CONECCT", year: "2022" });
     expect(publications[0].url).toMatch(/^https:\/\/ieeexplore\.ieee\.org\//);
   });
 

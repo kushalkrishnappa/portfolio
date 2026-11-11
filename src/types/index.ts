@@ -49,6 +49,10 @@ export interface Education {
   gpa?: string;
   honors?: string;
   coursework: string[];
+  /** Course projects worth naming (described, never linked). */
+  projects?: string[];
+  /** Research and industry projects during the degree. */
+  research?: string[];
 }
 
 export interface Publication {
@@ -61,6 +65,9 @@ export interface Publication {
 
 export interface Certification {
   name: string;
+  issuer?: string;
+  /** Issue date (and validity, where it expires). */
+  date?: string;
   featured?: boolean;
   url?: string;
 }

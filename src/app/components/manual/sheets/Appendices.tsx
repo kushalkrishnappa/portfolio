@@ -16,8 +16,8 @@ const pad2 = (n: number) => String(n).padStart(2, "0");
 const meta = (letter: AppendixMeta["letter"]) => appendices.find((a) => a.letter === letter)!;
 
 /**
- * An appendix: a Leaf (unpinned sheet) in the manual's stack. z 5 = above
- * sheet 05, below sheet 06; later appendices paint over earlier ones.
+ * An appendix: a Leaf (unpinned sheet) in the manual's stack. z 9 = above
+ * sheet 09, below sheet 10; later appendices paint over earlier ones.
  */
 function Appendix({ m, children }: { m: AppendixMeta; children: React.ReactNode }) {
   return (
@@ -28,7 +28,7 @@ function Appendix({ m, children }: { m: AppendixMeta; children: React.ReactNode 
       title={m.title}
       edge={m.edge}
       bp={m.bp}
-      z={5}
+      z={9}
       titleBlock={{ no: m.letter, noLabel: "Appendix", of: APPENDIX_TOTAL, title: m.title, rev: MANUAL_REV, cells: m.titleCells }}
     >
       {children}
@@ -159,6 +159,18 @@ function Specifications() {
                 <dt>Coursework</dt>
                 <dd>{ms.coursework.join(" · ")}</dd>
               </div>
+              {ms.projects && (
+                <div data-row>
+                  <dt>Projects</dt>
+                  <dd>
+                    <ul className="kv-list">
+                      {ms.projects.map((p) => (
+                        <li key={p}>{p}</li>
+                      ))}
+                    </ul>
+                  </dd>
+                </div>
+              )}
             </dl>
           </article>
           {prior.map((e) => (
@@ -178,6 +190,24 @@ function Specifications() {
                   <dt>Coursework</dt>
                   <dd>{e.coursework.join(" · ")}</dd>
                 </div>
+                {e.research && (
+                  <div data-row>
+                    <dt>Research</dt>
+                    <dd>
+                      <ul className="kv-list">
+                        {e.research.map((r) => (
+                          <li key={r}>{r}</li>
+                        ))}
+                      </ul>
+                    </dd>
+                  </div>
+                )}
+                {e.honors && (
+                  <div data-row>
+                    <dt>Honors</dt>
+                    <dd>{e.honors}</dd>
+                  </div>
+                )}
               </dl>
             </article>
           ))}
@@ -186,7 +216,11 @@ function Specifications() {
           <h3 className="cap">Spec B.2 — Publication</h3>
           <article className="pub" data-row>
             <p className="pub-v">
-              <span className="sheen">{pub.venue}</span>
+              {pub.venue.split(" ").map((w) => (
+                <span key={w} className="sheen">
+                  {w}
+                </span>
+              ))}
               <span className="pub-y">{pub.year}</span>
             </p>
             <div className="pub-b">
@@ -207,7 +241,10 @@ function Specifications() {
             {certifications.map((c, i) => (
               <li key={c.name} data-row>
                 <span className="cert-n">{`B.3.${i + 1}`}</span>
-                <span className="cert-t">{c.featured ? <b className="hl">{c.name}</b> : c.name}</span>
+                <span className="cert-t">
+                  {c.featured ? <b className="hl">{c.name}</b> : c.name}
+                  {(c.issuer || c.date) && <span className="cert-m">{[c.issuer, c.date].filter(Boolean).join(" · ")}</span>}
+                </span>
                 {c.url ? (
                   <a className="cert-v" href={c.url} target="_blank" rel="noopener noreferrer" aria-label={`Verify ${c.name}`}>
                     Verify <span aria-hidden="true">↗</span>
@@ -262,7 +299,7 @@ interface AppendicesProps {
   total: number;
 }
 
-/** Appendices A · Parts list, B · Specifications, C · Field notes (between sheets 05 and 06). */
+/** Appendices A · Parts list, B · Specifications, C · Field notes (between sheets 09 and 10). */
 export default function Appendices({ posts, total }: AppendicesProps) {
   return (
     <>

@@ -47,7 +47,7 @@ export default async function OpengraphImage() {
         <div style={{ position: "relative", display: "flex", flexDirection: "column", width: "100%", height: "100%", border: `2px solid ${INK2}`, padding: "44px 56px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 16, ...label }}>
             <div style={{ width: 34, height: 1, background: INK2 }} />
-            FIELD MANUAL · SHEET 00 / 06 · COVER
+            FIELD MANUAL · SHEET 00 / 10 · COVER
           </div>
           <div style={{ display: "flex", flexDirection: "column", marginTop: 26, fontFamily: "Stencil", fontSize: 178, lineHeight: 0.82, color: INK }}>
             <div style={{ display: "flex" }}>{first}</div>
@@ -78,8 +78,8 @@ export default async function OpengraphImage() {
           >
             {[
               ["PROJECT", "K. KRISHNAPPA · FIELD MANUAL"],
-              ["SHEET", "00 / 06"],
-              ["REV", "D"],
+              ["SHEET", "00 / 10"],
+              ["REV", "H"],
               ["ISSUED", "KUSHALKRISHNAPPA.COM"],
             ].map(([k, v], i) => (
               <div key={k} style={{ display: "flex", flexDirection: "column", padding: "10px 16px 11px", borderLeft: i ? `1px solid ${INK3}` : "none" }}>

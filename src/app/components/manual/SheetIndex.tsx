@@ -1,4 +1,4 @@
-import { appendices, sheets } from "@/data/manual";
+import { appendices, GENERAL_DATA_ID, sheets } from "@/data/manual";
 
 interface Item {
   id: string;
@@ -18,8 +18,9 @@ function RailLink({ it, on }: { it: Item; on?: boolean }) {
 
 /**
  * Right-edge sheet index (the chapter rail) with a scroll-progress line.
- * Order follows the manual: cover, sheets 01–05, appendices A–C (grouped,
- * set smaller under the numbered sheets), sheet 06. `data-go` = target id.
+ * Order follows the manual: cover and its general-data band (grouped), sheets
+ * 01–09, appendices A–C (grouped, set smaller under the numbered sheets),
+ * sheet 10. `data-go` = target id.
  */
 export default function SheetIndex() {
   const story = sheets.map((s) => ({ id: s.id, label: s.railLabel, no: s.no }));
@@ -30,6 +31,9 @@ export default function SheetIndex() {
       <div className="rail-line" />
       <div className="rail-prog" />
       <RailLink it={{ id: "cover", label: "Cover", no: "00" }} on />
+      <div className="rail-grp rail-gd" role="group" aria-label="Cover data">
+        <RailLink it={{ id: GENERAL_DATA_ID, label: "Data", no: "GD" }} />
+      </div>
       {story.map((it) => (
         <RailLink key={it.id} it={it} />
       ))}
