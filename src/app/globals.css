@@ -1,86 +1,18 @@
 @import "tailwindcss";
 
 /*
- * Monumental Nameplate — dark-only world.
- *
- * Dark theme ONLY. There is deliberately no light `:root` and no
- * `@media (prefers-color-scheme)` block: the site refuses a light theme.
- *
- * Palette
- *   --bg        near-black ground
- *   --surface   raised panels / cards
- *   --bone      primary text (the wordmark, body)
- *   --dim       secondary text (meta, labels)
- *   --faint     tertiary text (de-emphasized)
- *   --accent    the single cool accent — use SPARINGLY. Reserved for the
- *               live "now" dot, chip borders, links, and the primary action
- *               only. Never as a fill for large areas or decoration.
- *   --accent-dim  muted accent backing (chip fills, subtle washes)
- *   --line      hairline dividers
- *   --line-2    slightly stronger dividers / borders
- *
- * Type scale intent
- *   --font-display (Archivo, heavy grotesk)  monumental wordmark + headings,
- *                                            tight negative tracking at scale.
- *   --font-geist-sans                        clean body sans.
- *   --font-geist-mono                        labels, meta, chips, metrics —
- *                                            uppercase with positive tracking.
+ * Site base. Every page is a Field Manual surface: its tokens, type and
+ * furniture live in components/manual/field-manual.css (see DESIGN.md).
+ * This only sets the near-black ground for the instant before that sheet
+ * paints, and keeps the page from scrolling sideways. `clip` (not `hidden`)
+ * so body never becomes a scroll container and sticky stages still pin.
  */
-
-:root {
-  --bg: #0A0A0A;
-  --surface: #111317;
-  --bone: #ECECEA;
-  --dim: #8A8F96;
-  --faint: #5C6066;
-  --accent: #4DD4E0;
-  --accent-dim: #1C3B3E;
-  --line: #1E1E1E;
-  --line-2: #2A2A2A;
-}
-
-@theme inline {
-  --color-background: var(--bg);
-  --color-foreground: var(--bone);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-display: var(--font-display);
+html,
+body {
+  background: #06080c;
+  color: #e9edf3;
 }
 
 body {
-  background: var(--bg);
-  color: var(--bone);
-  font-family: var(--font-geist-sans);
-  /* Clip any horizontal overflow so no sideways scrollbar appears. `clip`
-     (not `hidden`) keeps body from becoming a scroll container, so the Field
-     Manual's position:sticky stages still pin to the viewport. */
   overflow-x: clip;
-}
-
-/* Hide the native cursor only while the custom <Cursor /> is active. The class
-   is added to <body> on mount and removed on unmount / touch devices. */
-.cursor-none,
-.cursor-none * {
-  cursor: none;
-}
-
-/* Font helpers. */
-.mono {
-  font-family: var(--font-geist-mono);
-}
-
-.display {
-  font-family: var(--font-display);
-}
-
-/* Smooth anchor scrolling, disabled for users who prefer reduced motion. */
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    scroll-behavior: smooth;
-  }
-}
-
-/* Offsets in-page anchor targets so headings clear the fixed nav bar. */
-section[id] {
-  scroll-margin-top: 6rem;
 }

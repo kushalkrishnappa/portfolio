@@ -37,47 +37,6 @@ export interface Profile {
   socials: Social[];
 }
 
-export interface ImpactMetric {
-  value: string;
-  label: string;
-}
-
-export interface Experience {
-  period: string;
-  company: string;
-  role: string;
-  location: string;
-  summary?: string;
-  tags?: string[];
-  achievements: string[];
-}
-
-export interface SystemCaseStudy {
-  slug: string;
-  name: string;
-  org: string;
-  period: string;
-  role: string;
-  summary: string;
-  problem: string;
-  approach: string[];
-  highlights: string[];
-  stack: string[];
-  outcome: string;
-  status?: "shipped" | "prototype";
-}
-
-export interface Project {
-  name: string;
-  description: string;
-  tech: string[];
-  features: string[];
-  impact: string;
-  links?: { label: string; url: string }[];
-  role?: string;
-  year?: string;
-}
-
 export interface SkillGroup {
   label: string;
   skills: string[];

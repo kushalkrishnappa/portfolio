@@ -4,7 +4,7 @@ import SpecTable from "../SpecTable";
 import { RESUME_HREF } from "../Chrome";
 import { Dot, Route, Stamp } from "../svgParts";
 import { IssuedSet } from "./geometry";
-import ContactForm from "@/app/components/sections/ContactForm";
+import ContactForm from "../ContactForm";
 import { sheetById } from "@/data/manual";
 import { profile } from "@/data/profile";
 

@@ -1,14 +1,10 @@
 import { describe, it, expect } from "vitest";
 
 import { profile } from "./profile";
-import { impactMetrics } from "./impact";
-import { experiences } from "./experience";
-import { projects } from "./projects";
 import { skillGroups } from "./skills";
 import { education } from "./education";
 import { publications } from "./publications";
 import { certifications } from "./certifications";
-import { systems } from "./systems";
 import { sheets, fleetFacts, coverRevisions, appendices, PARTS_TOTAL } from "./manual";
 import fs from "node:fs";
 import path from "node:path";
@@ -32,14 +28,10 @@ function collectStrings(value: unknown, acc: string[]): string[] {
 
 const allData: Record<string, unknown> = {
   profile,
-  impactMetrics,
-  experiences,
-  projects,
   skillGroups,
   education,
   publications,
   certifications,
-  systems,
   manualSheets: sheets,
   fleetFacts,
   coverRevisions,
@@ -47,6 +39,14 @@ const allData: Record<string, unknown> = {
 };
 
 const SRC = path.resolve(__dirname, "..");
+/** Every shipped source file under src/ (components, pages, data), minus tests. */
+function shippedSources(dir = SRC): string[] {
+  return fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
+    const p = path.join(dir, e.name);
+    if (e.isDirectory()) return shippedSources(p);
+    return /\.(tsx?|css)$/.test(e.name) && !/\.test\.ts$/.test(e.name) ? [p] : [];
+  });
+}
 const readSrc = (rel: string) => fs.readFileSync(path.join(SRC, rel), "utf8");
 
 describe("data layer — private denylist", () => {
@@ -63,24 +63,26 @@ describe("data layer — private denylist", () => {
   });
 });
 
-describe("projects", () => {
-  it("does not claim Auth Server or kvstore", () => {
-    const names = projects.map((p) => p.name);
-    expect(names).not.toContain("Auth Server");
-    expect(names).not.toContain("kvstore");
-  });
-});
+describe("shipped copy — retired claims", () => {
+  // The old projects / impact data is gone; these guard the whole shipped
+  // source so the claims cannot come back anywhere on the site.
+  const files = shippedSources();
 
-describe("impact metrics", () => {
-  it("has exactly 3 entries", () => {
-    expect(impactMetrics).toHaveLength(3);
+  it("never claims Auth Server or kvstore", () => {
+    const hits = files.filter((f) => /Auth Server|kvstore/i.test(fs.readFileSync(f, "utf8")));
+    expect(hits).toEqual([]);
   });
 
-  it("drops the undefensible 90% automation metric", () => {
-    for (const metric of impactMetrics) {
-      expect(metric.value).not.toContain("90%");
-      expect(metric.label).not.toContain("90%");
-    }
+  it("never states the undefensible 90% automation metric", () => {
+    // copy lives in .ts/.tsx (CSS has unrelated percentages)
+    const hits = files.filter((f) => /\.tsx?$/.test(f) && /90\s?%/.test(fs.readFileSync(f, "utf8")));
+    expect(hits).toEqual([]);
+  });
+
+  it("contains no private Jira keys or PR/ticket numbers in any component copy", () => {
+    const jsx = (src: string) => (src.match(/>[^<>{}]+</g) ?? []).join("\n");
+    const hits = files.filter((f) => f.endsWith(".tsx") && PRIVATE_DENYLIST.test(jsx(fs.readFileSync(f, "utf8"))));
+    expect(hits).toEqual([]);
   });
 });
 
