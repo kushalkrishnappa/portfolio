@@ -1,30 +1,9 @@
 import type { Metadata } from "next";
-import { Archivo, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navigation from "./components/Navigation";
 import { profile } from "@/data/profile";
 
-// Clean body sans.
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-// Labels, meta, and chips.
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-// Monumental wordmark and headings — a committed display grotesk with real
-// presence (not Inter/Helvetica/Arial/Space Grotesk).
-// Variable font: omit `weight` so all weights (incl. 900) stay available and
-// `next dev --turbopack` resolves it correctly (an explicit weight array breaks
-// the turbopack font loader).
-const archivo = Archivo({
-  variable: "--font-display",
-  subsets: ["latin"],
-});
+// Fonts: every page is a Field Manual surface (.fm root); its four families
+// load via next/font in components/manual/fonts.ts.
 
 const SITE_URL = "https://kushalkrishnappa.com";
 const SITE_TITLE = "Kushal Krishnappa — Backend & Platform Engineer";
@@ -117,11 +96,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${archivo.variable} antialiased`}>
-        <Navigation />
-        {children}
-      </body>
+      <body className="antialiased">{children}</body>
     </html>
   );
 }

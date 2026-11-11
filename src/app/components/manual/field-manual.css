@@ -679,3 +679,84 @@ html.fm-live .appx .leaf-tail{display:block;height:100vh}
   .log-title{font-size:22px}
   .log-x{font-size:13.5px}
 }
+
+/* =====================================================================
+   /blogs — Field Notes: one leaf on the same paper, with the manual's chrome
+   (KK stamp home, Manual, Résumé). Rows draw in once on load (CSS only).
+   ===================================================================== */
+.fn-page .leaf-body{padding-right:118px}
+.fn-page .sheet-title{animation:titleSweep 1.8s cubic-bezier(.3,.6,.2,1) .2s 1 both}
+.fn-page .leaf [data-row]::before{animation:ruleIn .8s cubic-bezier(.55,0,.25,1) both}
+.fn-page .leaf [data-row] > *{animation:rowIn .7s cubic-bezier(.2,.8,.2,1) both}
+.fn-page .leaf [data-row]:nth-child(2)::before,.fn-page .leaf [data-row]:nth-child(2) > *{animation-delay:.08s}
+.fn-page .leaf [data-row]:nth-child(3)::before,.fn-page .leaf [data-row]:nth-child(3) > *{animation-delay:.16s}
+.fn-page .leaf [data-row]:nth-child(4)::before,.fn-page .leaf [data-row]:nth-child(4) > *{animation-delay:.24s}
+.fn-page .leaf [data-row]:nth-child(n+5)::before,.fn-page .leaf [data-row]:nth-child(n+5) > *{animation-delay:.32s}
+@keyframes ruleIn{from{transform:scaleX(0)}to{transform:none}}
+@keyframes rowIn{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+.fn-page .leaf .spec td{font-weight:500}
+@media (max-width:760px){
+  .fn-page .nav{display:flex;margin:12px 4px 0 0}
+  .fn-page .nav a{padding:7px 9px 7px}
+  .fn-page .leaf-body{padding-right:14px}
+}
+@media (prefers-reduced-motion: reduce){
+  .fn-page .leaf [data-row]::before,.fn-page .leaf [data-row] > *{animation:none}
+}
+
+/* =====================================================================
+   /embed — the signature: a cropped cover sheet. The name dominates and
+   scales with both width and height (one line); no scroll, no motion beyond
+   the name settling in.
+   ===================================================================== */
+html:has(.emb),html:has(.emb) body{height:100%;overflow:hidden}
+.emb{position:relative;height:100vh;width:100%;overflow:hidden;background:var(--paper);
+  --pad:clamp(10px,2.6vmin,30px);
+  /* one line: "KUSHAL KRISHNAPPA." measures ~7.9em; fit the frame's width and the height */
+  --efs:min(calc((100vw - 2 * var(--ei) - 2 * var(--pad)) / 8.1), 31vh);
+  --ei:clamp(5px,1.4vmin,16px)}
+.emb .paper-bg{top:0;bottom:0}
+.emb-frame{position:absolute;inset:var(--ei);border:1.5px solid var(--ink2);display:flex;flex-direction:column;justify-content:center;padding:var(--pad) var(--pad) calc(var(--tbh) + var(--pad));--tbh:clamp(26px,6.4vh,52px)}
+.emb-frame::before{content:"";position:absolute;inset:4px;border:.75px solid var(--ink4);pointer-events:none}
+.emb .eyebrow{font-size:clamp(6.5px,1.15vmax,10px);letter-spacing:.2em}
+.emb-name{display:block;width:max-content;margin:clamp(4px,1.6vh,18px) 0 0;font:900 var(--efs)/.8 var(--f-disp);text-transform:uppercase;letter-spacing:.004em;color:var(--ink);text-decoration:none;white-space:nowrap}
+.emb-name .w{display:inline-block;animation:embSettle 1.1s cubic-bezier(.2,.8,.2,1) .05s both}
+.emb-name .w + .w{margin-left:.2em;animation-delay:.14s}
+.emb-name .emb-dot{display:inline-block;width:.13em;height:.13em;margin-left:.08em;border-radius:50%;background:var(--sig);vertical-align:baseline;animation:embDot .5s cubic-bezier(.2,.8,.2,1.4) .9s both}
+.emb-name:hover .w,.emb-name:focus-visible .w{color:#fff}
+.emb-name:focus-visible{outline:1px solid var(--sig);outline-offset:6px}
+@keyframes embSettle{from{opacity:0;transform:translateY(.16em)}to{opacity:1;transform:none}}
+@keyframes embDot{from{transform:scale(0)}to{transform:none}}
+.emb-sub{display:flex;flex-wrap:wrap;align-items:center;gap:clamp(6px,1.2vw,16px) clamp(10px,2vw,26px);margin-top:clamp(8px,2.4vh,26px)}
+.emb .role{font-size:clamp(7.5px,1.25vmax,13px);padding:.5em .8em .45em;letter-spacing:.22em}
+.emb-now{font:500 clamp(7.5px,1.2vmax,12.5px)/1.3 var(--f-mono);letter-spacing:.1em;color:var(--ink2)}
+.emb-tb{position:absolute;left:0;bottom:0;display:flex;height:var(--tbh);border-top:1.5px solid var(--ink2);border-right:1.5px solid var(--ink2);background:rgba(11,14,20,.92)}
+.emb-tb .c{display:flex;flex-direction:column;justify-content:center;padding:0 clamp(7px,1.1vw,14px);border-right:.75px solid var(--ink3);min-width:0}
+.emb-tb .c:last-child{border-right:0}
+.emb-tb span{display:block;font:500 clamp(5.5px,.9vmax,7.5px)/1 var(--f-mono);letter-spacing:.2em;text-transform:uppercase;color:var(--ink2);margin-bottom:clamp(2px,.5vh,5px)}
+.emb-tb b{display:block;font:500 clamp(7px,1.05vmax,10.5px)/1.1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.emb-tb .big b{font:735 clamp(12px,2.1vmax,22px)/1 var(--f-disp);letter-spacing:.03em}
+.emb-tb a{text-decoration:none;color:var(--ink)}
+.emb-tb a:hover,.emb-tb a:focus-visible{color:var(--sig);outline:none}
+.emb .zones{display:none}
+@media (min-width:900px) and (min-height:420px){ .emb .zones{display:block} }
+@media (max-height:240px){ .emb .eyebrow{display:none} .emb-name{margin-top:0} }
+/* taller frames set the name in two lines, like the cover ("KRISHNAPPA." ~5em) */
+@media (max-aspect-ratio:2/1) and (min-height:420px){
+  .emb{--efs:min(calc((100vw - 2 * var(--ei) - 2 * var(--pad)) / 5.15), 25vh)}
+  .emb-name{line-height:.9}
+  .emb-name .w{display:block}
+  .emb-name .w + .w{margin-left:0}
+  .emb-name .emb-dot{width:.1em;height:.1em}
+}
+@media (max-width:520px){ .emb-tb .c.opt{display:none} }
+@media (prefers-reduced-motion: reduce){ .emb-name .w,.emb-name .emb-dot{animation:none} }
+
+/* /blogs + 404 additions */
+.fn-page .spec tr:first-child td{background-size:min(100%,18ch) 2px;animation:ulIn 1.1s cubic-bezier(.2,.7,.2,1) .5s both}
+@keyframes ulIn{from{background-size:0 2px}}
+.log-note{flex:1 1 100%;font-size:14px;color:var(--ink2)}
+.log-none.nf{max-width:720px}
+@media (prefers-reduced-motion: reduce){ .fn-page .spec tr:first-child td{animation:none} }
+.emb-tb small{font-size:.6em;color:var(--ink2);margin-left:2px}
+.emb-sub p{margin:0}
