@@ -376,7 +376,7 @@ export const generalData: DataStat[] = [
   { k: "G.03", label: "DB reads", pre: "~", from: 1, to: 7, post: "×", fmt: "int", unit: "Fewer DB reads", note: "under polling from thousands of agents: rollout safety for 9,000+ VMs", sheet: "s3" },
   { k: "G.04", label: "Telemetry", from: 0, to: 90, post: " TB+", fmt: "int", unit: "OTA vehicle telemetry", note: "streamed into a central warehouse I pitched as an intern", sheet: "s1" },
   { k: "G.05", label: "Harness", from: 0, to: 25, post: "+", and: { pre: " / ", from: 0, to: 9, post: "+" }, fmt: "int", unit: "Features / engineers", note: "shipped through the agentic harness I built: 9 of 12 engineers", sheet: "s8" },
-  { k: "G.06", label: "GPA", from: 0, to: 4, fmt: "dec1", unit: "MS CS · Northeastern", note: "4.0 / 4.0, graduating May 2027", sheet: "appx-b" },
+  { k: "G.06", label: "GPA", from: 4, to: 4, fmt: "dec1", unit: "MS CS · Northeastern", note: "4.0 / 4.0, graduating May 2027", sheet: "appx-b" },
 ];
 
 /** The quieter second row of the general-data band. */
