@@ -64,7 +64,7 @@ Mono labels are uppercase and tracked (`.14em` to `.24em`). Sheet titles use
   (`margin-top: -100vh`).
 - **Header**: an `.eyebrow` (mono, with a 26px leading rule) over `.sheet-title`.
 - **Title block** (`TitleBlock.tsx`): the bottom-left box, var(--col) + 34px wide.
-  Its cells are Project (with the client chip when there is a client), Sheet `NN/06`
+  Its cells are Project (with the client chip when there is a client), Sheet `NN/10`
   (Appendix `X/C` on the appendices), Title, Rev, then three cells from data (Drawn,
   Date/Type, Scale/Status).
 - **Notes column** (`.notes`, width `--col: min(392px, 29vw)`) holds a **Schedule**
@@ -81,23 +81,37 @@ Mono labels are uppercase and tracked (`.14em` to `.24em`). Sheet titles use
 - **Stamps** (`svgParts.tsx`, `Stamp`): a double border, display title, mono sub and
   the stampTex filter. They thunk in at scale 2.3 to 1 with a ring burst and a 3px
   frame jolt.
-- **Fact panel** (`FactPanel.tsx`, sheet 02): a masked track of cards scrolled one
-  at a time. The active card gets a sig rule and the number sheen.
+- **Fact panel** (`FactPanel.tsx`, sheet 02): a masked track of five cards scrolled
+  one at a time. The active card gets a sig rule and the number sheen. Static: the
+  cards sit in two columns.
+- **Overlays**: sheet 05 carries a light vellum (`.vellum`, HTML over the drawing,
+  slides in from the right); sheet 03 carries a dark incident film (`.incident`, an
+  SVG group inside the drawing, slides up over the lower half). Both stay in place
+  at the end and in the static layout.
 - **Leaf** (`Leaf.tsx`): an unpinned sheet that is as tall as its content, with the same
   paper, frame, zones, header and title block. It is used by the appendices, `/blogs`
   and 404. `.leaf-grid` puts the notes column beside the main column. Its rows
   (`[data-row]`) carry a top hairline.
-- **Appendices** (`sheets/Appendices.tsx`, between 05 and 06, z 5):
+- **General data** (`GeneralData.tsx`, id `gd`): an unpinned leaf between the cover
+  and 01. It holds still under the lifting cover (sticky stage, a 260vh tail), the
+  hero dot lands on its datum, six figures count up once (`.counted`, the same
+  formats as the sheets: int, one decimal, MTTR minutes), a quieter second row
+  follows, and 01 slides over it. Every figure links (`data-go`) to the sheet that
+  draws it. Copy lives in `generalData` / `generalDataMore`.
+- **Appendices** (`sheets/Appendices.tsx`, between 09 and 10, z 9):
   - **A · Parts list**: a bill of materials (balloon item no., assembly, parts, qty,
     and a total with sheen). Primary parts (`profile.chips`) are `.hl`.
-  - **B · Specifications**: education (the Northeastern plate next to the MS entry),
-    the IEEE 2022 publication and certifications.
+  - **B · Specifications**: education (the Northeastern plate next to the MS entry,
+    coursework and course projects; PES research, the 5G edge project and the
+    specialization), the IEEE CONECCT 2022 publication and dated certifications.
   - **C · Field notes**: the latest posts as log lines (entry no., date, title,
     excerpt, ↗), with a quiet empty line linking to `/blogs`.
 - **Sheet index** (`SheetIndex.tsx`): the fixed right rail with a progress line. Items
-  run Cover 00, 01 to 05, then the appendices, then 06. The appendices are grouped:
+  run Cover 00, Data GD (grouped under the cover), 01 to 09, then the appendices,
+  then 10. The appendices are grouped:
   tighter spacing, smaller type, diamond markers and tick marks bracketing the group
-  on the rail line. `data-go` holds the target element id.
+  on the rail line. `data-go` holds the target element id. Sheet ids are `s1`–`s10`
+  (the sheet number); the band is `gd`.
 - **Chrome** (`Chrome.tsx`): the KK drafting-stamp monogram (its ring turns with
   scroll) and the mono nav pills. `PageChrome` is the same chrome for `/blogs` and
   404, where it links home with plain `<a>` so the manual gets a full load and its
@@ -113,9 +127,10 @@ ticker, and cleanup on unmount.
 - **Scrubbed sheet timelines**: one per story sheet, covering draw, fade, pop,
   callout, stamp, and the dot travelling along `.route` paths with a sig `.trail`
   behind it.
-- **Flow comets**: once a structural line is drawn on the active sheet, a cloned
-  `.flow` path runs a 5/95 dash along it in sig (every third one in pop2). Plate
-  frames carry a slow one.
+- **Flow comets**: once a structural line is fully drawn (dash offset ~0) on the
+  active sheet, a cloned `.flow` path runs a 5/95 dash along it in sig (every third
+  one in pop2). Plate frames carry a slow one. Lines a timeline scales or swaps in
+  instead of drawing (strikes, needles, check marks) carry `.nf` and get no comet.
 - **Lit highlights**: a general note at full opacity gets `.lit`, and its `<b>`
   phrases sweep in a sig→pop2 2px underline. In the appendices the same underline is on
   `.hl`, keyed on the row's `.in`.
@@ -124,16 +139,24 @@ ticker, and cleanup on unmount.
 - **Sheet-over-sheet**: each sheet or leaf slides in over its predecessor in the flow
   with a slight rotation and x offset. The predecessor shades (to .62) and recedes
   (scale .955). A leaf predecessor recedes about the viewport's top edge.
-- **Leaves in the stack**: an appendix slides over 05 (or the previous appendix),
+- **Leaves in the stack**: an appendix slides over 09 (or the previous appendix),
   scrolls naturally, then sticks once its end reaches the viewport bottom. The hook sets
   a negative sticky `top`, and `.leaf-tail` provides the 100vh overlap that the next
-  sheet slides over. This is how 06 slides over Appendix C.
+  sheet slides over. This is how 10 slides over Appendix C, and 01 over the band.
 - **Row draw-in (appendices)**: not scrubbed. As each row enters the viewport (94%),
   its rule draws left to right, its cells rise in with a stagger, and its key phrase
   lights. Each row draws once.
 - **Cover**: the name's characters rise in, the cap/base guides and cap-height
   dimension draw, and the dot lands. On scroll the characters scatter and the cover
-  lifts away while the dot arcs into sheet 01.
+  lifts away while the dot arcs onto the general-data datum.
+- **Ship-2 timelines** (`motion/builders.ts`): 04 (the release line: crate retired,
+  three press strokes, the gate's lamps, the rack fills, a second image), 05 (the
+  keyed-entry vellum: request path, the dot enters only its own room, a forged URL
+  bounces), 06 (cold-start flood, watermark steps, the cap valve defers, the bell
+  rings once, tracker vs feed, the re-surfacing escalation), 07 (the dot walks the
+  days; 16 PR bars land as it passes), 08 (one feature rides the loop; each gate lamp
+  lights; the drift needle and the autonomy dial turn). They share the v3 helpers
+  through a `Kit`.
 - **Embed**: only the name settles in (two words rise .16em and fade in), and then the
   dot pops.
 
@@ -146,7 +169,7 @@ Everpure and RoonCyber on `#fff`. Each chip has a 1px `--ink3` hairline and a 2p
 - Never recolour, mono, crop to a glyph, filter, mask, clip-path, blend or reduce the
   opacity of a mark. It is fitted with `object-fit: contain` only.
 - Chips are fixed and even per context: `plate` 220×64 (150×44 on mobile),
-  `rev` 112×30, and `tb` 84×22. `LOGO_FIT` sets the logo height as a share of the
+  `rev` 84×20 (eight revision rows), and `tb` 84×22. `LOGO_FIT` sets the logo height as a share of the
   chip, tuned by eye for equal visual weight (mercedes .82, everpure .52,
   rooncyber .4, northeastern .9).
 - Field-manual accents (ticks, comets, labels, captions) stay outside the chip. Animate
@@ -171,7 +194,7 @@ Everpure and RoonCyber on `#fff`. Each chip has a 1px `--ink3` hairline and a 2p
 
 ## Surfaces
 
-- `/`: the manual (cover, 01 to 05, appendices A to C, 06). Blog posts for C are
+- `/`: the manual (cover, general data, 01 to 09, appendices A to C, 10). Blog posts for C are
   fetched server-side in `page.tsx` (`getAllPosts`, `[]` on failure).
 - `/blogs`: "Field notes", one leaf with the full log (with tags) and the page chrome.
 - `/embed`: the signature, a cropped cover (noindex). The name is on one line in wide
@@ -185,8 +208,12 @@ Everpure and RoonCyber on `#fff`. Each chip has a 1px `--ink3` hairline and a 2p
 
 ## Content rules
 
-The binding wording rules (disruption manager framing, illustrative labels, no
-authorship of Auth Server/kvstore, design partners not customers, no internal keys or
-names, and the Research Assistant removed site-wide) are in the spec's "Content rules"
-section and are enforced by `src/data/data.test.ts`. Copy lives in `src/data/*`.
-Drawing labels live in the sheet components.
+Marketing policy (user, 2026-11): strong, confident wording; impressive figures are
+shown as plain facts (the 3,000-machine pool and availability figures included). The
+floor still holds: no authorship of Auth Server/kvstore, the Dominator Go port or
+protocol, in-kernel eBPF programs, or teammates' M2M lifecycle endpoints; no Spot
+Award / YouTube / LeetCode / LendWise; no internal keys, PR numbers, tool, table,
+route or service names, or colleague names (titles only); design partners, not
+customers; the Research Assistant role stays off the site. `src/data/data.test.ts`
+enforces the floor. Copy lives in `src/data/*`. Drawing labels live in the sheet
+components.
