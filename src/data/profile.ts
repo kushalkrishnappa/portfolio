@@ -6,7 +6,7 @@ export const profile: Profile = {
   tagline: "building invisible infrastructure for visible impact",
   email: "kushalkrishnappa333@gmail.com",
   availability: "Open to backend / platform / infra / SRE roles",
-  nowLine: "Research Assistant @ Northeastern · open for full-time May 2027",
+  nowLine: "MS CS @ Northeastern · open to full-time May 2027",
   before: ["RoonCyber", "Pure Storage", "Mercedes-Benz"],
   chips: [
     "Go",
@@ -37,10 +37,10 @@ export const profile: Profile = {
       },
     ],
     closing:
-      "What I care about: orchestration, reliability, and systems that hold up under real load. I'm currently a Research Assistant in Northeastern's Systems Research Group, working on relational debugging for Kubernetes control-plane performance bugs.",
+      "What I care about: orchestration, reliability, and systems that hold up under real load.",
   },
   quickInfo: [
-    { label: "CURRENT ROLE", value: "Research Assistant @ Northeastern" },
+    { label: "EDUCATION", value: "MS CS @ Northeastern · May 2027" },
     { label: "LOCATION", value: "Boston, MA" },
     { label: "EXPERIENCE", value: "2.5+ years in Software Engineering" },
   ],

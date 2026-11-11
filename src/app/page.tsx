@@ -7,7 +7,6 @@ import Projects from "@/app/components/sections/Projects";
 import Writing from "@/app/components/sections/Writing";
 import Skills from "@/app/components/sections/Skills";
 import Education from "@/app/components/sections/Education";
-import Research from "@/app/components/sections/Research";
 import Publications from "@/app/components/sections/Publications";
 import Certifications from "@/app/components/sections/Certifications";
 import Contact from "@/app/components/sections/Contact";
@@ -25,7 +24,6 @@ export default function Home() {
         <Projects />
         <Skills />
         <Education />
-        <Research />
         <Publications />
         <Certifications />
         <Writing />

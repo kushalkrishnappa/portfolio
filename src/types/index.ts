@@ -67,15 +67,6 @@ export interface SystemCaseStudy {
   status?: "shipped" | "prototype";
 }
 
-export interface Research {
-  title: string;
-  advisor: string;
-  group: string;
-  period: string;
-  summary: string;
-  skills: string[];
-}
-
 export interface Project {
   name: string;
   description: string;

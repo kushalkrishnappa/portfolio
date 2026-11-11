@@ -9,7 +9,6 @@ import { education } from "./education";
 import { publications } from "./publications";
 import { certifications } from "./certifications";
 import { systems } from "./systems";
-import { research } from "./research";
 
 // Private material must never ship: internal Jira keys (PENG-####) or
 // internal PR / ticket numbers (#NNN+).
@@ -38,7 +37,6 @@ const allData: Record<string, unknown> = {
   publications,
   certifications,
   systems,
-  research,
 };
 
 describe("data layer — private denylist", () => {
@@ -73,5 +71,28 @@ describe("impact metrics", () => {
       expect(metric.value).not.toContain("90%");
       expect(metric.label).not.toContain("90%");
     }
+  });
+});
+
+describe("profile — retired RA role", () => {
+  // Assembled from parts so a repo-wide grep for the retired role stays empty.
+  const RA = new RegExp(
+    [["research", "assistant"], ["systems", "research"], ["xi", "ang"]]
+      .map((parts) => parts.join(parts[0] === "xi" ? "" : " "))
+      .join("|"),
+    "i",
+  );
+
+  it("mentions the retired role nowhere in the profile", () => {
+    const hits = collectStrings(profile, []).filter((s) => RA.test(s));
+    expect(hits).toEqual([]);
+  });
+
+  it("uses the Northeastern now-line", () => {
+    expect(profile.nowLine).toBe("MS CS @ Northeastern · open to full-time May 2027");
+  });
+
+  it("has no CURRENT ROLE quick-info entry", () => {
+    expect(profile.quickInfo.map((q) => q.label)).not.toContain("CURRENT ROLE");
   });
 });
