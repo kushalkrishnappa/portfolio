@@ -9,13 +9,13 @@ import { sheetById } from "@/data/manual";
 export default function Ingestion() {
   const meta = sheetById("s1");
   return (
-    <Sheet meta={meta} z={1} shadeCover>
+    <Sheet meta={meta} z={1}>
       <aside className="notes">
         <SpecTable {...meta.schedule!} />
         <GeneralNotes notes={meta.notes!} />
       </aside>
       <div className="drawing">
-        <svg className="dwg" viewBox="0 0 900 620" role="img" aria-label="Schematic: telemetry from a vehicle and other sources converges into Azure Event Hubs, runs through PySpark ETL, and lands in a Delta Lake warehouse holding 90 TB+.">
+        <svg className="dwg" viewBox="0 0 900 620" role="img" aria-label="Schematic: telemetry from a vehicle and other sources streams into Azure Event Hubs in real time, runs through PySpark ETL, and lands in a Delta Lake warehouse holding 90 TB+. Detail B: an N+1 query fan-out replaced by one call, halving p95 latency.">
           <text className="lbl fade" x="20" y="22">DWG 01 · MULTI-SOURCE INGESTION · NTS</text>
           <g className="p1" transform="translate(0 90)">
             <path className="ink b" d="M28 396 L28 368 C28 356 40 350 58 347 L112 340 C138 314 168 298 214 294 L262 294 C292 296 314 316 336 338 L352 344 C362 348 366 358 366 372 L366 396 L330 396 A34 34 0 0 0 262 396 L132 396 A34 34 0 0 0 64 396 Z" pathLength={1} />
@@ -77,6 +77,21 @@ export default function Ingestion() {
           <g className="c1"><path className="ink t" d="M214 346 L190 262 L30 262" pathLength={1} /><text className="hand pop" x="30" y="252">OTA telemetry, straight off the car</text></g>
           <g className="c2"><path className="ink t" d="M512 165 L540 120 L560 120" pathLength={1} /><text className="hand pop" x="566" y="126">many sources, one front door</text></g>
           <g className="c3"><path className="ink t" d="M566 470 L522 500" pathLength={1} /><text className="hand pop" x="388" y="524">pitched it,</text><text className="hand pop" x="402" y="552">then built it.</text></g>
+          <g className="hotp">
+            <text className="lbl k fade" x="470" y="38" style={{ fontSize: "8.5px" }}>DETAIL B · HOT PATH · ON CALL</text>
+            <text className="lbl fade" x="470" y="63" style={{ fontSize: "7.5px" }}>BEFORE</text>
+            <rect className="ink t" x="526" y="52" width="24" height="14" rx="2" pathLength={1} />
+            <path className="ink t" d="M550 59 L590 48 M550 59 L590 54 M550 59 L590 59 M550 59 L590 64 M550 59 L590 70" pathLength={1} />
+            <rect className="ink t" x="592" y="46" width="18" height="26" rx="5" pathLength={1} />
+            <path className="ink b" d="M626 59 L866 59" pathLength={1} />
+            <text className="lbl fade" x="626" y="50" style={{ fontSize: "7px" }}>p95 · N+1 QUERIES</text>
+            <text className="lbl fade" x="470" y="91" style={{ fontSize: "7.5px" }}>AFTER</text>
+            <rect className="ink t" x="526" y="80" width="24" height="14" rx="2" pathLength={1} />
+            <path className="ink b" d="M550 87 L590 87" pathLength={1} />
+            <rect className="ink t" x="592" y="74" width="18" height="26" rx="5" pathLength={1} />
+            <path className="sig-ln p95b sdraw" d="M626 87 L746 87" pathLength={1} />
+            <text className="dimtxt pop" x="758" y="92">−50%</text>
+          </g>
           <Stamp className="st1" transform="translate(470 318) rotate(-7)" w={200} h={68} title="APPROVED" titleY={7} sub="CENTRAL WAREHOUSE · 2022" subY={20} />
           <Route id="r1" d="M214 352 C250 280 360 214 440 200 L540 213 L741 213 L741 470 L741 592" />
           <Dot at="214 352" />

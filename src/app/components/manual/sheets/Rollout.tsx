@@ -21,7 +21,7 @@ export default function Rollout() {
         <GeneralNotes notes={meta.notes!} />
       </aside>
       <div className="drawing">
-        <svg className="dwg" viewBox="0 0 900 620" role="img" aria-label="Elevation of one image group. Dominator consults the disruption manager before a disruptive update. A per-group budget (two, illustrative) lets machines through the gate a couple at a time, canary first, while the rest wait as requested and a machine with running tests holds.">
+        <svg className="dwg" viewBox="0 0 900 620" role="img" aria-label="Elevation of one image group. Dominator consults the disruption manager before a disruptive update. A per-group budget (two, illustrative) lets machines through the gate a couple at a time, canary first, while the rest wait as requested and a machine with running tests holds. An incident report overlay charts the retry storm of the first disruptive rollout and the lessons from it.">
           <text className="lbl fade" x="60" y="22">DWG 03 · ELEVATION — ONE IMAGE GROUP · NTS</text>
           <g className="from"><path className="ink" d="M4 88 L30 88 L42 100 L30 112 L4 112 Z" pathLength={1} /><text className="lbl fade" x="4" y="58">FROM SHT 02</text></g>
           <g className="infra">
@@ -88,6 +88,44 @@ export default function Rollout() {
             <rect className="lg-p fade" x="650" y="521" width="10" height="10" /><text className="lbl fade" x="668" y="530" style={{ fontSize: "8.5px" }}>PERMITTED</text>
           </g>
           <Stamp className="st-rs" transform="translate(766 578) rotate(-6)" w={208} h={60} inset={7} title="STAGGERED ✓" titleY={4} titleStyle={{ fontSize: "28px" }} sub="NEVER THE WHOLE GROUP" subY={17} />
+          <g className="incident">
+            <rect className="film" x="-14" y="312" width="928" height="318" />
+            <rect className="film-tape" x="-36" y="306" width="98" height="22" transform="rotate(-24 13 317)" />
+            <rect className="film-tape" x="846" y="606" width="98" height="22" transform="rotate(-24 895 617)" />
+            <rect className="film-tab" x="700" y="294" width="198" height="18" />
+            <text className="film-tag" x="799" y="307" textAnchor="middle">INCIDENT REPORT · OVERLAY B</text>
+            <text className="lbl k fade" x="24" y="334">INCIDENT · RETRY STORM · FIRST DISRUPTIVE ROLLOUT</text>
+            <path className="ink t" d="M40 354 L40 520 L572 520" pathLength={1} />
+            <text className="lbl fade" x="46" y="352" style={{ fontSize: "7.5px" }}>DB LOAD</text>
+            <text className="lbl fade" x="572" y="536" textAnchor="end" style={{ fontSize: "7.5px" }}>TIME →</text>
+            <path className="ink" d="M44 512 L60 470 L66 512 L90 470 L96 512 L120 470 L126 512 L150 470 L156 512 L172 506 L250 506" pathLength={1} />
+            <text className="lbl fade" x="46" y="456" style={{ fontSize: "7.5px" }}>CHECK PEAKS · EVERY 15 MIN</text>
+            <path className="rel fade" d="M168 380 L168 520" />
+            <text className="lbl fade" x="174" y="392" style={{ fontSize: "7.5px" }}>CACHE ~100 S</text>
+            <text className="lbl fade" x="174" y="404" style={{ fontSize: "7.5px" }}>+ BACKOFF</text>
+            <path className="sig-ln storm sdraw" d="M250 506 C272 500 282 420 302 366" pathLength={1} />
+            <path className="sig-ln storm sdraw" d="M306 356 L306 520" pathLength={1} />
+            <text className="lbl k fade" x="312" y="366" style={{ fontSize: "8px" }}>DB DOWN</text>
+            <path className="ink" d="M342 446 A20 20 0 1 1 366 452" markerEnd="url(#arr)" pathLength={1} />
+            <text className="lbl fade" x="318" y="484" style={{ fontSize: "7.5px" }}>500 → RETRY FASTER</text>
+            <path className="sig-ln storm sdraw" d="M380 506 L398 396 L404 506" pathLength={1} />
+            <text className="lbl k fade" x="406" y="404" style={{ fontSize: "8px" }}>REDIS DOWN</text>
+            <path className="rel fade" d="M452 380 L452 520" />
+            <text className="lbl fade" x="458" y="392" style={{ fontSize: "7.5px" }}>REDIS UPGRADED</text>
+            <path className="ink b" d="M404 506 L452 498 L566 498" pathLength={1} />
+            <text className="lbl k fade" x="458" y="488" style={{ fontSize: "8px" }}>STEADY ✓</text>
+            <text className="lbl k fade" x="604" y="352">LESSONS · WRITTEN DOWN</text>
+            <path className="ink t" d="M604 362 L880 362 M604 388 L880 388 M604 414 L880 414 M604 440 L880 440 M604 466 L880 466 M604 492 L880 492" pathLength={1} />
+            {["Back-of-envelope load math", "Caching", "Rate limits", "SLAs and SLOs", "Alerts and metrics"].map((l, i) => (
+              <g key={l} className="lesson pop">
+                <text className="lbl" x="606" y={380 + i * 26} style={{ fontSize: "7.5px" }}>{`0${i + 1}`}</text>
+                <text className="lbl k" x="632" y={380 + i * 26} style={{ fontSize: "8px" }}>{l.toUpperCase()}</text>
+              </g>
+            ))}
+            <g className="metric2"><text className="lbl-b pop" x="40" y="572">5 MACHINES AT A TIME</text><text className="lbl pop" x="40" y="592" style={{ fontSize: "8.5px" }}>NEXT DISRUPTIVE ROLLOUT · CACHE + BACKOFF</text></g>
+            <g className="c-inc"><text className="hand pop" x="372" y="570">load math</text><text className="hand pop" x="372" y="598">before deploy.</text></g>
+            <Stamp className="st-inc" transform="translate(754 566) rotate(-6)" w={212} h={58} inset={7} title="RESOLVED" titleY={3} titleStyle={{ fontSize: "26px" }} sub="NEXT ROLLOUT · 5 AT A TIME" subY={17} />
+          </g>
           <Route id="rsa" d="M42 100 L60 100 L300 100 L420 104 L420 196 L420 262" />
           <Route id="rsb" d="M420 262 L420 276 L850 276" />
           <Dot at="42 100" />

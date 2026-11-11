@@ -31,7 +31,7 @@ export default function Cover() {
         <div className="paper-bg" style={{ "--bp": "30% 10%" } as CSSProperties} />
         <div className="frame">
           <Zones />
-          <p className="eyebrow cover-eyebrow">Field manual · Sheet 00 / 06 · Cover</p>
+          <p className="eyebrow cover-eyebrow">Field manual · Sheet 00 / 10 · Cover</p>
           <h1 className="name" id="top" aria-label={profile.name}>
             <span className="nline" aria-hidden="true">
               <span className="guides">

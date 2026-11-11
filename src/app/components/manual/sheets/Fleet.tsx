@@ -16,7 +16,7 @@ export default function Fleet() {
         <FactPanel />
       </aside>
       <div className="drawing">
-        <svg className="dwg" viewBox="0 0 900 620" role="img" aria-label="Exploded axonometric of a 2,000-testbed, 9,000+-VM fleet; a Temporal reconciler visits each flagged node and redraws it. MTTR shrinks from 5 hours to 10 minutes.">
+        <svg className="dwg" viewBox="0 0 900 620" role="img" aria-label="Exploded axonometric of a 2,000-testbed, 9,000+-VM fleet; a Temporal reconciler visits each flagged node and redraws it. MTTR shrinks from 5 hours to 10 minutes, then a further 85% with snapshot-restore.">
           <text className="lbl fade" x="80" y="22">DWG 02 · FLEET · EXPLODED AXONOMETRIC · NTS</text>
           <g className="from"><path className="ink" d="M14 50 L42 50 L54 62 L42 74 L14 74 Z" pathLength={1} /><text className="lbl fade" x="14" y="94">FROM SHT 01</text></g>
           <FleetGrid />
@@ -41,6 +41,7 @@ export default function Fleet() {
             <text className="lbl" x="24" y="608">MTTR</text>
             <text className="mttr-v" id="mt-v" x="734" y="615">5h 00m</text>
           </g>
+          <g className="mt2"><path className="sig-ln" d="M124 594 L124 614" /><text className="lbl k pop" x="268" y="603">THEN −85% MORE</text><text className="lbl pop" x="268" y="617" style={{ fontSize: "8px" }}>SNAPSHOT-RESTORE · GO + TEMPORAL</text></g>
           <Stamp className="st2" transform="translate(770 494) rotate(-6)" w={224} h={68} title="RECONCILED" titleY={7} sub="FLEET · 2023–24" subY={20} />
           <FleetArcs />
           <Route id="r2in" d="M54 62 C200 30 330 56 430 84" />
