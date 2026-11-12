@@ -4,8 +4,9 @@ import { join } from "node:path";
 import { profile } from "@/data/profile";
 
 // OG card in the Field Manual world: the near-black drafting ground with its
-// grid, the stencil name, the orange request dot (the one Heat accent) and the
-// role. Rendered once at build (static), Node runtime.
+// grid, the stencil name, the orange request dot (the one Heat accent), the
+// role box and the availability line. No eyebrow or title block: the card is
+// read at thumbnail size, so it carries only what a viewer needs. Rendered once at build (static), Node runtime.
 //
 // Fonts are tiny glyph subsets of two OFL families, bundled in src/assets/og
 // so the build never fetches anything: Big Shoulders Stencil (opsz 72,
@@ -19,7 +20,6 @@ export const contentType = "image/png";
 const PAPER = "#0b0e14";
 const INK = "#e9edf3";
 const INK2 = "rgba(233,237,243,.60)";
-const INK3 = "rgba(233,237,243,.26)";
 const GRID = "rgba(233,237,243,.055)";
 const GRID_FINE = "rgba(233,237,243,.028)";
 const SIG = "#ff5a1f";
@@ -44,12 +44,8 @@ export default async function OpengraphImage() {
           padding: 26,
         }}
       >
-        <div style={{ position: "relative", display: "flex", flexDirection: "column", width: "100%", height: "100%", border: `2px solid ${INK2}`, padding: "44px 56px" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 16, ...label }}>
-            <div style={{ width: 34, height: 1, background: INK2 }} />
-            FIELD MANUAL · SHEET 00 / 10 · COVER
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", marginTop: 26, fontFamily: "Stencil", fontSize: 178, lineHeight: 0.82, color: INK }}>
+        <div style={{ position: "relative", display: "flex", flexDirection: "column", width: "100%", height: "100%", border: `2px solid ${INK2}`, padding: "44px 56px", justifyContent: "center" }}>
+          <div style={{ display: "flex", flexDirection: "column", fontFamily: "Stencil", fontSize: 178, lineHeight: 0.82, color: INK }}>
             <div style={{ display: "flex" }}>{first}</div>
             <div style={{ display: "flex", alignItems: "flex-end" }}>
               {rest.join(" ")}
@@ -64,29 +60,6 @@ export default async function OpengraphImage() {
               MS CS @ NORTHEASTERN · OPEN TO FULL-TIME MAY 2027
               <div style={{ display: "flex", width: 120, height: 3, marginTop: 10, backgroundImage: `linear-gradient(90deg, ${SIG}, ${POP2})` }} />
             </div>
-          </div>
-          <div
-            style={{
-              position: "absolute",
-              left: 0,
-              bottom: 0,
-              display: "flex",
-              borderTop: `2px solid ${INK2}`,
-              borderRight: `2px solid ${INK2}`,
-              background: "rgba(11,14,20,.92)",
-            }}
-          >
-            {[
-              ["PROJECT", "K. KRISHNAPPA · FIELD MANUAL"],
-              ["SHEET", "00 / 10"],
-              ["REV", "H"],
-              ["ISSUED", "KUSHALKRISHNAPPA.COM"],
-            ].map(([k, v], i) => (
-              <div key={k} style={{ display: "flex", flexDirection: "column", padding: "10px 16px 11px", borderLeft: i ? `1px solid ${INK3}` : "none" }}>
-                <div style={{ display: "flex", ...label, fontSize: 10, letterSpacing: 3 }}>{k}</div>
-                <div style={{ display: "flex", fontFamily: "Mono", fontSize: 15, letterSpacing: 2, color: INK, marginTop: 6 }}>{v}</div>
-              </div>
-            ))}
           </div>
         </div>
       </div>
