@@ -202,8 +202,9 @@ Everpure and RoonCyber on `#fff`. Each chip has a 1px `--ink3` hairline and a 2p
   ≤ 2:1 and height ≥ 420px. It has a compact one-row title block. Tested at 600×200,
   800×300 and 1440×900.
 - 404: "Sheet missing", a leaf with a link home.
-- OG image (`opengraph-image.tsx`): the drafting ground and grid, the stencil name,
-  the orange dot, the role box, the now-line and a title block. It uses bundled glyph
+- OG image (`opengraph-image.tsx`): the drafting ground and grid, the frame, the
+  stencil name, the orange dot, the role box and the availability line, centred.
+  No eyebrow and no title block (thumbnail-size reading). It uses bundled glyph
   subsets in `src/assets/og/`; re-subset them if that copy changes.
 
 ## Content rules
